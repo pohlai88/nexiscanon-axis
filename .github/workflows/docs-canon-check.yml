@@ -1,0 +1,81 @@
+name: Docs Canon Check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  docs-canon-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Canon entrypoint must exist
+        run: |
+          test -f .cursor/plans/A-canonical-can/CAN000-CANON-MAP.md
+          test -f .cursor/plans/README.md
+
+      - name: README must point to CAN000
+        run: |
+          grep -q "A-canonical-can/CAN000-CANON-MAP.md" .cursor/plans/README.md
+
+      - name: Prevent linking SUP/EVI/ARC from entry README
+        run: |
+          set -e
+          if grep -E "B-supporrting-sup/|C-evidence-evi/|z-archive-arc/" .cursor/plans/README.md; then
+            echo "❌ Entry README must not link to SUP/EVI/ARC docs."
+            exit 1
+          fi
+
+      - name: Ban legacy plan references inside .cursor/plans
+        run: |
+          set -e
+          LEGACY_PATTERNS='000-FOUNDATION-DONE.md|001-ARCHITECTURE-SPEC-v3.md|002-ENFORCEMENT-ACTIFACT.md|003-IMPORT-ENFORCEMENT.md|004-WORKSPACE-BOUNDARIES.md|005-ODOO-WORKSPACE.md|006-SCAFFOLD.md|007-CURSOR-INSTRUCTION.md|008-MIGRATION-COMPLETE.md|\.cursor/plans/'
+          # Allow intentional references only inside:
+          # - CAN000 (canon map)
+          # - ARC003 (archive disclaimer)
+          if grep -RInE "$LEGACY_PATTERNS" .cursor/plans | grep -v "CAN000-CANON-MAP.md" | grep -v "ARC003-IMPORT-ENFORCEMENT.md"; then
+            echo "❌ Found legacy references in .cursor/plans (non-allowed locations)."
+            exit 1
+          fi
+
+      - name: Enforce banners on SUP/EVI/ARC docs
+        run: |
+          set -e
+
+          # SUP banner must exist near top
+          if ls .cursor/plans/B-supporrting-sup/SUP*.md >/dev/null 2>&1; then
+            if ! grep -RIl "^> \*\*Status: SUPPORTING \(SUP\)\*\*" .cursor/plans/B-supporrting-sup | grep -q "SUP"; then
+              echo "❌ One or more SUP docs missing SUPPORTING banner."
+              exit 1
+            fi
+          fi
+
+          # EVI banner must exist near top
+          if ls .cursor/plans/C-evidence-evi/EVI*.md >/dev/null 2>&1; then
+            if ! grep -RIl "^> \*\*Status: EVIDENCE \(EVI\)\*\*" .cursor/plans/C-evidence-evi | grep -q "EVI"; then
+              echo "❌ One or more EVI docs missing EVIDENCE banner."
+              exit 1
+            fi
+          fi
+
+          # ARC banner must exist near top (allow either strict format)
+          if ls .cursor/plans/z-archive-arc/ARC*.md >/dev/null 2>&1; then
+            if ! grep -RIl "^> \*\*🚫 Status: ARCHIVED \(ARC\)" .cursor/plans/z-archive-arc \
+              && ! grep -RIl "ARCHIVED — DO NOT USE" .cursor/plans/z-archive-arc; then
+              echo "❌ One or more ARC docs missing ARCHIVED banner."
+              exit 1
+            fi
+          fi
+
+      - name: Optional - ban assistant fluff phrases in docs
+        run: |
+          set -e
+          # Prevent phrases that indicate non-canonical “assistant voice” slipping into plans.
+          FLUFF='Absolutely —|here are the \*\*two paste-ready enforcement artifacts\*\*|Perfect!|Great question'
+          if grep -RInE "$FLUFF" .cursor/plans; then
+            echo "❌ Found assistant-style fluff phrases in .cursor/plans. Keep docs strictly canonical."
+            exit 1
+          fi

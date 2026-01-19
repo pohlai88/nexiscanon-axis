@@ -8,13 +8,13 @@ This guide covers **routing**, **Route Handlers (API)**, **Server Actions**, **m
 
 ### File conventions
 
-| File            | Purpose                                                                 |
-|-----------------|-------------------------------------------------------------------------|
-| `page.tsx`      | UI for a route. Required for a URL to be reachable.                     |
-| `layout.tsx`    | Shared UI; wraps `page` and nested layouts. Root layout needs `<html>`, `<body>`. |
-| `loading.tsx`   | Suspense fallback while the segment loads (streaming).                  |
-| `error.tsx`     | Error boundary for the segment. Must be a Client Component (`'use client'`). |
-| `not-found.tsx` | Shown when `notFound()` is called or the URL does not match any route.  |
+| File               | Purpose                                                                                |
+| ------------------ | -------------------------------------------------------------------------------------- |
+| `page.tsx`         | UI for a route. Required for a URL to be reachable.                                    |
+| `layout.tsx`       | Shared UI; wraps `page` and nested layouts. Root layout needs `<html>`, `<body>`.      |
+| `loading.tsx`      | Suspense fallback while the segment loads (streaming).                                 |
+| `error.tsx`        | Error boundary for the segment. Must be a Client Component (`'use client'`).           |
+| `not-found.tsx`    | Shown when `notFound()` is called or the URL does not match any route.                 |
 | `global-error.tsx` | Replaces the root layout when an error occurs. Must define its own `<html>`, `<body>`. |
 
 ### Params and searchParams (async in Next 15+)
@@ -23,7 +23,11 @@ This guide covers **routing**, **Route Handlers (API)**, **Server Actions**, **m
 
 ```ts
 // app/blog/[slug]/page.tsx
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   // ...
 }
@@ -90,11 +94,11 @@ Export: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`.
 
 ### Examples in `apps/web`
 
-| Route              | Method | Purpose                          |
-|--------------------|--------|----------------------------------|
-| `/api/health`      | GET    | Liveness/readiness, monitoring   |
-| `/api/echo`        | POST   | JSON body, validation, 400       |
-| `/api/users/[id]`  | GET    | Dynamic segment, `params` async  |
+| Route             | Method | Purpose                         |
+| ----------------- | ------ | ------------------------------- |
+| `/api/health`     | GET    | Liveness/readiness, monitoring  |
+| `/api/echo`       | POST   | JSON body, validation, 400      |
+| `/api/users/[id]` | GET    | Dynamic segment, `params` async |
 
 ### When to use Route Handlers vs Server Actions
 
@@ -120,11 +124,11 @@ Export: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `HEAD`, `OPTIONS`.
 
 ```ts
 // app/actions.ts
-'use server'
+"use server";
 export async function submitMessage(formData: FormData) {
-  const message = formData.get('message');
+  const message = formData.get("message");
   // validate, persist…
-  revalidatePath('/');
+  revalidatePath("/");
   return { success: true }; // or { error: '...' }
 }
 ```
@@ -157,7 +161,9 @@ export async function submitMessage(formData: FormData) {
 
 ```ts
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };
 ```
 

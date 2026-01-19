@@ -10,7 +10,10 @@ export const emailSchema = z
 
 export const passwordSchema = z
   .string()
-  .min(PASSWORD_MIN_LENGTH, `Password must be at least ${PASSWORD_MIN_LENGTH} characters`)
+  .min(
+    PASSWORD_MIN_LENGTH,
+    `Password must be at least ${PASSWORD_MIN_LENGTH} characters`
+  )
   .regex(/[A-Z]/, "Password must contain uppercase letter")
   .regex(/[0-9]/, "Password must contain number");
 

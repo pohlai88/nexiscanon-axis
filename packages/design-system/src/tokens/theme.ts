@@ -1,5 +1,12 @@
 // lib/theme.ts
-export type ThemeName = "neutral" | "gray" | "stone" | "zinc" | "midnight" | "opulence" | "heirloom";
+export type ThemeName =
+  | "neutral"
+  | "gray"
+  | "stone"
+  | "zinc"
+  | "midnight"
+  | "opulence"
+  | "heirloom";
 
 export type ThemeColors = {
   background: string;
@@ -27,7 +34,15 @@ export type Theme = {
   colors: ThemeColors;
 };
 
-export const THEME_NAMES: ThemeName[] = ["neutral", "gray", "stone", "zinc", "midnight", "opulence", "heirloom"];
+export const THEME_NAMES: ThemeName[] = [
+  "neutral",
+  "gray",
+  "stone",
+  "zinc",
+  "midnight",
+  "opulence",
+  "heirloom",
+];
 
 export const THEME_LABELS: Record<ThemeName, string> = {
   neutral: "Neutral",

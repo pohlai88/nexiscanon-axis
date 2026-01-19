@@ -1,38 +1,39 @@
-import { signupHandler } from "@workspace/auth";
-import { NextRequest, NextResponse } from "next/server";
+// apps/web/app/api/auth/signup/route.ts
+// Signup endpoint - uses kernel pattern
+
+import { kernel } from "@workspace/api-kernel";
+import { signupSchema, signupOutputSchema } from "@workspace/validation";
 
 /**
  * POST /api/auth/signup
- * 
+ *
  * Creates a new user account
- * 
- * Request body:
- * {
- *   email: string,
- *   password: string,
- *   confirmPassword: string
- * }
- * 
- * Response:
- * {
- *   success: true,
- *   message: "Account created. Check your email to verify."
- * }
  */
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    
-    // Call handler from @repo/auth/handlers
-    // TODO: Implement database integration in handler
-    const result = await signupHandler(body);
-    
-    return NextResponse.json(result, { status: 201 });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Signup failed";
-    return NextResponse.json(
-      { message, code: "SIGNUP_ERROR" },
-      { status: 400 }
-    );
-  }
-}
+export const POST = kernel({
+  method: "POST",
+  routeId: "auth.signup",
+  // Public endpoint - no auth required (this creates the account)
+  auth: { mode: "public" },
+  body: signupSchema,
+  output: signupOutputSchema,
+
+  async handler({ body }) {
+    // TODO: Implement actual signup logic
+    // In production:
+    // 1. Check if email already exists
+    // 2. Hash password
+    // 3. Create user in database
+    // 4. Send verification email
+    // 5. Return success message
+
+    // Placeholder validation
+    if (body.email && body.password && body.confirmPassword) {
+      return {
+        success: true,
+        message: "Account created. Check your email to verify.",
+      };
+    }
+
+    throw new Error("Invalid signup data");
+  },
+});

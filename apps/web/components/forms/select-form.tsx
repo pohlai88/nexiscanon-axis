@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -15,13 +15,13 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   language: z.string().min(1, "Please select a language."),
-})
+});
 
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof formSchema>;
 
 export function SelectForm() {
   const form = useForm<FormData>({
@@ -29,10 +29,10 @@ export function SelectForm() {
     defaultValues: {
       language: "",
     },
-  })
+  });
 
   function onSubmit(data: FormData) {
-    console.log("Form submitted:", data)
+    console.log("Form submitted:", data);
   }
 
   return (
@@ -43,9 +43,7 @@ export function SelectForm() {
         render={({ field, fieldState }) => (
           <Field orientation="responsive" data-invalid={fieldState.invalid}>
             <FieldContent>
-              <FieldLabel htmlFor="language-select">
-                Spoken Language
-              </FieldLabel>
+              <FieldLabel htmlFor="language-select">Spoken Language</FieldLabel>
               <FieldDescription>
                 For best results, select the language you speak.
               </FieldDescription>
@@ -78,5 +76,5 @@ export function SelectForm() {
 
       <Button type="submit">Save Preferences</Button>
     </form>
-  )
+  );
 }

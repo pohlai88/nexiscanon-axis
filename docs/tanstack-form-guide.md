@@ -15,16 +15,22 @@ pnpm add @tanstack/react-form @tanstack/zod-form-adapter zod
 ### Basic Usage
 
 ```tsx
-"use client"
+"use client";
 
-import { useForm } from "@tanstack/react-form"
-import { zodValidator } from "@tanstack/zod-form-adapter"
-import * as z from "zod"
-import { Button, Field, FieldError, FieldLabel, Input } from "@workspace/design-system"
+import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
+import * as z from "zod";
+import {
+  Button,
+  Field,
+  FieldError,
+  FieldLabel,
+  Input,
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
-})
+});
 
 export function MyForm() {
   const form = useForm({
@@ -34,21 +40,22 @@ export function MyForm() {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log(value)
+      console.log(value);
     },
-  })
+  });
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
     >
       <form.Field
         name="email"
         children={(field) => {
-          const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+          const isInvalid =
+            field.state.meta.isTouched && !field.state.meta.isValid;
           return (
             <Field data-invalid={isInvalid}>
               <FieldLabel htmlFor={field.name}>Email</FieldLabel>
@@ -62,12 +69,12 @@ export function MyForm() {
               />
               {isInvalid && <FieldError errors={field.state.meta.errors} />}
             </Field>
-          )
+          );
         }}
       />
       <Button type="submit">Submit</Button>
     </form>
-  )
+  );
 }
 ```
 
@@ -93,7 +100,7 @@ Define your form structure and validation rules using Zod:
 const formSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   age: z.number().min(18, "Must be 18 or older"),
-})
+});
 ```
 
 ### 2. Form Setup
@@ -108,9 +115,9 @@ const form = useForm({
     onSubmit: formSchema,
   },
   onSubmit: async ({ value }) => {
-    console.log(value)
+    console.log(value);
   },
-})
+});
 ```
 
 ### 3. Render Prop Pattern
@@ -121,7 +128,7 @@ Use `form.Field` with a render prop to connect fields:
 <form.Field
   name="username"
   children={(field) => {
-    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
     return (
       <Field data-invalid={isInvalid}>
         <FieldLabel htmlFor={field.name}>Username</FieldLabel>
@@ -135,7 +142,7 @@ Use `form.Field` with a render prop to connect fields:
         />
         {isInvalid && <FieldError errors={field.state.meta.errors} />}
       </Field>
-    )
+    );
   }}
 />
 ```
@@ -163,17 +170,20 @@ Configure when validation occurs using the `validators` option:
 
 ```tsx
 const form = useForm({
-  defaultValues: { /* ... */ },
+  defaultValues: {
+    /* ... */
+  },
   validatorAdapter: zodValidator(),
   validators: {
-    onChange: formSchema,  // Validate on every change
-    onBlur: formSchema,    // Validate on blur
-    onSubmit: formSchema,  // Validate on submit
+    onChange: formSchema, // Validate on every change
+    onBlur: formSchema, // Validate on blur
+    onSubmit: formSchema, // Validate on submit
   },
-})
+});
 ```
 
 **Validation Strategies:**
+
 - `onChange` - Real-time validation as user types
 - `onBlur` - Validate when field loses focus
 - `onSubmit` - Validate only on form submission
@@ -189,7 +199,7 @@ Use `field.state.value` and `field.handleChange`:
 <form.Field
   name="username"
   children={(field) => {
-    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
     return (
       <Field data-invalid={isInvalid}>
         <FieldLabel htmlFor={field.name}>Username</FieldLabel>
@@ -203,7 +213,7 @@ Use `field.state.value` and `field.handleChange`:
         />
         {isInvalid && <FieldError errors={field.state.meta.errors} />}
       </Field>
-    )
+    );
   }}
 />
 ```
@@ -214,7 +224,7 @@ Use `field.state.value` and `field.handleChange`:
 <form.Field
   name="language"
   children={(field) => {
-    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
     return (
       <Field data-invalid={isInvalid}>
         <FieldLabel htmlFor={field.name}>Language</FieldLabel>
@@ -233,7 +243,7 @@ Use `field.state.value` and `field.handleChange`:
         </Select>
         {isInvalid && <FieldError errors={field.state.meta.errors} />}
       </Field>
-    )
+    );
   }}
 />
 ```
@@ -264,7 +274,7 @@ Use `mode="array"` for checkbox groups:
   name="interests"
   mode="array"
   children={(field) => {
-    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
     return (
       <FieldSet>
         <FieldLegend>Interests</FieldLegend>
@@ -275,10 +285,10 @@ Use `mode="array"` for checkbox groups:
                 checked={field.state.value.includes(option.id)}
                 onCheckedChange={(checked) => {
                   if (checked) {
-                    field.pushValue(option.id)
+                    field.pushValue(option.id);
                   } else {
-                    const index = field.state.value.indexOf(option.id)
-                    if (index > -1) field.removeValue(index)
+                    const index = field.state.value.indexOf(option.id);
+                    if (index > -1) field.removeValue(index);
                   }
                 }}
               />
@@ -288,7 +298,7 @@ Use `mode="array"` for checkbox groups:
         </FieldGroup>
         {isInvalid && <FieldError errors={field.state.meta.errors} />}
       </FieldSet>
-    )
+    );
   }}
 />
 ```
@@ -299,7 +309,7 @@ Use `mode="array"` for checkbox groups:
 <form.Field
   name="plan"
   children={(field) => {
-    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+    const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
     return (
       <FieldSet>
         <FieldLegend>Choose Plan</FieldLegend>
@@ -325,7 +335,7 @@ Use `mode="array"` for checkbox groups:
         </RadioGroup>
         {isInvalid && <FieldError errors={field.state.meta.errors} />}
       </FieldSet>
-    )
+    );
   }}
 />
 ```
@@ -390,10 +400,7 @@ TanStack Form provides powerful array field management with `mode="array"`:
 Use `field.pushValue(item)`:
 
 ```tsx
-<Button
-  type="button"
-  onClick={() => field.pushValue({ address: "" })}
->
+<Button type="button" onClick={() => field.pushValue({ address: "" })}>
   Add Email
 </Button>
 ```
@@ -414,10 +421,7 @@ Or use form-level methods:
 Use `field.removeValue(index)`:
 
 ```tsx
-<Button
-  type="button"
-  onClick={() => field.removeValue(index)}
->
+<Button type="button" onClick={() => field.removeValue(index)}>
   Remove
 </Button>
 ```
@@ -434,7 +438,7 @@ const formSchema = z.object({
     )
     .min(1, "Add at least one email address.")
     .max(5, "You can add up to 5 email addresses."),
-})
+});
 ```
 
 ## Form State
@@ -469,19 +473,19 @@ const form = useForm({ /* ... */ })
 ### Get Field Value
 
 ```tsx
-const emailValue = form.getFieldValue("email")
+const emailValue = form.getFieldValue("email");
 ```
 
 ### Set Field Value
 
 ```tsx
-form.setFieldValue("email", "new@example.com")
+form.setFieldValue("email", "new@example.com");
 ```
 
 ### Validate Form
 
 ```tsx
-await form.validateAllFields("submit")
+await form.validateAllFields("submit");
 ```
 
 ## Best Practices
@@ -497,22 +501,24 @@ await form.validateAllFields("submit")
 
 ## Comparison with React Hook Form
 
-| Feature | TanStack Form | React Hook Form |
-|---------|--------------|-----------------|
-| **API Style** | Render props | Controller component |
-| **Type Safety** | Excellent | Excellent |
-| **Bundle Size** | Smaller | Small |
-| **Validation** | Built-in + adapters | Resolvers |
-| **Array Fields** | `mode="array"` | `useFieldArray` |
-| **Real-time Validation** | Easy (onChange) | Requires mode config |
-| **Learning Curve** | Moderate | Moderate |
-| **Performance** | Excellent | Excellent |
+| Feature                  | TanStack Form       | React Hook Form      |
+| ------------------------ | ------------------- | -------------------- |
+| **API Style**            | Render props        | Controller component |
+| **Type Safety**          | Excellent           | Excellent            |
+| **Bundle Size**          | Smaller             | Small                |
+| **Validation**           | Built-in + adapters | Resolvers            |
+| **Array Fields**         | `mode="array"`      | `useFieldArray`      |
+| **Real-time Validation** | Easy (onChange)     | Requires mode config |
+| **Learning Curve**       | Moderate            | Moderate             |
+| **Performance**          | Excellent           | Excellent            |
 
 ## Form Submission
 
 ```tsx
 const form = useForm({
-  defaultValues: { /* ... */ },
+  defaultValues: {
+    /* ... */
+  },
   validatorAdapter: zodValidator(),
   validators: {
     onSubmit: formSchema,
@@ -523,19 +529,19 @@ const form = useForm({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(value),
-      })
-      
+      });
+
       if (response.ok) {
-        toast.success("Success!")
-        form.reset()
+        toast.success("Success!");
+        form.reset();
       } else {
-        toast.error("Failed to submit")
+        toast.error("Failed to submit");
       }
     } catch (error) {
-      toast.error("Network error")
+      toast.error("Network error");
     }
   },
-})
+});
 ```
 
 ## Resources

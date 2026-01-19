@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { XIcon } from "lucide-react"
-import { Controller, useFieldArray, useForm } from "react-hook-form"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { XIcon } from "lucide-react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -18,7 +18,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   emails: z
@@ -29,9 +29,9 @@ const formSchema = z.object({
     )
     .min(1, "Add at least one email address.")
     .max(5, "You can add up to 5 email addresses."),
-})
+});
 
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof formSchema>;
 
 export function ArrayForm() {
   const form = useForm<FormData>({
@@ -39,15 +39,15 @@ export function ArrayForm() {
     defaultValues: {
       emails: [{ address: "" }],
     },
-  })
+  });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "emails",
-  })
+  });
 
   function onSubmit(data: FormData) {
-    console.log("Form submitted:", data)
+    console.log("Form submitted:", data);
   }
 
   return (
@@ -64,7 +64,10 @@ export function ArrayForm() {
               name={`emails.${index}.address`}
               control={form.control}
               render={({ field: controllerField, fieldState }) => (
-                <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                <Field
+                  orientation="horizontal"
+                  data-invalid={fieldState.invalid}
+                >
                   <FieldContent>
                     <FieldLabel htmlFor={`email-${index}`} className="sr-only">
                       Email {index + 1}
@@ -119,5 +122,5 @@ export function ArrayForm() {
         <Button type="submit">Save Emails</Button>
       </div>
     </form>
-  )
+  );
 }

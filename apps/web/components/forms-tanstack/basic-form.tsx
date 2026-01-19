@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useForm } from "@tanstack/react-form"
-import { zodValidator } from "@tanstack/zod-form-adapter"
-import { toast } from "sonner"
-import * as z from "zod"
+import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
+import { toast } from "sonner";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -13,7 +13,7 @@ import {
   FieldLabel,
   Input,
   Textarea,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   title: z
@@ -24,7 +24,7 @@ const formSchema = z.object({
     .string()
     .min(20, "Description must be at least 20 characters.")
     .max(100, "Description must be at most 100 characters."),
-})
+});
 
 export function BasicTanStackForm() {
   const form = useForm({
@@ -37,16 +37,16 @@ export function BasicTanStackForm() {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value)
-      toast.success("Bug report submitted successfully!")
+      console.log("Form submitted:", value);
+      toast.success("Bug report submitted successfully!");
     },
-  })
+  });
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
       className="space-y-6"
     >
@@ -55,7 +55,7 @@ export function BasicTanStackForm() {
           name="title"
           children={(field) => {
             const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>Bug Title</FieldLabel>
@@ -74,7 +74,7 @@ export function BasicTanStackForm() {
                 </FieldDescription>
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
-            )
+            );
           }}
         />
 
@@ -82,7 +82,7 @@ export function BasicTanStackForm() {
           name="description"
           children={(field) => {
             const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>Description</FieldLabel>
@@ -101,7 +101,7 @@ export function BasicTanStackForm() {
                 </FieldDescription>
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
-            )
+            );
           }}
         />
       </FieldGroup>
@@ -120,5 +120,5 @@ export function BasicTanStackForm() {
         </Button>
       </div>
     </form>
-  )
+  );
 }

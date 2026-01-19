@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useForm } from "@tanstack/react-form"
-import { zodValidator } from "@tanstack/zod-form-adapter"
-import { toast } from "sonner"
-import * as z from "zod"
+import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
+import { toast } from "sonner";
+import * as z from "zod";
 import {
   Button,
   Checkbox,
@@ -26,7 +26,7 @@ import {
   SelectValue,
   Switch,
   Textarea,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   // Personal Info
@@ -49,20 +49,20 @@ const formSchema = z.object({
   accountType: z.enum(["free", "pro", "enterprise"], {
     required_error: "Please select an account type",
   }),
-})
+});
 
 const roles = [
   { value: "developer", label: "Developer" },
   { value: "designer", label: "Designer" },
   { value: "manager", label: "Manager" },
   { value: "other", label: "Other" },
-]
+];
 
 const notificationTypes = [
   { id: "email", label: "Email notifications" },
   { id: "push", label: "Push notifications" },
   { id: "sms", label: "SMS notifications" },
-]
+];
 
 const accountTypes = [
   {
@@ -80,7 +80,7 @@ const accountTypes = [
     title: "Enterprise",
     description: "Custom solutions for large teams",
   },
-]
+];
 
 export function ComplexTanStackForm() {
   const form = useForm({
@@ -98,16 +98,16 @@ export function ComplexTanStackForm() {
       onChange: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value)
-      toast.success("Account created successfully!")
+      console.log("Form submitted:", value);
+      toast.success("Account created successfully!");
     },
-  })
+  });
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
       className="space-y-8"
     >
@@ -124,7 +124,7 @@ export function ComplexTanStackForm() {
             name="fullName"
             children={(field) => {
               const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid
+                field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
                   <FieldLabel htmlFor={field.name}>Full Name</FieldLabel>
@@ -143,7 +143,7 @@ export function ComplexTanStackForm() {
                   </FieldDescription>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
-              )
+              );
             }}
           />
 
@@ -151,7 +151,7 @@ export function ComplexTanStackForm() {
             name="email"
             children={(field) => {
               const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid
+                field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
                   <FieldLabel htmlFor={field.name}>Email</FieldLabel>
@@ -171,7 +171,7 @@ export function ComplexTanStackForm() {
                   </FieldDescription>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
-              )
+              );
             }}
           />
 
@@ -179,7 +179,7 @@ export function ComplexTanStackForm() {
             name="bio"
             children={(field) => {
               const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid
+                field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field data-invalid={isInvalid}>
                   <FieldLabel htmlFor={field.name}>Bio</FieldLabel>
@@ -198,7 +198,7 @@ export function ComplexTanStackForm() {
                   </FieldDescription>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
-              )
+              );
             }}
           />
 
@@ -206,7 +206,7 @@ export function ComplexTanStackForm() {
             name="role"
             children={(field) => {
               const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid
+                field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field orientation="responsive" data-invalid={isInvalid}>
                   <FieldContent>
@@ -239,7 +239,7 @@ export function ComplexTanStackForm() {
                     </SelectContent>
                   </Select>
                 </Field>
-              )
+              );
             }}
           />
         </FieldGroup>
@@ -258,7 +258,7 @@ export function ComplexTanStackForm() {
             mode="array"
             children={(field) => {
               const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid
+                field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <FieldSet>
                   <FieldLegend variant="label">
@@ -279,16 +279,18 @@ export function ComplexTanStackForm() {
                           name={field.name}
                           aria-invalid={isInvalid}
                           checked={
-                            field.state.value?.includes(notification.id) ?? false
+                            field.state.value?.includes(notification.id) ??
+                            false
                           }
                           onCheckedChange={(checked) => {
                             if (checked) {
-                              field.pushValue(notification.id)
+                              field.pushValue(notification.id);
                             } else {
                               const index =
-                                field.state.value?.indexOf(notification.id) ?? -1
+                                field.state.value?.indexOf(notification.id) ??
+                                -1;
                               if (index > -1) {
-                                field.removeValue(index)
+                                field.removeValue(index);
                               }
                             }
                           }}
@@ -304,7 +306,7 @@ export function ComplexTanStackForm() {
                   </FieldGroup>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </FieldSet>
-              )
+              );
             }}
           />
 
@@ -312,7 +314,7 @@ export function ComplexTanStackForm() {
             name="twoFactor"
             children={(field) => {
               const isInvalid =
-                field.state.meta.isTouched && !field.state.meta.isValid
+                field.state.meta.isTouched && !field.state.meta.isValid;
               return (
                 <Field orientation="horizontal" data-invalid={isInvalid}>
                   <FieldContent>
@@ -334,7 +336,7 @@ export function ComplexTanStackForm() {
                     aria-invalid={isInvalid}
                   />
                 </Field>
-              )
+              );
             }}
           />
         </FieldGroup>
@@ -345,7 +347,7 @@ export function ComplexTanStackForm() {
         name="accountType"
         children={(field) => {
           const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid
+            field.state.meta.isTouched && !field.state.meta.isValid;
           return (
             <FieldSet>
               <FieldLegend>Account Type</FieldLegend>
@@ -358,10 +360,7 @@ export function ComplexTanStackForm() {
                 onValueChange={field.handleChange}
               >
                 {accountTypes.map((type) => (
-                  <label
-                    key={type.id}
-                    htmlFor={`account-tanstack-${type.id}`}
-                  >
+                  <label key={type.id} htmlFor={`account-tanstack-${type.id}`}>
                     <Field orientation="horizontal" data-invalid={isInvalid}>
                       <FieldContent>
                         <FieldTitle>{type.title}</FieldTitle>
@@ -378,7 +377,7 @@ export function ComplexTanStackForm() {
               </RadioGroup>
               {isInvalid && <FieldError errors={field.state.meta.errors} />}
             </FieldSet>
-          )
+          );
         }}
       />
 
@@ -409,5 +408,5 @@ export function ComplexTanStackForm() {
         </div>
       )}
     </form>
-  )
+  );
 }

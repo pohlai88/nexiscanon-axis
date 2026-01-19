@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -11,14 +11,14 @@ import {
   FieldError,
   FieldLabel,
   Switch,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   twoFactor: z.boolean(),
   marketing: z.boolean(),
-})
+});
 
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof formSchema>;
 
 export function SwitchForm() {
   const form = useForm<FormData>({
@@ -27,10 +27,10 @@ export function SwitchForm() {
       twoFactor: false,
       marketing: false,
     },
-  })
+  });
 
   function onSubmit(data: FormData) {
-    console.log("Form submitted:", data)
+    console.log("Form submitted:", data);
   }
 
   return (
@@ -85,5 +85,5 @@ export function SwitchForm() {
 
       <Button type="submit">Save Settings</Button>
     </form>
-  )
+  );
 }

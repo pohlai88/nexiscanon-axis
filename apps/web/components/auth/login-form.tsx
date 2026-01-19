@@ -70,7 +70,9 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             />
           </div>
 
-          {validationError && <p className="text-sm text-destructive">{validationError}</p>}
+          {validationError && (
+            <p className="text-sm text-destructive">{validationError}</p>
+          )}
           {error && <p className="text-sm text-destructive">{error.message}</p>}
 
           <Button type="submit" disabled={isLoading} className="w-full">

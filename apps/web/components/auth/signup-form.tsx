@@ -19,7 +19,11 @@ interface SignupFormProps {
 }
 
 export function SignupForm({ onSuccess }: SignupFormProps) {
-  const [data, setData] = useState<SignupInput>({ email: "", password: "", confirmPassword: "" });
+  const [data, setData] = useState<SignupInput>({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [validationError, setValidationError] = useState<string>("");
   const { signup, isLoading, error } = useAuth();
 
@@ -77,12 +81,16 @@ export function SignupForm({ onSuccess }: SignupFormProps) {
               type="password"
               placeholder="Confirm password"
               value={data.confirmPassword}
-              onChange={(e) => setData({ ...data, confirmPassword: e.target.value })}
+              onChange={(e) =>
+                setData({ ...data, confirmPassword: e.target.value })
+              }
               required
             />
           </div>
 
-          {validationError && <p className="text-sm text-destructive">{validationError}</p>}
+          {validationError && (
+            <p className="text-sm text-destructive">{validationError}</p>
+          )}
           {error && <p className="text-sm text-destructive">{error.message}</p>}
 
           <Button type="submit" disabled={isLoading} className="w-full">

@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useForm } from "@tanstack/react-form"
-import { zodValidator } from "@tanstack/zod-form-adapter"
-import { XIcon } from "lucide-react"
-import { toast } from "sonner"
-import * as z from "zod"
+import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
+import { XIcon } from "lucide-react";
+import { toast } from "sonner";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -19,7 +19,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   emails: z
@@ -30,7 +30,7 @@ const formSchema = z.object({
     )
     .min(1, "Add at least one email address.")
     .max(5, "You can add up to 5 email addresses."),
-})
+});
 
 export function ArrayTanStackForm() {
   const form = useForm({
@@ -42,16 +42,16 @@ export function ArrayTanStackForm() {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value)
-      toast.success("Email addresses saved!")
+      console.log("Form submitted:", value);
+      toast.success("Email addresses saved!");
     },
-  })
+  });
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
       className="space-y-6"
     >
@@ -60,7 +60,7 @@ export function ArrayTanStackForm() {
         mode="array"
         children={(field) => {
           const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid
+            field.state.meta.isTouched && !field.state.meta.isValid;
           return (
             <FieldSet className="gap-4">
               <FieldLegend variant="label">Email Addresses</FieldLegend>
@@ -75,7 +75,7 @@ export function ArrayTanStackForm() {
                     children={(subField) => {
                       const isSubFieldInvalid =
                         subField.state.meta.isTouched &&
-                        !subField.state.meta.isValid
+                        !subField.state.meta.isValid;
                       return (
                         <Field
                           orientation="horizontal"
@@ -121,14 +121,14 @@ export function ArrayTanStackForm() {
                             )}
                           </FieldContent>
                         </Field>
-                      )
+                      );
                     }}
                   />
                 ))}
               </FieldGroup>
               {isInvalid && <FieldError errors={field.state.meta.errors} />}
             </FieldSet>
-          )
+          );
         }}
       />
 
@@ -150,5 +150,5 @@ export function ArrayTanStackForm() {
         </Button>
       </div>
     </form>
-  )
+  );
 }

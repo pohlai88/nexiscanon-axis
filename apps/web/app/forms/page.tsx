@@ -6,8 +6,14 @@ import {
   RadioForm,
   SelectForm,
   SwitchForm,
-} from "@/components/forms"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@workspace/design-system"
+} from "@/components/forms";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@workspace/design-system";
 
 export default function FormsPage() {
   return (
@@ -16,7 +22,8 @@ export default function FormsPage() {
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">React Hook Form Examples</h1>
           <p className="text-muted-foreground">
-            Examples of forms built with React Hook Form, Zod validation, and Shadcn UI components.
+            Examples of forms built with React Hook Form, Zod validation, and
+            Shadcn UI components.
           </p>
         </div>
 
@@ -25,7 +32,8 @@ export default function FormsPage() {
             <CardHeader>
               <CardTitle>Complex Form</CardTitle>
               <CardDescription>
-                A comprehensive form demonstrating multiple field types, validation, and sections.
+                A comprehensive form demonstrating multiple field types,
+                validation, and sections.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -107,5 +115,5 @@ export default function FormsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

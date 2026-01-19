@@ -1,2 +1,1 @@
-export { ThemeProvider, useColorTheme } from "./theme-provider"
-
+export { ThemeProvider, useColorTheme } from "./theme-provider";

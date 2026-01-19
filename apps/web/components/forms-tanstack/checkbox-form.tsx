@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useForm } from "@tanstack/react-form"
-import { zodValidator } from "@tanstack/zod-form-adapter"
-import { toast } from "sonner"
-import * as z from "zod"
+import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
+import { toast } from "sonner";
+import * as z from "zod";
 import {
   Button,
   Checkbox,
@@ -14,21 +14,21 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const tasks = [
   { id: "comments", label: "Comments" },
   { id: "mentions", label: "Mentions" },
   { id: "updates", label: "Updates" },
   { id: "assignments", label: "Assignments" },
-]
+];
 
 const formSchema = z.object({
   tasks: z
     .array(z.string())
     .min(1, "Select at least one notification type.")
     .max(3, "You can select up to 3 notification types."),
-})
+});
 
 export function CheckboxTanStackForm() {
   const form = useForm({
@@ -40,16 +40,16 @@ export function CheckboxTanStackForm() {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value)
-      toast.success("Notification preferences saved!")
+      console.log("Form submitted:", value);
+      toast.success("Notification preferences saved!");
     },
-  })
+  });
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
       className="space-y-6"
     >
@@ -58,7 +58,7 @@ export function CheckboxTanStackForm() {
         mode="array"
         children={(field) => {
           const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid
+            field.state.meta.isTouched && !field.state.meta.isValid;
           return (
             <FieldSet>
               <FieldLegend variant="label">Tasks</FieldLegend>
@@ -79,11 +79,11 @@ export function CheckboxTanStackForm() {
                       checked={field.state.value.includes(task.id)}
                       onCheckedChange={(checked) => {
                         if (checked) {
-                          field.pushValue(task.id)
+                          field.pushValue(task.id);
                         } else {
-                          const index = field.state.value.indexOf(task.id)
+                          const index = field.state.value.indexOf(task.id);
                           if (index > -1) {
-                            field.removeValue(index)
+                            field.removeValue(index);
                           }
                         }
                       }}
@@ -99,7 +99,7 @@ export function CheckboxTanStackForm() {
               </FieldGroup>
               {isInvalid && <FieldError errors={field.state.meta.errors} />}
             </FieldSet>
-          )
+          );
         }}
       />
 
@@ -107,5 +107,5 @@ export function CheckboxTanStackForm() {
         Save Preferences
       </Button>
     </form>
-  )
+  );
 }

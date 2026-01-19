@@ -29,7 +29,7 @@ const ITEMS: ComponentItem[] = [
   { name: "Toaster", status: "stable" },
   { name: "Leather Button", status: "wip" },
   { name: "Vellum Card", status: "wip" },
-  { name: "Wood Panel", status: "wip" }
+  { name: "Wood Panel", status: "wip" },
 ];
 
 function Status({ status }: { status?: ComponentItem["status"] }) {
@@ -47,7 +47,7 @@ function Status({ status }: { status?: ComponentItem["status"] }) {
         fontSize: 12,
         lineHeight: 1,
         color: "white",
-        backgroundColor: color
+        backgroundColor: color,
       }}
     >
       {label}
@@ -62,7 +62,7 @@ export function ComponentsList() {
         display: "grid",
         gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
         gap: 16,
-        marginTop: 24
+        marginTop: 24,
       }}
     >
       {ITEMS.map((item) => (
@@ -72,7 +72,7 @@ export function ComponentsList() {
             border: "1px solid var(--color-border, #e5e7eb)",
             borderRadius: 12,
             padding: 16,
-            background: "var(--color-card, #fff)"
+            background: "var(--color-card, #fff)",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>

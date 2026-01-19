@@ -1,7 +1,7 @@
-export { BasicTanStackForm } from "./basic-form"
-export { SelectTanStackForm } from "./select-form"
-export { CheckboxTanStackForm } from "./checkbox-form"
-export { RadioTanStackForm } from "./radio-form"
-export { SwitchTanStackForm } from "./switch-form"
-export { ArrayTanStackForm } from "./array-form"
-export { ComplexTanStackForm } from "./complex-form"
+export { BasicTanStackForm } from "./basic-form";
+export { SelectTanStackForm } from "./select-form";
+export { CheckboxTanStackForm } from "./checkbox-form";
+export { RadioTanStackForm } from "./radio-form";
+export { SwitchTanStackForm } from "./switch-form";
+export { ArrayTanStackForm } from "./array-form";
+export { ComplexTanStackForm } from "./complex-form";

@@ -15,20 +15,26 @@ pnpm add react-hook-form @hookform/resolvers zod
 ### Basic Usage
 
 ```tsx
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import * as z from "zod"
-import { Button, Field, FieldError, FieldLabel, Input } from "@workspace/design-system"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  Button,
+  Field,
+  FieldError,
+  FieldLabel,
+  Input,
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
-})
+});
 
 export function MyForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: { email: "" },
-  })
+  });
 
   return (
     <form onSubmit={form.handleSubmit((data) => console.log(data))}>
@@ -38,14 +44,18 @@ export function MyForm() {
         render={({ field, fieldState }) => (
           <Field data-invalid={fieldState.invalid}>
             <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-            <Input {...field} id={field.name} aria-invalid={fieldState.invalid} />
+            <Input
+              {...field}
+              id={field.name}
+              aria-invalid={fieldState.invalid}
+            />
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>
         )}
       />
       <Button type="submit">Submit</Button>
     </form>
-  )
+  );
 }
 ```
 
@@ -70,7 +80,7 @@ Define your form structure and validation rules using Zod:
 const formSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   age: z.number().min(18, "Must be 18 or older"),
-})
+});
 ```
 
 ### 2. Form Setup
@@ -81,7 +91,7 @@ Use the `useForm` hook with the Zod resolver:
 const form = useForm<z.infer<typeof formSchema>>({
   resolver: zodResolver(formSchema),
   defaultValues: { username: "", age: 18 },
-})
+});
 ```
 
 ### 3. Controller Pattern
@@ -118,7 +128,7 @@ Configure when validation occurs:
 const form = useForm({
   resolver: zodResolver(formSchema),
   mode: "onChange", // "onBlur" | "onSubmit" | "onTouched" | "all"
-})
+});
 ```
 
 ## Working with Different Field Types
@@ -165,8 +175,8 @@ Use `field.value` and `field.onChange`:
   onCheckedChange={(checked) => {
     const newValue = checked
       ? [...field.value, itemId]
-      : field.value.filter((v) => v !== itemId)
-    field.onChange(newValue)
+      : field.value.filter((v) => v !== itemId);
+    field.onChange(newValue);
   }}
   aria-invalid={fieldState.invalid}
 />

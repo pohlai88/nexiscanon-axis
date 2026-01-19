@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   Button,
   Checkbox,
@@ -13,23 +13,23 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const tasks = [
   { id: "comments", label: "Comments" },
   { id: "mentions", label: "Mentions" },
   { id: "updates", label: "Updates" },
   { id: "assignments", label: "Assignments" },
-]
+];
 
 const formSchema = z.object({
   tasks: z
     .array(z.string())
     .min(1, "Select at least one notification type.")
     .max(3, "You can select up to 3 notification types."),
-})
+});
 
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof formSchema>;
 
 export function CheckboxForm() {
   const form = useForm<FormData>({
@@ -37,10 +37,10 @@ export function CheckboxForm() {
     defaultValues: {
       tasks: [],
     },
-  })
+  });
 
   function onSubmit(data: FormData) {
-    console.log("Form submitted:", data)
+    console.log("Form submitted:", data);
   }
 
   return (
@@ -69,8 +69,8 @@ export function CheckboxForm() {
                     onCheckedChange={(checked) => {
                       const newValue = checked
                         ? [...field.value, task.id]
-                        : field.value.filter((value) => value !== task.id)
-                      field.onChange(newValue)
+                        : field.value.filter((value) => value !== task.id);
+                      field.onChange(newValue);
                     }}
                   />
                   <FieldLabel
@@ -89,5 +89,5 @@ export function CheckboxForm() {
 
       <Button type="submit">Save Preferences</Button>
     </form>
-  )
+  );
 }

@@ -27,17 +27,17 @@ npx @next/codemod <transform> <path>
 
 Examples:
 
-| Transform | Purpose |
-|-----------|---------|
-| `next-async-request-api` | `cookies()`, `headers()`, `params`, `searchParams` → async |
-| `middleware-to-proxy` | `middleware.ts` → `proxy.ts`, `middleware` → `proxy` |
-| `remove-unstable-prefix` | `unstable_cacheTag` → `cacheTag`, etc. |
-| `remove-experimental-ppr` | Remove `experimental_ppr` route segment config |
-| `next-lint-to-eslint-cli` | `next lint` → ESLint CLI + `eslint.config.mjs` |
-| `app-dir-runtime-config-experimental-edge` | `runtime: 'experimental-edge'` → `'edge'` |
-| `metadata-to-viewport-export` | Move `viewport` from `metadata` to `viewport` export |
-| `new-link` | Remove `<a>` inside `<Link>` |
-| `built-in-next-font` | `@next/font` → `next/font` |
+| Transform                                  | Purpose                                                    |
+| ------------------------------------------ | ---------------------------------------------------------- |
+| `next-async-request-api`                   | `cookies()`, `headers()`, `params`, `searchParams` → async |
+| `middleware-to-proxy`                      | `middleware.ts` → `proxy.ts`, `middleware` → `proxy`       |
+| `remove-unstable-prefix`                   | `unstable_cacheTag` → `cacheTag`, etc.                     |
+| `remove-experimental-ppr`                  | Remove `experimental_ppr` route segment config             |
+| `next-lint-to-eslint-cli`                  | `next lint` → ESLint CLI + `eslint.config.mjs`             |
+| `app-dir-runtime-config-experimental-edge` | `runtime: 'experimental-edge'` → `'edge'`                  |
+| `metadata-to-viewport-export`              | Move `viewport` from `metadata` to `viewport` export       |
+| `new-link`                                 | Remove `<a>` inside `<Link>`                               |
+| `built-in-next-font`                       | `@next/font` → `next/font`                                 |
 
 **Always:** `--dry` or `--print` first, then run without for real edits.
 
@@ -189,18 +189,18 @@ Start the dev server so the MCP can talk to the app.
 
 ## 9. Quick Reference: Codemods by Goal
 
-| Goal | Codemod |
-|------|---------|
-| Upgrade Next.js (and run applicable codemods) | `npx @next/codemod upgrade minor` (or `major`, `canary`, etc.) |
-| Async `cookies`/`headers`/`params`/`searchParams` | `next-async-request-api` |
-| Migrate middleware to proxy | `middleware-to-proxy` |
-| Migrate from `next lint` to ESLint | `next-lint-to-eslint-cli` |
-| Remove `unstable_` from cache APIs | `remove-unstable-prefix` |
-| Remove `experimental_ppr` | `remove-experimental-ppr` |
-| `runtime: 'experimental-edge'` → `'edge'` | `app-dir-runtime-config-experimental-edge` |
-| `viewport` in metadata → `viewport` export | `metadata-to-viewport-export` |
-| `<Link><a>…` → `<Link>…` | `new-link` |
-| `@next/font` → `next/font` | `built-in-next-font` |
+| Goal                                              | Codemod                                                        |
+| ------------------------------------------------- | -------------------------------------------------------------- |
+| Upgrade Next.js (and run applicable codemods)     | `npx @next/codemod upgrade minor` (or `major`, `canary`, etc.) |
+| Async `cookies`/`headers`/`params`/`searchParams` | `next-async-request-api`                                       |
+| Migrate middleware to proxy                       | `middleware-to-proxy`                                          |
+| Migrate from `next lint` to ESLint                | `next-lint-to-eslint-cli`                                      |
+| Remove `unstable_` from cache APIs                | `remove-unstable-prefix`                                       |
+| Remove `experimental_ppr`                         | `remove-experimental-ppr`                                      |
+| `runtime: 'experimental-edge'` → `'edge'`         | `app-dir-runtime-config-experimental-edge`                     |
+| `viewport` in metadata → `viewport` export        | `metadata-to-viewport-export`                                  |
+| `<Link><a>…` → `<Link>…`                          | `new-link`                                                     |
+| `@next/font` → `next/font`                        | `built-in-next-font`                                           |
 
 ---
 

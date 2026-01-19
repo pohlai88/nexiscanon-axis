@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useForm } from "@tanstack/react-form"
-import { zodValidator } from "@tanstack/zod-form-adapter"
-import { toast } from "sonner"
-import * as z from "zod"
+import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
+import { toast } from "sonner";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -15,7 +15,7 @@ import {
   FieldTitle,
   RadioGroup,
   RadioGroupItem,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const plans = [
   {
@@ -33,11 +33,11 @@ const plans = [
     title: "Enterprise",
     description: "Custom solutions for large teams",
   },
-]
+];
 
 const formSchema = z.object({
   plan: z.string().min(1, "Please select a plan."),
-})
+});
 
 export function RadioTanStackForm() {
   const form = useForm({
@@ -49,16 +49,16 @@ export function RadioTanStackForm() {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value)
-      toast.success(`${value.plan} plan selected!`)
+      console.log("Form submitted:", value);
+      toast.success(`${value.plan} plan selected!`);
     },
-  })
+  });
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
       className="space-y-6"
     >
@@ -66,7 +66,7 @@ export function RadioTanStackForm() {
         name="plan"
         children={(field) => {
           const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid
+            field.state.meta.isTouched && !field.state.meta.isValid;
           return (
             <FieldSet>
               <FieldLegend>Plan</FieldLegend>
@@ -96,7 +96,7 @@ export function RadioTanStackForm() {
               </RadioGroup>
               {isInvalid && <FieldError errors={field.state.meta.errors} />}
             </FieldSet>
-          )
+          );
         }}
       />
 
@@ -104,5 +104,5 @@ export function RadioTanStackForm() {
         Continue
       </Button>
     </form>
-  )
+  );
 }

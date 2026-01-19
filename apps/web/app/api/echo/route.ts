@@ -1,26 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
+// apps/web/app/api/echo/route.ts
+// Echo endpoint - uses kernel pattern
+
+import { kernel } from "@workspace/api-kernel";
+import { echoBodySchema, echoOutputSchema } from "@workspace/validation";
 
 /**
  * POST /api/echo
  * Example: parse JSON body, validate, return JSON.
  * Use Route Handlers for: webhooks, REST APIs, non-UI responses.
  */
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
+export const POST = kernel({
+  method: "POST",
+  routeId: "echo.post",
+  // Public endpoint - no auth or tenant required
+  auth: { mode: "public" },
+  body: echoBodySchema,
+  output: echoOutputSchema,
 
-    if (typeof body?.message !== "string") {
-      return NextResponse.json(
-        { error: "Missing or invalid 'message' (string)" },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json({ echoed: body.message }, { status: 200 });
-  } catch {
-    return NextResponse.json(
-      { error: "Invalid JSON body" },
-      { status: 400 }
-    );
-  }
-}
+  async handler({ body }) {
+    return {
+      echoed: body.message,
+    };
+  },
+});

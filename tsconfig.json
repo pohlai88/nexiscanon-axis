@@ -12,7 +12,15 @@
       "@workspace/auth": ["./packages/auth/src/index.ts"],
       "@workspace/auth/*": ["./packages/auth/src/*"],
       "@workspace/validation": ["./packages/validation/src/index.ts"],
-      "@workspace/validation/*": ["./packages/validation/src/*"]
+      "@workspace/validation/*": ["./packages/validation/src/*"],
+      "@workspace/api-kernel": ["./packages/api-kernel/src/index.ts"],
+      "@workspace/api-kernel/*": ["./packages/api-kernel/src/*"],
+      "@workspace/domain": ["./packages/domain/src/index.ts"],
+      "@workspace/domain/*": ["./packages/domain/src/*"],
+      "@workspace/observability": ["./packages/observability/src/index.ts"],
+      "@workspace/observability/*": ["./packages/observability/src/*"],
+      "@workspace/db": ["./packages/db/src/index.ts"],
+      "@workspace/db/*": ["./packages/db/src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

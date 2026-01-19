@@ -1,0 +1,48 @@
+name: Core Integrity
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  core-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Versions
+        run: |
+          node -v
+          pnpm -v
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check API Kernel discipline
+        run: pnpm check:api-kernel
+
+      - name: Typecheck core packages
+        run: pnpm typecheck:core
+
+      - name: Check DB migration discipline
+        run: pnpm check:db-migrations
+        # No DATABASE_URL needed: db:generate only reads schema.ts

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useForm } from "@tanstack/react-form"
-import { zodValidator } from "@tanstack/zod-form-adapter"
-import { toast } from "sonner"
-import * as z from "zod"
+import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
+import { toast } from "sonner";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -16,11 +16,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   language: z.string().min(1, "Please select a language."),
-})
+});
 
 export function SelectTanStackForm() {
   const form = useForm({
@@ -32,16 +32,16 @@ export function SelectTanStackForm() {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value)
-      toast.success("Language preference saved!")
+      console.log("Form submitted:", value);
+      toast.success("Language preference saved!");
     },
-  })
+  });
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
       className="space-y-6"
     >
@@ -49,7 +49,7 @@ export function SelectTanStackForm() {
         name="language"
         children={(field) => {
           const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid
+            field.state.meta.isTouched && !field.state.meta.isValid;
           return (
             <Field orientation="responsive" data-invalid={isInvalid}>
               <FieldContent>
@@ -83,7 +83,7 @@ export function SelectTanStackForm() {
                 </SelectContent>
               </Select>
             </Field>
-          )
+          );
         }}
       />
 
@@ -91,5 +91,5 @@ export function SelectTanStackForm() {
         Save Preferences
       </Button>
     </form>
-  )
+  );
 }

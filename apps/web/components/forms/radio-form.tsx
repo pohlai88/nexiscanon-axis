@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -15,7 +15,7 @@ import {
   FieldTitle,
   RadioGroup,
   RadioGroupItem,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const plans = [
   {
@@ -33,13 +33,13 @@ const plans = [
     title: "Enterprise",
     description: "Custom solutions for large teams",
   },
-]
+];
 
 const formSchema = z.object({
   plan: z.string().min(1, "Please select a plan."),
-})
+});
 
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof formSchema>;
 
 export function RadioForm() {
   const form = useForm<FormData>({
@@ -47,10 +47,10 @@ export function RadioForm() {
     defaultValues: {
       plan: "",
     },
-  })
+  });
 
   function onSubmit(data: FormData) {
-    console.log("Form submitted:", data)
+    console.log("Form submitted:", data);
   }
 
   return (
@@ -95,5 +95,5 @@ export function RadioForm() {
 
       <Button type="submit">Continue</Button>
     </form>
-  )
+  );
 }

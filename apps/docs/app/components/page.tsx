@@ -16,8 +16,9 @@ export default function Page() {
 
       <hr style={{ margin: "24px 0" }} />
       <p>
-        Can&apos;t find what you need? Try the <a href="/docs/directory">registry
-        directory</a> for community-maintained components.
+        Can&apos;t find what you need? Try the{" "}
+        <a href="/docs/directory">registry directory</a> for
+        community-maintained components.
       </p>
     </main>
   );

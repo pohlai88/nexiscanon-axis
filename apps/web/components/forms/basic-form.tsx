@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -11,7 +11,7 @@ import {
   FieldLabel,
   Input,
   Textarea,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   title: z
@@ -22,9 +22,9 @@ const formSchema = z.object({
     .string()
     .min(20, "Description must be at least 20 characters.")
     .max(100, "Description must be at most 100 characters."),
-})
+});
 
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof formSchema>;
 
 export function BasicForm() {
   const form = useForm<FormData>({
@@ -33,10 +33,10 @@ export function BasicForm() {
       title: "",
       description: "",
     },
-  })
+  });
 
   function onSubmit(data: FormData) {
-    console.log("Form submitted:", data)
+    console.log("Form submitted:", data);
     // Handle form submission
   }
 
@@ -91,5 +91,5 @@ export function BasicForm() {
         </Button>
       </div>
     </form>
-  )
+  );
 }

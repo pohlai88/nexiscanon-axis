@@ -1,14 +1,35 @@
-import { NextRequest, NextResponse } from "next/server";
+// apps/web/app/api/users/[id]/route.ts
+// User detail endpoint - uses kernel pattern
+
+import { kernel } from "@workspace/api-kernel";
+import { userOutputSchema } from "@workspace/validation";
 
 /**
  * GET /api/users/[id]
- * Dynamic Route Handler: params is a Promise in Next.js 15+.
+ *
+ * Fetches a user by ID
  */
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const { id } = await params;
-  // In real apps: fetch from DB. For demo, return id.
-  return NextResponse.json({ id, name: `User ${id}` }, { status: 200 });
-}
+export const GET = kernel({
+  method: "GET",
+  routeId: "users.get",
+  // Require authentication to view user details
+  auth: { mode: "required" },
+  output: userOutputSchema,
+
+  async handler({ params }) {
+    // Extract ID from route params
+    const id = Array.isArray(params.id) ? params.id[0] : params.id;
+
+    // TODO: Fetch from database
+    // In production:
+    // 1. Query user from database by ID
+    // 2. Check permissions (can user view this profile?)
+    // 3. Return user data
+
+    // For now, return mock data
+    return {
+      id,
+      name: `User ${id}`,
+    };
+  },
+});

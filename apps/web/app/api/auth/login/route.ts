@@ -1,43 +1,39 @@
-import { loginHandler } from "@workspace/auth";
-import { NextRequest, NextResponse } from "next/server";
+// apps/web/app/api/auth/login/route.ts
+// Login endpoint - uses kernel pattern
+
+import { kernel } from "@workspace/api-kernel";
+import { loginSchema, loginOutputSchema } from "@workspace/validation";
 
 /**
  * POST /api/auth/login
- * 
+ *
  * Authenticates a user with email and password
- * 
- * Request body:
- * {
- *   email: string,
- *   password: string
- * }
- * 
- * Response:
- * {
- *   user: { id, email, name?, emailVerified? },
- *   token: string,
- *   expiresAt?: number
- * }
  */
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    
-    // Call handler from @repo/auth/handlers
-    // TODO: Implement database integration in handler
-    await loginHandler(body);
-    
-    // If we reach here, handler will have thrown since it's not implemented
-    // For now, return a placeholder response
-    return NextResponse.json(
-      { message: "Login handler not implemented" },
-      { status: 501 }
-    );
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Login failed";
-    return NextResponse.json(
-      { message, code: "LOGIN_ERROR" },
-      { status: 400 }
-    );
-  }
-}
+export const POST = kernel({
+  method: "POST",
+  routeId: "auth.login",
+  // Public endpoint - no auth required (this IS the auth endpoint)
+  auth: { mode: "public" },
+  body: loginSchema,
+  output: loginOutputSchema,
+
+  async handler({ body }) {
+    // TODO: Implement actual authentication logic
+    // For now, return placeholder response
+
+    // In production:
+    // 1. Verify credentials against database
+    // 2. Create session/token
+    // 3. Set auth cookie
+    // 4. Return user info
+
+    // Placeholder validation
+    if (body.email && body.password) {
+      return {
+        message: "Login handler not implemented",
+      };
+    }
+
+    throw new Error("Invalid credentials");
+  },
+});

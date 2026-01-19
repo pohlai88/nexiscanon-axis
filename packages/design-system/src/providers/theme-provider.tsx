@@ -1,6 +1,9 @@
 "use client";
 
-import { ThemeProvider as NextThemesProvider, type ThemeProviderProps } from "next-themes";
+import {
+  ThemeProvider as NextThemesProvider,
+  type ThemeProviderProps,
+} from "next-themes";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ThemeName } from "../tokens/theme";
 
@@ -25,7 +28,18 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   useEffect(() => {
     // Read stored color theme on mount
     const stored = localStorage.getItem("axis:color-theme") as ThemeName | null;
-    if (stored && ["neutral", "gray", "stone", "zinc", "midnight", "opulence", "heirloom"].includes(stored)) {
+    if (
+      stored &&
+      [
+        "neutral",
+        "gray",
+        "stone",
+        "zinc",
+        "midnight",
+        "opulence",
+        "heirloom",
+      ].includes(stored)
+    ) {
       applyColorTheme(stored);
       setColorTheme(stored);
     }
@@ -38,8 +52,15 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   }
 
   return (
-    <NextThemesProvider attribute="class" defaultTheme="light" enableSystem {...props}>
-      <ColorThemeContext.Provider value={{ colorTheme, setColorTheme: handleSetColorTheme }}>
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem
+      {...props}
+    >
+      <ColorThemeContext.Provider
+        value={{ colorTheme, setColorTheme: handleSetColorTheme }}
+      >
         {children}
       </ColorThemeContext.Provider>
     </NextThemesProvider>

@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   Button,
   Checkbox,
@@ -25,7 +25,7 @@ import {
   SelectValue,
   Switch,
   Textarea,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   // Personal Info
@@ -48,22 +48,22 @@ const formSchema = z.object({
   accountType: z.enum(["free", "pro", "enterprise"], {
     required_error: "Please select an account type",
   }),
-})
+});
 
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof formSchema>;
 
 const roles = [
   { value: "developer", label: "Developer" },
   { value: "designer", label: "Designer" },
   { value: "manager", label: "Manager" },
   { value: "other", label: "Other" },
-]
+];
 
 const notificationTypes = [
   { id: "email", label: "Email notifications" },
   { id: "push", label: "Push notifications" },
   { id: "sms", label: "SMS notifications" },
-]
+];
 
 const accountTypes = [
   {
@@ -81,7 +81,7 @@ const accountTypes = [
     title: "Enterprise",
     description: "Custom solutions for large teams",
   },
-]
+];
 
 export function ComplexForm() {
   const form = useForm<FormData>({
@@ -96,11 +96,11 @@ export function ComplexForm() {
       twoFactor: false,
       accountType: undefined,
     },
-  })
+  });
 
   function onSubmit(data: FormData) {
-    console.log("Form submitted:", data)
-    alert("Form submitted successfully! Check console for data.")
+    console.log("Form submitted:", data);
+    alert("Form submitted successfully! Check console for data.");
   }
 
   return (
@@ -109,7 +109,8 @@ export function ComplexForm() {
       <FieldSet>
         <FieldLegend>Personal Information</FieldLegend>
         <FieldDescription>
-          Tell us about yourself. This information will be displayed on your profile.
+          Tell us about yourself. This information will be displayed on your
+          profile.
         </FieldDescription>
 
         <FieldGroup>
@@ -129,7 +130,9 @@ export function ComplexForm() {
                 <FieldDescription>
                   This is the name that will be displayed on your profile.
                 </FieldDescription>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />
@@ -151,7 +154,9 @@ export function ComplexForm() {
                 <FieldDescription>
                   We&apos;ll never share your email with anyone else.
                 </FieldDescription>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />
@@ -172,7 +177,9 @@ export function ComplexForm() {
                 <FieldDescription>
                   Brief description for your profile. Max 200 characters.
                 </FieldDescription>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />
@@ -187,7 +194,9 @@ export function ComplexForm() {
                   <FieldDescription>
                     Select your primary role or occupation.
                   </FieldDescription>
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
                 </FieldContent>
                 <Select
                   name={field.name}
@@ -243,13 +252,17 @@ export function ComplexForm() {
                         id={`notification-${notification.id}`}
                         name={field.name}
                         aria-invalid={fieldState.invalid}
-                        checked={field.value?.includes(notification.id) ?? false}
+                        checked={
+                          field.value?.includes(notification.id) ?? false
+                        }
                         onCheckedChange={(checked) => {
-                          const currentValue = field.value ?? []
+                          const currentValue = field.value ?? [];
                           const newValue = checked
                             ? [...currentValue, notification.id]
-                            : currentValue.filter((value) => value !== notification.id)
-                          field.onChange(newValue)
+                            : currentValue.filter(
+                                (value) => value !== notification.id
+                              );
+                          field.onChange(newValue);
                         }}
                       />
                       <FieldLabel
@@ -261,7 +274,9 @@ export function ComplexForm() {
                     </Field>
                   ))}
                 </FieldGroup>
-                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </FieldSet>
             )}
           />
@@ -278,7 +293,9 @@ export function ComplexForm() {
                   <FieldDescription>
                     Add an extra layer of security to your account.
                   </FieldDescription>
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
                 </FieldContent>
                 <Switch
                   id="two-factor-auth"
@@ -310,7 +327,10 @@ export function ComplexForm() {
             >
               {accountTypes.map((type) => (
                 <FieldLabel key={type.id} htmlFor={`account-${type.id}`}>
-                  <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                  <Field
+                    orientation="horizontal"
+                    data-invalid={fieldState.invalid}
+                  >
                     <FieldContent>
                       <FieldTitle>{type.title}</FieldTitle>
                       <FieldDescription>{type.description}</FieldDescription>
@@ -361,5 +381,5 @@ export function ComplexForm() {
         </div>
       )}
     </form>
-  )
+  );
 }

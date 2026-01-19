@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useForm } from "@tanstack/react-form"
-import { zodValidator } from "@tanstack/zod-form-adapter"
-import { toast } from "sonner"
-import * as z from "zod"
+import { useForm } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
+import { toast } from "sonner";
+import * as z from "zod";
 import {
   Button,
   Field,
@@ -12,12 +12,12 @@ import {
   FieldError,
   FieldLabel,
   Switch,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 const formSchema = z.object({
   twoFactor: z.boolean(),
   marketing: z.boolean(),
-})
+});
 
 export function SwitchTanStackForm() {
   const form = useForm({
@@ -30,16 +30,16 @@ export function SwitchTanStackForm() {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value)
-      toast.success("Settings saved successfully!")
+      console.log("Form submitted:", value);
+      toast.success("Settings saved successfully!");
     },
-  })
+  });
 
   return (
     <form
       onSubmit={(e) => {
-        e.preventDefault()
-        form.handleSubmit()
+        e.preventDefault();
+        form.handleSubmit();
       }}
       className="space-y-6"
     >
@@ -47,7 +47,7 @@ export function SwitchTanStackForm() {
         name="twoFactor"
         children={(field) => {
           const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid
+            field.state.meta.isTouched && !field.state.meta.isValid;
           return (
             <Field orientation="horizontal" data-invalid={isInvalid}>
               <FieldContent>
@@ -67,7 +67,7 @@ export function SwitchTanStackForm() {
                 aria-invalid={isInvalid}
               />
             </Field>
-          )
+          );
         }}
       />
 
@@ -75,7 +75,7 @@ export function SwitchTanStackForm() {
         name="marketing"
         children={(field) => {
           const isInvalid =
-            field.state.meta.isTouched && !field.state.meta.isValid
+            field.state.meta.isTouched && !field.state.meta.isValid;
           return (
             <Field orientation="horizontal" data-invalid={isInvalid}>
               <FieldContent>
@@ -95,7 +95,7 @@ export function SwitchTanStackForm() {
                 aria-invalid={isInvalid}
               />
             </Field>
-          )
+          );
         }}
       />
 
@@ -103,5 +103,5 @@ export function SwitchTanStackForm() {
         Save Settings
       </Button>
     </form>
-  )
+  );
 }

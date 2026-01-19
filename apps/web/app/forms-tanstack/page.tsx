@@ -6,14 +6,14 @@ import {
   RadioTanStackForm,
   SelectTanStackForm,
   SwitchTanStackForm,
-} from "@/components/forms-tanstack"
+} from "@/components/forms-tanstack";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@workspace/design-system"
+} from "@workspace/design-system";
 
 export default function TanStackFormsPage() {
   return (
@@ -115,5 +115,5 @@ export default function TanStackFormsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -14,5 +14,8 @@
     "@typescript-eslint/parser": "^8.53.0",
     "eslint": "^9.39.1",
     "typescript-eslint": "^8.53.0"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^10.1.8"
   }
 }
