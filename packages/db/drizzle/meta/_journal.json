@@ -29,6 +29,13 @@
       "when": 1768853978523,
       "tag": "0003_lucky_vindicator",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1768859550491,
+      "tag": "0004_steep_justice",
+      "breakpoints": true
     }
   ]
 }

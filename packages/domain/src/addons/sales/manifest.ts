@@ -1,11 +1,13 @@
 // packages/domain/src/addons/sales/manifest.ts
-// erp.sales addon: sales quote management
+// erp.sales addon: sales quote and order management
 //
 // Provides:
 // - SalesQuoteService (quote lifecycle + line management)
+// - SalesOrderService (order lifecycle + line management + quote conversion)
 
 import type { AddonManifest, AddonAPI } from "../../types";
 import { SALES_QUOTE_SERVICE, SalesQuoteServiceImpl } from "./services/quote-service";
+import { SALES_ORDER_SERVICE, SalesOrderServiceImpl } from "./orders/services/order-service";
 import { ERP_BASE_TOKENS } from "../erp.base/tokens";
 
 // ---- Addon Manifest ----
@@ -24,6 +26,10 @@ export const salesAddon: AddonManifest = {
     // Register SalesQuoteService
     const quoteService = new SalesQuoteServiceImpl(sequenceService);
     provideValue(SALES_QUOTE_SERVICE, quoteService);
+
+    // Register SalesOrderService
+    const orderService = new SalesOrderServiceImpl(sequenceService);
+    provideValue(SALES_ORDER_SERVICE, orderService);
   },
 };
 

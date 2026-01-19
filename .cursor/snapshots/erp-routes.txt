@@ -13,6 +13,15 @@ erp.base.uoms.create | POST | apps\web\app\api\erp\base\uoms\route.ts
 erp.base.uoms.get | GET | apps\web\app\api\erp\base\uoms\[id]\route.ts
 erp.base.uoms.list | GET | apps\web\app\api\erp\base\uoms\route.ts
 erp.base.uoms.update | PATCH | apps\web\app\api\erp\base\uoms\[id]\route.ts
+erp.sales.orders.cancel | POST | apps\web\app\api\erp\sales\orders\[id]\cancel\route.ts
+erp.sales.orders.confirm | POST | apps\web\app\api\erp\sales\orders\[id]\confirm\route.ts
+erp.sales.orders.create | POST | apps\web\app\api\erp\sales\orders\route.ts
+erp.sales.orders.createFromQuote | POST | apps\web\app\api\erp\sales\orders\from-quote\[quoteId]\route.ts
+erp.sales.orders.get | GET | apps\web\app\api\erp\sales\orders\[id]\route.ts
+erp.sales.orders.lines.remove | DELETE | apps\web\app\api\erp\sales\orders\[id]\lines\[lineNo]\route.ts
+erp.sales.orders.lines.upsert | POST | apps\web\app\api\erp\sales\orders\[id]\lines\route.ts
+erp.sales.orders.list | GET | apps\web\app\api\erp\sales\orders\route.ts
+erp.sales.orders.update | PATCH | apps\web\app\api\erp\sales\orders\[id]\route.ts
 erp.sales.quotes.accept | POST | apps\web\app\api\erp\sales\quotes\[id]\accept\route.ts
 erp.sales.quotes.cancel | POST | apps\web\app\api\erp\sales\quotes\[id]\cancel\route.ts
 erp.sales.quotes.create | POST | apps\web\app\api\erp\sales\quotes\route.ts
@@ -22,3 +31,4 @@ erp.sales.quotes.lines.upsert | POST | apps\web\app\api\erp\sales\quotes\[id]\li
 erp.sales.quotes.list | GET | apps\web\app\api\erp\sales\quotes\route.ts
 erp.sales.quotes.send | POST | apps\web\app\api\erp\sales\quotes\[id]\send\route.ts
 erp.sales.quotes.update | PATCH | apps\web\app\api\erp\sales\quotes\[id]\route.ts
+

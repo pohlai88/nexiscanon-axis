@@ -2,6 +2,7 @@
 // Sales addon service tokens for DI
 
 import { SALES_QUOTE_SERVICE } from "./services/quote-service";
+import { SALES_ORDER_SERVICE } from "./orders/services/order-service";
 
 /**
  * Sales addon service tokens
@@ -9,4 +10,5 @@ import { SALES_QUOTE_SERVICE } from "./services/quote-service";
  */
 export const SALES_TOKENS = {
   SalesQuoteService: SALES_QUOTE_SERVICE,
+  SalesOrderService: SALES_ORDER_SERVICE,
 } as const;
