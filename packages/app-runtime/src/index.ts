@@ -5,6 +5,8 @@
 import { bootstrapDomain, allAddons, REQUESTS_TOKENS, tokenId } from "@workspace/domain";
 import type { DomainRuntime, Container } from "@workspace/domain";
 
+export { getR2Client, getR2Config, type R2Client, type R2Config } from "./r2";
+
 let _domainRuntime: DomainRuntime | null = null;
 
 /**
@@ -76,4 +78,14 @@ export async function getDomainContainer(): Promise<Container> {
   }
 
   return _domainRuntime.container;
+}
+
+/**
+ * Get evidence files repository directly.
+ * Phase 1: direct access from app-runtime, not domain-wrapped.
+ */
+export async function getEvidenceFilesRepo() {
+  const { getDb, createEvidenceFileRepository } = await import("@workspace/db");
+  const db = getDb();
+  return createEvidenceFileRepository(db);
 }

@@ -17,6 +17,7 @@ const ALLOWED_IMPORT_PREFIXES = [
   "@workspace/api-kernel/",
   "@workspace/validation/",
   "@workspace/domain/",
+  "@workspace/jobs/", // Background jobs package
 ];
 
 // ✅ Also allow direct (non-slash) entry imports
@@ -25,6 +26,7 @@ const ALLOWED_EXACT = new Set<string>([
   "@workspace/validation",
   "@workspace/domain",
   "@workspace/app-runtime",
+  "@workspace/jobs", // Background jobs package
   ...(ALLOW_ZOD_IN_ROUTES ? ["zod"] : []),
 ]);
 

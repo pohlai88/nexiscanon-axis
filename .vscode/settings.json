@@ -7,5 +7,28 @@
   },
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  
+  // Console Ninja - Show console.log in editor
+  "console-ninja.featureSet": "Community",
+  
+  // Inline Fold - Collapse long classNames
+  "inlineFold.regex": "(class|className)=\"([^\"]*)",
+  "inlineFold.regexFlags": "g",
+  "inlineFold.regexGroup": 2,
+  "inlineFold.unfoldedOpacity": 0.6,
+  "inlineFold.maskChar": "...",
+  
+  // Turbo Console Log
+  "turboConsoleLog.quote": "\"",
+  "turboConsoleLog.insertEnclosingClass": false,
+  "turboConsoleLog.insertEnclosingFunction": true,
+  
+  // REST Client
+  "rest-client.enableTelemetry": false,
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "baseUrl": "http://localhost:3000"
+    }
+  }
 }

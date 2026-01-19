@@ -1,39 +1,49 @@
 // apps/web/app/api/auth/login/route.ts
-// Login endpoint - uses kernel pattern
+// Login endpoint - Neon Auth integration
 
 import { kernel } from "@workspace/api-kernel";
-import { loginSchema, loginOutputSchema } from "@workspace/validation";
+import { z } from "zod";
+
+const LoginInput = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+
+const LoginOutput = z.object({
+  message: z.string(),
+  neonAuthUrl: z.string().optional(),
+  instructions: z.string(),
+});
 
 /**
  * POST /api/auth/login
  *
- * Authenticates a user with email and password
+ * Phase 1: Minimal implementation
+ * Neon Auth uses hosted pages for login. This endpoint provides instructions.
+ * To obtain a JWT:
+ * 1. Use Neon Auth hosted UI (if available)
+ * 2. Or call Neon Auth API directly
+ * 3. Return the JWT to use in Authorization: Bearer <jwt>
  */
 export const POST = kernel({
   method: "POST",
   routeId: "auth.login",
-  // Public endpoint - no auth required (this IS the auth endpoint)
   auth: { mode: "public" },
-  body: loginSchema,
-  output: loginOutputSchema,
+  body: LoginInput,
+  output: LoginOutput,
 
   async handler({ body }) {
-    // TODO: Implement actual authentication logic
-    // For now, return placeholder response
+    const neonAuthUrl = process.env.NEON_AUTH_BASE_URL;
 
-    // In production:
-    // 1. Verify credentials against database
-    // 2. Create session/token
-    // 3. Set auth cookie
-    // 4. Return user info
-
-    // Placeholder validation
-    if (body.email && body.password) {
-      return {
-        message: "Login handler not implemented",
-      };
-    }
-
-    throw new Error("Invalid credentials");
+    // Phase 1: Return instructions for obtaining JWT
+    // Phase 2 will implement actual Neon Auth API calls
+    return {
+      message: "Login via Neon Auth",
+      neonAuthUrl,
+      instructions: neonAuthUrl
+        ? `Use Neon Auth at ${neonAuthUrl} to obtain JWT, then pass as Authorization: Bearer <jwt>`
+        : "NEON_AUTH_BASE_URL not configured - using dev mode (Authorization: Bearer dev + X-Actor-ID header)",
+    };
   },
 });
+

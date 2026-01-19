@@ -110,14 +110,17 @@ Time:     334ms >>> FULL TURBO
   - ✅ POST /api/requests (create → SUBMITTED)
   - ✅ POST /api/requests/[id]/approve (approve → APPROVED)
   - ✅ routes call domain service only (spec-only pattern)
-  - ⏳ domain service uses in-memory stub (DB roundtrip pending DATABASE_URL)
+  - ✅ domain service uses Drizzle repository (DB persistence verified)
   - ✅ audit events written on transitions
 
-**Next EVI proof milestone (when DATABASE_URL is set):**
+**EVI002 Proof Milestone:** ✅ COMPLETE (2026-01-19)
 
-- `pnpm db:migrate` output against Neon (shows applied migrations)
-- `tsx scripts/smoke-db.ts` output (shows inserted ids + rollback confirmation)
-- One domain endpoint (`POST /api/requests`) writes to DB (not in-memory stub)
+- ✅ `pnpm db:migrate` output against Neon (migrations applied successfully)
+- ✅ `tsx scripts/smoke-db.ts` output (DB roundtrip PASS with real UUIDs)
+- ✅ Domain endpoint (`POST /api/requests`) writes to DB via Drizzle
+- ✅ Wiring log confirms: `"wired":"drizzle"` with correct repo token
+- ✅ Cross-tenant isolation verified (RLS enforced, access prevented)
+- ⚠️ Follow-up: Map repository null → 404 NOT_FOUND (currently returns 500)
 
 **Freeze rule:** after 1 real addon ships, stop redesigning domain.
 
@@ -125,7 +128,7 @@ Time:     334ms >>> FULL TURBO
 
 # E) Data Layer (Neon + Drizzle) (Must)
 
-- [ ] ⏳ Neon Postgres connected for app + worker (skeleton exists, no connection string)
+- [x] ✅ Neon Postgres connected for app + worker
 - [x] ✅ Drizzle schema + Drizzle migrations runnable
   - **Schema currently defines 4 tables**: `tenants`, `users`, `audit_logs`, `requests`
   - **First migration generated accordingly**: `0000_hot_the_leader.sql`
@@ -139,6 +142,38 @@ Time:     334ms >>> FULL TURBO
 - [x] ✅ Tenant discipline implemented:
   - `tenant_id` in all multi-tenant tables
   - every query is tenant-scoped (no route-level queries)
+  - RLS policies applied and verified (EVI002-C)
+
+## E1) Infra SQL Exception (Manual Migrations)
+
+**Schema migrations** (Drizzle-managed):
+- Location: `packages/db/drizzle/*.sql`
+- Tracked: `_journal.json`
+- Applied: `pnpm db:migrate`
+
+**Infra SQL** (manual, not Drizzle-managed):
+- Location: `packages/db/drizzle/manual/*.sql`
+- Tracked: NOT in `_journal.json` (Drizzle doesn't manage RLS/policies/grants)
+- Applied: Manually via `psql` or Neon SQL Editor
+- **Requirements:**
+  - Idempotent (`IF NOT EXISTS`, `CREATE OR REPLACE`)
+  - Documented in `drizzle/manual/README.md`
+  - Applied once per environment after `db:migrate`
+  - Version controlled (part of canonical schema)
+
+**Current manual migrations:**
+- `0001_tenant_isolation_rls.sql`: RLS policies + tenant-scoped indexes
+
+**Verification queries** (ensure RLS applied):
+```sql
+-- Check RLS enabled
+SELECT tablename, rowsecurity FROM pg_tables 
+WHERE schemaname = 'public' AND tablename IN ('users', 'requests', 'audit_logs');
+
+-- Check policies exist
+SELECT tablename, policyname FROM pg_policies 
+WHERE tablename IN ('users', 'requests', 'audit_logs');
+```
 
 **Proof:**
 

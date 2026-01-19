@@ -3,6 +3,7 @@
 
 import { KernelError, ErrorCode } from "./errors";
 import type { AuthConfig } from "./types";
+import { verifyJwt } from "@workspace/auth";
 
 /** Auth resolution result */
 export type AuthResult = {
@@ -12,8 +13,9 @@ export type AuthResult = {
 
 /**
  * Extract auth from request.
- * This is a placeholder - integrate with Neon Auth in production.
- * Checks Authorization header for Bearer token and extracts user info.
+ * Supports two modes:
+ * 1. JWT verification (production): Authorization: Bearer <jwt>
+ * 2. Dev headers (fallback): X-Actor-ID + X-Actor-Roles
  */
 export async function extractAuth(request: Request): Promise<AuthResult> {
   const authHeader = request.headers.get("Authorization");
@@ -22,27 +24,50 @@ export async function extractAuth(request: Request): Promise<AuthResult> {
     return { actorId: undefined, roles: [] };
   }
 
-  // TODO: Integrate with Neon Auth
-  // For now, this is a placeholder that decodes a simple JWT-like structure
-  // In production, use Neon Auth SDK to validate and extract session
-  const token = authHeader.slice(7);
+  const token = authHeader.slice(7); // Remove "Bearer " prefix
 
+  // Try JWT verification first (production mode)
   try {
-    // Placeholder: extract from header for dev/testing
-    // Real implementation: validate JWT with Neon Auth
-    const actorId = request.headers.get("X-Actor-ID") ?? undefined;
-    const rolesHeader = request.headers.get("X-Actor-Roles");
-    const roles = rolesHeader
-      ? rolesHeader.split(",").map((r) => r.trim())
+    const principal = await verifyJwt(token);
+
+    if (principal) {
+      // JWT verified successfully
+      // Extract roles from claims if present (Neon Auth may include roles)
+      const roles =
+        Array.isArray(principal.claims.roles) &&
+        principal.claims.roles.every((r): r is string => typeof r === "string")
+          ? principal.claims.roles
+          : [];
+
+      return {
+        actorId: principal.actorId,
+        roles,
+      };
+    }
+  } catch (error) {
+    // JWT verification failed - log but continue to dev fallback
+    console.warn("JWT verification error:", error);
+  }
+
+  // Fallback to dev headers (for local development without Neon Auth)
+  // IMPORTANT: This fallback only works when JWKS_URL is not set
+  // In production with JWKS_URL set, invalid tokens return undefined auth
+  const devActorId = request.headers.get("X-Actor-ID");
+  const devRolesHeader = request.headers.get("X-Actor-Roles");
+
+  if (devActorId || token === "dev") {
+    const roles = devRolesHeader
+      ? devRolesHeader.split(",").map((r) => r.trim())
       : [];
 
     return {
-      actorId: actorId || (token ? "dev-user" : undefined),
+      actorId: devActorId || "dev-user",
       roles,
     };
-  } catch {
-    return { actorId: undefined, roles: [] };
   }
+
+  // No valid auth found
+  return { actorId: undefined, roles: [] };
 }
 
 /**

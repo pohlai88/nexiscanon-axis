@@ -168,6 +168,9 @@ export async function bootstrapDomain(opts: {
     addonVersions[addon.id] = addon.version;
   }
 
+  // Wiring log is emitted by app-runtime layer (getDomainContainer)
+  // Domain layer stays pure and doesn't know about DB vs in-memory
+
   return {
     container,
     deps: opts.deps,

@@ -1,0 +1,59 @@
+### NexusCanon AXIS API Testing
+### Use this file with REST Client extension (humao.rest-client)
+
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+### Health Check
+GET {{baseUrl}}/api/health
+
+### Echo API
+POST {{baseUrl}}/api/echo
+Content-Type: {{contentType}}
+
+{
+  "message": "Hello from REST Client"
+}
+
+### Get All Requests
+GET {{baseUrl}}/api/requests
+Content-Type: {{contentType}}
+
+### Get Request by ID
+GET {{baseUrl}}/api/requests/1
+Content-Type: {{contentType}}
+
+### Approve Request
+POST {{baseUrl}}/api/requests/1/approve
+Content-Type: {{contentType}}
+
+{
+  "approvedBy": "user@example.com"
+}
+
+### Get Users
+GET {{baseUrl}}/api/users
+Content-Type: {{contentType}}
+
+### Auth - Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+### Auth - Signup
+POST {{baseUrl}}/api/auth/signup
+Content-Type: {{contentType}}
+
+{
+  "email": "newuser@example.com",
+  "password": "password123",
+  "name": "New User"
+}
+
+### Auth - Logout
+POST {{baseUrl}}/api/auth/logout
+Content-Type: {{contentType}}

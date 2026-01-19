@@ -7,6 +7,7 @@
     "build:affected": "turbo run build --affected",
     "dev": "turbo run dev",
     "dev:web": "turbo run dev --filter=@workspace/web",
+    "worker": "tsx scripts/run-worker.ts",
     "lint": "turbo run lint",
     "check-types": "turbo run check-types",
     "typecheck:core": "turbo run check-types --filter=@workspace/api-kernel --filter=@workspace/domain --filter=@workspace/validation --filter=@workspace/observability",
@@ -16,6 +17,9 @@
     "db:migrate": "pnpm --filter @workspace/db db:migrate",
     "db:push": "pnpm --filter @workspace/db db:push",
     "db:studio": "pnpm --filter @workspace/db db:studio",
+    "evi006": "tsx scripts/run-evi006-phase1.ts",
+    "evi007": "tsx scripts/run-evi007-phase2.ts",
+    "evi008": "tsx scripts/run-evi008.ts",
     "validate:css": "turbo run validate:css",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
@@ -38,5 +42,17 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.971.0",
+    "@aws-sdk/s3-request-presigner": "^3.971.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.210.0",
+    "@opentelemetry/instrumentation": "^0.210.0",
+    "@opentelemetry/resources": "^2.4.0",
+    "@opentelemetry/sdk-trace-base": "^2.4.0",
+    "@opentelemetry/sdk-trace-node": "^2.4.0",
+    "@opentelemetry/semantic-conventions": "^1.39.0",
+    "@sentry/nextjs": "^10.35.0",
+    "dotenv": "^17.2.3"
   }
 }

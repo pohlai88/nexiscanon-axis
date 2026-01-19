@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@workspace/validation": "workspace:*",
+    "jose": "^5.9.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

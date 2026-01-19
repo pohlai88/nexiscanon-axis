@@ -1,6 +1,10 @@
-# Manual Database Migrations
+# Manual Infrastructure SQL
 
-This directory contains SQL migrations that are **not managed by Drizzle Kit** but must be applied manually to production databases.
+**Location:** `packages/db/drizzle/manual/`
+
+This directory contains infrastructure SQL (RLS policies, grants, custom indexes) that is **not managed by Drizzle Kit's schema-driven migrations** but must be applied manually to databases.
+
+**Canon Rule:** All migration-related files live under `packages/db/drizzle/`. This subfolder holds manual infra SQL that is NOT tracked in `_journal.json`.
 
 ## Why Manual Migrations?
 
@@ -27,7 +31,7 @@ Drizzle Kit only generates migrations from TypeScript schema definitions. Some d
 **Application Instructions:**
 ```bash
 # Apply to new database/branch
-psql $DATABASE_URL < packages/db/migrations-manual/0001_tenant_isolation_rls.sql
+psql $DATABASE_URL < packages/db/drizzle/manual/0001_tenant_isolation_rls.sql
 
 # Or via Neon SQL Editor
 # Copy/paste the SQL file contents
@@ -55,11 +59,18 @@ AND indexname LIKE 'idx_%tenant%';
 
 ## Migration Discipline
 
-1. **Manual migrations are NOT auto-applied** by `pnpm db:migrate`
-2. **Document application status** in this README for each migration
-3. **Verify idempotency** - manual migrations should use `IF NOT EXISTS` / `OR REPLACE`
-4. **Track in version control** - manual migrations are part of the canonical schema
-5. **Apply to all environments** - dev, staging, production, and ephemeral branches
+**Critical operational rules:**
+
+1. **NOT tracked by `_journal.json`** - Drizzle Kit does not manage infra SQL
+2. **Run AFTER `pnpm -w db:migrate`** - schema migrations must be applied first
+3. **MUST be idempotent** - safe to rerun (use `IF NOT EXISTS`, `CREATE OR REPLACE`, etc.)
+
+**Process:**
+
+1. Manual migrations are NOT auto-applied by `pnpm db:migrate`
+2. Document application status in this README for each migration
+3. Track in version control - manual migrations are part of the canonical schema
+4. Apply to all environments - dev, staging, production, and ephemeral branches
 
 ## Adding New Manual Migrations
 

@@ -6,7 +6,7 @@
 // - All queries MUST be tenant-scoped (no route-level queries)
 // - Use getTenantDb() helper to ensure tenant scoping
 
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, bigint } from "drizzle-orm/pg-core";
 
 // ---- Common columns ----
 
@@ -84,3 +84,35 @@ export const requests = pgTable("requests", {
 
 export type Request = typeof requests.$inferSelect;
 export type NewRequest = typeof requests.$inferInsert;
+
+// ---- Evidence Files table (multi-tenant) ----
+
+export const evidenceFiles = pgTable("evidence_files", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id")
+    .notNull()
+    .references(() => tenants.id),
+  uploadedBy: uuid("uploaded_by").notNull(),
+  
+  // Original file metadata (always present)
+  originalName: text("original_name").notNull(),
+  mimeType: text("mime_type").notNull(),
+  sizeBytes: bigint("size_bytes", { mode: "number" }).notNull(),
+  sha256: text("sha256"),
+  
+  // Phase 1 (direct viewable): r2Key = viewR2Key, sourceR2Key = null
+  // Phase 2 (conversion): sourceR2Key = original office file, viewR2Key = generated PDF
+  r2Key: text("r2_key").notNull().unique(), // DEPRECATED: use sourceR2Key or viewR2Key
+  sourceR2Key: text("source_r2_key"), // Original file (for office docs)
+  viewR2Key: text("view_r2_key"), // Viewable artifact (PDF for office, same as original for images/pdf)
+  
+  // Status: READY | CONVERT_PENDING | CONVERT_FAILED | REJECTED_UNSUPPORTED
+  status: text("status").notNull(),
+  
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+export type EvidenceFile = typeof evidenceFiles.$inferSelect;
+export type NewEvidenceFile = typeof evidenceFiles.$inferInsert;
