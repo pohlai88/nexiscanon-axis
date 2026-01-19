@@ -3,13 +3,17 @@
 //
 // Provides:
 // - AuditService (durable business event logging)
-// - SequenceService (document numbering - Phase 1)
-// - PartnerService (customers/vendors - Phase 1)
-// - ProductService (items - Phase 1)
-// - UomService (units of measure - Phase 1)
+// - SequenceService (document numbering)
+// - UomService (units of measure)
+// - PartnerService (customers/vendors)
+// - ProductService (items)
 
 import type { AddonManifest, AddonAPI } from "../../types";
 import { ERP_AUDIT_SERVICE, type ErpAuditService } from "./services/audit-service";
+import { SEQUENCE_SERVICE, SequenceServiceImpl } from "./services/sequence-service";
+import { UOM_SERVICE, UomServiceImpl } from "./services/uom-service";
+import { PARTNER_SERVICE, PartnerServiceImpl } from "./services/partner-service";
+import { PRODUCT_SERVICE, ProductServiceImpl } from "./services/product-service";
 
 // ---- Addon Manifest ----
 
@@ -64,7 +68,20 @@ export const erpBaseAddon: AddonManifest = {
       },
     };
 
+    // Register all services
     provideValue(ERP_AUDIT_SERVICE, auditService);
+
+    const sequenceService = new SequenceServiceImpl();
+    provideValue(SEQUENCE_SERVICE, sequenceService);
+
+    const uomService = new UomServiceImpl();
+    provideValue(UOM_SERVICE, uomService);
+
+    const partnerService = new PartnerServiceImpl(sequenceService);
+    provideValue(PARTNER_SERVICE, partnerService);
+
+    const productService = new ProductServiceImpl(sequenceService);
+    provideValue(PRODUCT_SERVICE, productService);
   },
 };
 

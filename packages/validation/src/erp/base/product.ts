@@ -128,7 +128,6 @@ export type ProductOutput = z.infer<typeof ProductOutput>;
 
 export const ProductListOutput = z.object({
   items: z.array(ProductOutput),
-  hasMore: z.boolean(),
   nextCursor: z.string().uuid().nullable(),
 });
 
@@ -139,10 +138,10 @@ export type ProductListOutput = z.infer<typeof ProductListOutput>;
 export const ProductListQuery = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(20),
   cursor: z.string().uuid().optional(),
-  q: z.string().max(100).optional(),
+  q: z.string().max(100).optional(), // Search: sku, name (ILIKE)
   productType: ProductType.optional(),
   category: z.string().max(100).optional(),
-  isActive: z.coerce.boolean().optional(),
+  isActive: z.coerce.boolean().optional().default(true), // Default: active only
   isSellable: z.coerce.boolean().optional(),
   isPurchasable: z.coerce.boolean().optional(),
   orderBy: z.enum(["createdAt", "sku", "name"]).default("createdAt"),

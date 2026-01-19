@@ -138,6 +138,100 @@ function scanFile(file: string, content: string): Finding[] {
     });
   }
 
+  // Gate 1: Output schema must be explicit (no `any`)
+  // Find kernel({ blocks and check for output: key using brace-counting
+  const kernelStarts: number[] = [];
+  const kernelRegex = /\bkernel\s*\(\s*\{/g;
+  let match: RegExpExecArray | null;
+  
+  while ((match = kernelRegex.exec(content))) {
+    kernelStarts.push(match.index + match[0].length - 1); // Position of opening {
+  }
+  
+  for (const startPos of kernelStarts) {
+    // Extract kernel config block using brace counting (string-aware)
+    let braceCount = 1;
+    let endPos = startPos + 1;
+    let inString: string | null = null; // Track if inside string: ", ', or `
+    let escaped = false;
+    
+    while (endPos < content.length && braceCount > 0) {
+      const char = content[endPos];
+      
+      // Handle escape sequences
+      if (escaped) {
+        escaped = false;
+        endPos++;
+        continue;
+      }
+      
+      if (char === '\\') {
+        escaped = true;
+        endPos++;
+        continue;
+      }
+      
+      // Track string boundaries
+      if (inString) {
+        if (char === inString) inString = null; // Exit string
+      } else {
+        if (char === '"' || char === "'" || char === '`') {
+          inString = char; // Enter string
+        } else {
+          // Only count braces outside strings
+          if (char === '{') braceCount++;
+          if (char === '}') braceCount--;
+        }
+      }
+      
+      endPos++;
+    }
+    
+    const configBlock = content.slice(startPos, endPos);
+    
+    // Remove comments to avoid false positives
+    const withoutComments = configBlock
+      .replace(/\/\*[\s\S]*?\*\//g, '') // Block comments
+      .replace(/\/\/.*$/gm, '');        // Line comments
+    
+    // Check for output: key at property level (not nested in objects)
+    // Look for output: at start of line or after comma/semicolon
+    const hasOutput = /(?:^|[,;])\s*output\s*:/m.test(withoutComments);
+    
+    if (!hasOutput) {
+      findings.push({
+        file,
+        problem: "Missing explicit output schema in kernel call",
+        hint: "All kernel handlers must specify output: ZodSchema for type safety",
+      });
+    }
+  }
+
+  // Gate 2: No direct service instantiation (must use container tokens)
+  // Check for direct `new ServiceImpl()` patterns in ERP routes
+  if (file.includes("/api/erp/")) {
+    const hasDirectInstantiation = /new\s+\w+Service(?:Impl)?\s*\(/.test(content);
+    if (hasDirectInstantiation) {
+      findings.push({
+        file,
+        problem: "Direct service instantiation detected",
+        hint: "ERP routes must use container.get(ERP_BASE_TOKENS.ServiceName) instead of new ServiceImpl()",
+      });
+    }
+
+    // Must use getDomainContainer() for service access
+    const usesContainer = content.includes("getDomainContainer()") || content.includes("container.get(");
+    const callsService = /\w+Service\./.test(content) || content.includes("Service(");
+    
+    if (callsService && !usesContainer) {
+      findings.push({
+        file,
+        problem: "Service usage without container",
+        hint: "Must use: const container = await getDomainContainer(); const service = container.get(TOKEN);",
+      });
+    }
+  }
+
   // Forbidden bypass patterns
   const forbidden: Array<{ re: RegExp; msg: string; hint?: string }> = [
     {

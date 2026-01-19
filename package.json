@@ -13,6 +13,8 @@
     "check:api-kernel": "tsx scripts/check-api-kernel.ts",
     "check:db-migrations": "tsx scripts/check-db-migrations.ts",
     "check:erp": "tsx scripts/check-erp.ts",
+    "check:erp-routes": "tsx scripts/check-erp-routes.ts",
+    "smoke:erp": "tsx scripts/smoke-test-erp.ts",
     "db:generate": "pnpm --filter @workspace/db db:generate",
     "db:migrate": "pnpm --filter @workspace/db db:migrate",
     "db:push": "pnpm --filter @workspace/db db:push",

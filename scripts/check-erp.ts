@@ -260,6 +260,56 @@ function checkForbiddenImports(module: string): Finding[] {
   return findings;
 }
 
+// ---- Check E: No Naked Writes in ERP Services ----
+
+function checkNakedWrites(module: string): Finding[] {
+  const findings: Finding[] = [];
+  const servicesPath = path.join(DOMAIN_ADDONS, module, "services");
+
+  if (!exists(servicesPath)) return findings;
+
+  const tsFiles = walkFiles(servicesPath, ".ts");
+
+  for (const file of tsFiles) {
+    // Skip test files
+    if (file.includes("__tests__") || file.includes(".test.") || file.includes(".spec.")) {
+      continue;
+    }
+
+    const content = read(file);
+    const relativePath = path.relative(ROOT, file);
+
+    // Check if file uses atomic helpers
+    const usesAtomicHelpers =
+      content.includes("atomicInsertWithAudit") ||
+      content.includes("atomicUpdateWithAudit") ||
+      content.includes("from '../helpers/atomic-audit'") ||
+      content.includes('from "../helpers/atomic-audit"');
+
+    // Skip if it's the audit service itself or uses atomic helpers
+    if (file.includes("audit-service.ts") || usesAtomicHelpers) {
+      continue;
+    }
+
+    // Check for naked writes
+    const hasNakedInsert = content.includes(".insert(");
+    const hasNakedUpdate = content.includes(".update(") && !content.includes("UPDATE") && !content.includes(".transaction(");
+    const hasNakedDelete = content.includes(".delete(");
+    const hasSqlInsert = content.includes("sql`INSERT") || content.includes('sql`\n      INSERT');
+    const hasSqlUpdate = content.includes("sql`UPDATE") || content.includes('sql`\n      UPDATE');
+
+    if (hasNakedInsert || hasNakedUpdate || hasNakedDelete || hasSqlInsert || hasSqlUpdate) {
+      findings.push({
+        module,
+        problem: `Naked database write detected in ${relativePath}`,
+        hint: "ERP services MUST use atomicInsertWithAudit() or atomicUpdateWithAudit() to guarantee audit durability",
+      });
+    }
+  }
+
+  return findings;
+}
+
 // ---- Main ----
 
 function main(): void {
@@ -285,6 +335,7 @@ function main(): void {
     allFindings.push(...checkContracts(module));
     allFindings.push(...checkDbSchema(module));
     allFindings.push(...checkForbiddenImports(module));
+    allFindings.push(...checkNakedWrites(module));
   }
 
   console.log("");

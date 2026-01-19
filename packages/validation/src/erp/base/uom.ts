@@ -59,7 +59,6 @@ export type UomOutput = z.infer<typeof UomOutput>;
 
 export const UomListOutput = z.object({
   items: z.array(UomOutput),
-  hasMore: z.boolean(),
   nextCursor: z.string().uuid().nullable(),
 });
 
@@ -70,9 +69,9 @@ export type UomListOutput = z.infer<typeof UomListOutput>;
 export const UomListQuery = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(20),
   cursor: z.string().uuid().optional(),
-  q: z.string().max(100).optional(),
+  q: z.string().max(100).optional(), // Search: code, name (ILIKE)
   category: UomCategory.optional(),
-  isActive: z.coerce.boolean().optional(),
+  isActive: z.coerce.boolean().optional(), // Default in service: true
   orderBy: z.enum(["createdAt", "code", "name"]).default("createdAt"),
   orderDir: z.enum(["asc", "desc"]).default("desc"),
 });
