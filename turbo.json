@@ -1,0 +1,32 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "ui": "tui",
+  "globalEnv": ["NODE_ENV"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "description": "Build the application"
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "description": "Start development server"
+    },
+    "lint": {
+      "dependsOn": [],
+      "description": "Run linter"
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"],
+      "description": "Type check all files"
+    },
+    "test:e2e": {
+      "cache": false,
+      "persistent": false,
+      "description": "Run end-to-end tests"
+    }
+  },
+  "globalDependencies": ["**/tsconfig.json", ".env", ".env.local"]
+}

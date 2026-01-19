@@ -1,0 +1,21 @@
+{
+  "name": "@repo/eslint-config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./next-js": "./configs/next-js.js",
+    "./react-internal": "./configs/react-internal.js"
+  },
+  "dependencies": {
+    "@eslint/js": "^9.39.1",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
+    "eslint": "^9.39.1",
+    "typescript-eslint": "^8.53.0"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^10.1.8"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1768811203300,
+      "tag": "0000_hot_the_leader",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1768852751349,
+      "tag": "0001_kind_vin_gonzales",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1768853958622,
+      "tag": "0002_misty_invisible_woman",
+      "breakpoints": true
+    }
+  ]
+}

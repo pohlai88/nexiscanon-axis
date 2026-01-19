@@ -1,4 +1,11 @@
-# Environment files
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Local env files
 .env
 .env.local
 .env.development.local
@@ -6,13 +13,14 @@
 .env.production.local
 env.localCopy
 
-# Dependencies
-node_modules
-.pnp
-.pnp.js
-
 # Testing
 coverage
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
 
 # Build Outputs
 .next/

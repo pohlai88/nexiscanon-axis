@@ -1,0 +1,28 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "wallabyjs.console-ninja",
+    "rangav.vscode-thunder-client",
+    "mattpocock.ts-error-translator",
+    "moalamri.inline-fold",
+    "humao.rest-client",
+    "chakrounanas.turbo-console-log",
+    "yoavbls.pretty-ts-errors",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "databricks.neon-local-connect",
+    "dsznajder.es7-react-js-snippets",
+    "pulkitgangwar.nextjs-snippets",
+    "themeselection.shadcn-studio-vscode-extension"
+  ],
+  "unwantedRecommendations": [
+    "apollographql.vscode-apollo",
+    "graphql.vscode-graphql",
+    "graphql.vscode-graphql-syntax",
+    "firsttris.vscode-jest-runner",
+    "orta.vscode-jest",
+    "zixuanchen.vitest-explorer"
+  ]
+}

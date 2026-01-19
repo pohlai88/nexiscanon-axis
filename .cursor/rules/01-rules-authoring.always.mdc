@@ -1,0 +1,52 @@
+---
+description: "Rules Authoring Law: prevent duplicated rules and rule sprawl. Enforce Global + Delta pattern."
+alwaysApply: true
+---
+
+# Cursor Rules Authoring Law (Always Apply)
+
+## Purpose
+Prevent spaghetti rules, duplication, contradictions, and bloat.
+
+## Required Architecture
+- Exactly ONE global shared rule file:
+  - `.cursor/rules/00-global.always.mdc`
+- All other rules MUST be delta-only and scoped by globs.
+
+## Delta-Only Rule Standard
+Every non-global rule MUST start with:
+> Applies on top of `00-global.always.mdc`. Do NOT restate global rules.
+
+## Naming Convention (Mandatory)
+`{domain}.{topic}.delta.mdc`
+
+Examples:
+- `app.docs.delta.mdc`
+- `api.auth.delta.mdc`
+- `shared.utils.delta.mdc`
+
+## Duplication Ban (Hard Rule)
+- Never copy/paste rule text across rule files.
+- Shared text belongs ONLY in `00-global.always.mdc`.
+
+## No Bypass Rule
+If you later introduce `AGENTS.md` (anywhere under `.cursor/` or the repo),
+it MUST follow the same Global + Delta structure:
+- shared rules belong ONLY in `00-global.always.mdc`
+- scoped guidance belongs in delta-only rule files
+
+## Enforcement (HARD RULE)
+**MANDATORY**: Duplication is enforced by CI via `jscpd` on `.cursor/rules/**/*.{mdc,md}`.
+
+**REQUIRED**: Before creating or modifying any rule file:
+1. Check for existing similar rules in `00-global.always.mdc`
+2. If content exists globally → DO NOT duplicate, reference it instead
+3. If content is new → determine if it belongs in global or delta
+4. If shared across 2+ domains → MUST go in `00-global.always.mdc`
+
+**FORBIDDEN**:
+- ❌ Copy/pasting rule text across rule files
+- ❌ Restating global rules in delta files
+- ❌ Creating duplicate content in multiple delta files
+
+**VERIFICATION**: Any duplication must be removed by merging shared content into `00-global.always.mdc`.
