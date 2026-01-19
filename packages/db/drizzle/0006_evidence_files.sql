@@ -7,6 +7,8 @@ CREATE TABLE "evidence_files" (
 	"size_bytes" bigint NOT NULL,
 	"sha256" text,
 	"r2_key" text NOT NULL,
+	"source_r2_key" text,
+	"view_r2_key" text,
 	"status" text NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "evidence_files_r2_key_unique" UNIQUE("r2_key")
