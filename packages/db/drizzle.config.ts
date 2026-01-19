@@ -4,8 +4,8 @@
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
-  schema: "./src/schema.ts",
-  out: "./drizzle",
+  schema: "./packages/db/src/schema.ts",
+  out: "./packages/db/drizzle",
   dialect: "postgresql",
   // dbCredentials only needed for db:migrate, not db:generate
   ...(process.env.DATABASE_URL && {

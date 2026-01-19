@@ -116,3 +116,10 @@ export function createContainer(): Container {
 export function token<T>(name: string): Token<T> {
   return name as Token<T>;
 }
+
+/**
+ * Extract the string ID from a typed token (for logging/evidence).
+ */
+export function tokenId<T>(t: Token<T>): string {
+  return t as string;
+}

@@ -86,6 +86,16 @@ function scanImports(file: string, content: string): Finding[] {
       continue;
     }
 
+    // Forbid direct DB imports (routes must use @workspace/app-runtime)
+    if (source === "@workspace/db" || source.startsWith("@workspace/db/")) {
+      findings.push({
+        file,
+        problem: `Forbidden import (direct DB): "${source}"`,
+        hint: "Route files must not import @workspace/db. Use @workspace/app-runtime to get the wired domain container.",
+      });
+      continue;
+    }
+
     // Allowlist check
     if (!isAllowedImport(source)) {
       findings.push({

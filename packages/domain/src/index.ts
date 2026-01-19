@@ -24,7 +24,7 @@ export type {
 } from "./types";
 
 // Container
-export { createContainer, token } from "./container";
+export { createContainer, token, tokenId } from "./container";
 
 // Bootstrap
 export { bootstrapDomain } from "./bootstrap";
