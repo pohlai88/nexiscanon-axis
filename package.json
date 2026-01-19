@@ -12,6 +12,7 @@
     "typecheck:core": "turbo run check-types --filter=@workspace/api-kernel --filter=@workspace/domain --filter=@workspace/validation --filter=@workspace/observability",
     "check:api-kernel": "tsx scripts/check-api-kernel.ts",
     "check:db-migrations": "tsx scripts/check-db-migrations.ts",
+    "check:erp": "tsx scripts/check-erp.ts",
     "db:generate": "pnpm --filter @workspace/db db:generate",
     "db:migrate": "pnpm --filter @workspace/db db:migrate",
     "db:push": "pnpm --filter @workspace/db db:push",
