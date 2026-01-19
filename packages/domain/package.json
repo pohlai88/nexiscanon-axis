@@ -11,13 +11,21 @@
   },
   "scripts": {
     "check-types": "tsc --noEmit",
-    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --max-warnings 0"
+    "check-types:tests": "tsc -p tsconfig.vitest.json --noEmit",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --max-warnings 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@workspace/observability": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "typescript": "^5.9.2"
+    "@types/pg": "^8.16.0",
+    "@vitest/ui": "^4.0.17",
+    "pg": "^8.17.1",
+    "typescript": "^5.9.2",
+    "vitest": "^4.0.17"
   }
 }

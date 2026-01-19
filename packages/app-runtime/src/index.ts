@@ -2,12 +2,24 @@
 // App-layer composition: wire domain with infrastructure (DB, env, etc.)
 // This package is allowed to know about both @workspace/domain and @workspace/db
 
-import { bootstrapDomain, allAddons, REQUESTS_TOKENS, tokenId } from "@workspace/domain";
+import { bootstrapDomain, allAddons, REQUESTS_TOKENS, ERP_BASE_TOKENS, tokenId } from "@workspace/domain";
 import type { DomainRuntime, Container } from "@workspace/domain";
+import { getDb as getDbImpl } from "@workspace/db";
 
 export { getR2Client, getR2Config, type R2Client, type R2Config } from "./r2";
 
 let _domainRuntime: DomainRuntime | null = null;
+
+/**
+ * Get database instance (singleton).
+ * Routes should use this instead of importing @workspace/db directly.
+ * 
+ * IMPORTANT: This is synchronous and returns the same connection pool instance.
+ * Safe for serverless/edge as it's a driver handle, not a live connection.
+ */
+export function getDb() {
+  return getDbImpl();
+}
 
 /**
  * Wire Drizzle repository implementations to domain container.
@@ -16,8 +28,8 @@ let _domainRuntime: DomainRuntime | null = null;
  */
 async function wireDatabaseRepositories(runtime: DomainRuntime): Promise<string[]> {
   // Import db package (only in app layer, not in domain)
-  const { getDb, createRequestsRepo } = await import("@workspace/db");
-  const db = getDb();
+  const { getDb: getDbInternal, createRequestsRepo } = await import("@workspace/db");
+  const db = getDbInternal();
 
   const wiredRepos: string[] = [];
 

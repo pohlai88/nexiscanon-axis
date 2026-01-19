@@ -37,6 +37,8 @@ export {
   CORE_TOKENS,
   requestsAddon,
   REQUESTS_TOKENS,
+  erpBaseAddon,
+  ERP_BASE_TOKENS,
 } from "./addons";
 export type {
   IdService,

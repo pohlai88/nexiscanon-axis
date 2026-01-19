@@ -116,3 +116,7 @@ export const evidenceFiles = pgTable("evidence_files", {
 
 export type EvidenceFile = typeof evidenceFiles.$inferSelect;
 export type NewEvidenceFile = typeof evidenceFiles.$inferInsert;
+
+// ---- ERP Tables ----
+// Import ERP schemas so they're included in migrations
+export * from "./erp";
