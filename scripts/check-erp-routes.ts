@@ -120,13 +120,27 @@ function checkRouteConventions(routes: RouteInfo[]): Finding[] {
   const seenIds = new Map<string, RouteInfo>();
 
   for (const route of routes) {
-    // Check 1: Must follow erp.{module}.{entity}.{action} pattern
+    // Check 1: Must follow erp.{module}.{entity}.{action} or erp.{module}.{entity}.{subresource}.{action}
     const parts = route.routeId.split(".");
-    if (parts.length !== 4 || parts[0] !== "erp") {
+    const isValid =
+      parts[0] === "erp" &&
+      (parts.length === 4 || parts.length === 5) && // Base (4) or sub-resource (5)
+      parts.every((p) => p.length > 0); // No empty segments
+    
+    if (!isValid) {
       findings.push({
         file: route.file,
         problem: `Invalid routeId format: "${route.routeId}"`,
-        hint: 'Must follow pattern: erp.{module}.{entity}.{action} (e.g., "erp.base.uoms.create")',
+        hint: 'Must follow pattern: erp.{module}.{entity}.{action} OR erp.{module}.{entity}.{subresource}.{action} (e.g., "erp.base.uoms.create" or "erp.sales.invoices.lines.upsert")',
+      });
+    }
+    
+    // Check 1b: Reject too-deep nesting (max 1 subresource level)
+    if (parts.length > 5) {
+      findings.push({
+        file: route.file,
+        problem: `RouteId too deeply nested: "${route.routeId}"`,
+        hint: 'Maximum nesting: erp.{module}.{entity}.{subresource}.{action} (5 segments)',
       });
     }
 
@@ -143,6 +157,8 @@ function checkRouteConventions(routes: RouteInfo[]): Finding[] {
     }
 
     // Check 3: Entity part must be plural (convention)
+    // For 4-segment: parts[2] is entity
+    // For 5-segment: parts[2] is entity, parts[3] is subresource (also should be plural)
     const entity = parts[2];
     if (entity && !entity.endsWith("s") && entity !== "inventory") {
       findings.push({
@@ -150,6 +166,18 @@ function checkRouteConventions(routes: RouteInfo[]): Finding[] {
         problem: `Entity "${entity}" in routeId should be plural: "${route.routeId}"`,
         hint: 'Use plural entity names (e.g., "uoms", "partners", "products")',
       });
+    }
+    
+    // Check 3b: Sub-resource part must also be plural (if present)
+    if (parts.length === 5) {
+      const subresource = parts[3];
+      if (subresource && !subresource.endsWith("s")) {
+        findings.push({
+          file: route.file,
+          problem: `Sub-resource "${subresource}" in routeId should be plural: "${route.routeId}"`,
+          hint: 'Use plural sub-resource names (e.g., "lines", "attachments", "payments")',
+        });
+      }
     }
   }
 

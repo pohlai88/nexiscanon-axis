@@ -7,3 +7,4 @@ export * from "./orders";
 export * from "./order-lines";
 export * from "./invoices";
 export * from "./invoice-lines";
+export * from "./credits";

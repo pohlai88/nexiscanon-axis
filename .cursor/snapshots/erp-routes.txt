@@ -13,6 +13,24 @@ erp.base.uoms.create | POST | apps\web\app\api\erp\base\uoms\route.ts
 erp.base.uoms.get | GET | apps\web\app\api\erp\base\uoms\[id]\route.ts
 erp.base.uoms.list | GET | apps\web\app\api\erp\base\uoms\route.ts
 erp.base.uoms.update | PATCH | apps\web\app\api\erp\base\uoms\[id]\route.ts
+erp.sales.credits.cancel | POST | apps\web\app\api\erp\sales\credits\[id]\cancel\route.ts
+erp.sales.credits.create | POST | apps\web\app\api\erp\sales\credits\route.ts
+erp.sales.credits.createFromInvoice | POST | apps\web\app\api\erp\sales\credits\from-invoice\[invoiceId]\route.ts
+erp.sales.credits.get | GET | apps\web\app\api\erp\sales\credits\[id]\route.ts
+erp.sales.credits.issue | POST | apps\web\app\api\erp\sales\credits\[id]\issue\route.ts
+erp.sales.credits.lines.remove | DELETE | apps\web\app\api\erp\sales\credits\[id]\lines\[lineNo]\route.ts
+erp.sales.credits.lines.upsert | POST | apps\web\app\api\erp\sales\credits\[id]\lines\route.ts
+erp.sales.credits.list | GET | apps\web\app\api\erp\sales\credits\route.ts
+erp.sales.credits.update | PATCH | apps\web\app\api\erp\sales\credits\[id]\route.ts
+erp.sales.invoices.cancel | POST | apps\web\app\api\erp\sales\invoices\[id]\cancel\route.ts
+erp.sales.invoices.create | POST | apps\web\app\api\erp\sales\invoices\route.ts
+erp.sales.invoices.createFromOrder | POST | apps\web\app\api\erp\sales\invoices\from-order\[orderId]\route.ts
+erp.sales.invoices.get | GET | apps\web\app\api\erp\sales\invoices\[id]\route.ts
+erp.sales.invoices.issue | POST | apps\web\app\api\erp\sales\invoices\[id]\issue\route.ts
+erp.sales.invoices.lines.remove | DELETE | apps\web\app\api\erp\sales\invoices\[id]\lines\[lineNo]\route.ts
+erp.sales.invoices.lines.upsert | POST | apps\web\app\api\erp\sales\invoices\[id]\lines\route.ts
+erp.sales.invoices.list | GET | apps\web\app\api\erp\sales\invoices\route.ts
+erp.sales.invoices.update | PATCH | apps\web\app\api\erp\sales\invoices\[id]\route.ts
 erp.sales.orders.cancel | POST | apps\web\app\api\erp\sales\orders\[id]\cancel\route.ts
 erp.sales.orders.confirm | POST | apps\web\app\api\erp\sales\orders\[id]\confirm\route.ts
 erp.sales.orders.create | POST | apps\web\app\api\erp\sales\orders\route.ts
@@ -31,4 +49,3 @@ erp.sales.quotes.lines.upsert | POST | apps\web\app\api\erp\sales\quotes\[id]\li
 erp.sales.quotes.list | GET | apps\web\app\api\erp\sales\quotes\route.ts
 erp.sales.quotes.send | POST | apps\web\app\api\erp\sales\quotes\[id]\send\route.ts
 erp.sales.quotes.update | PATCH | apps\web\app\api\erp\sales\quotes\[id]\route.ts
-
