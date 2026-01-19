@@ -36,6 +36,13 @@
       "when": 1768859550491,
       "tag": "0004_steep_justice",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1768860726656,
+      "tag": "0005_breezy_lionheart",
+      "breakpoints": true
     }
   ]
 }

@@ -5,3 +5,5 @@ export * from "./quotes";
 export * from "./quote-lines";
 export * from "./orders";
 export * from "./order-lines";
+export * from "./invoices";
+export * from "./invoice-lines";
