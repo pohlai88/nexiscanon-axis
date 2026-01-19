@@ -8,6 +8,13 @@
       "when": 1768811203300,
       "tag": "0000_hot_the_leader",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1768845776167,
+      "tag": "0001_tearful_boomerang",
+      "breakpoints": true
     }
   ]
 }

@@ -84,3 +84,7 @@ export const requests = pgTable("requests", {
 
 export type Request = typeof requests.$inferSelect;
 export type NewRequest = typeof requests.$inferInsert;
+
+// ---- ERP Tables ----
+// Import ERP schemas so they're included in migrations
+export * from "./erp";

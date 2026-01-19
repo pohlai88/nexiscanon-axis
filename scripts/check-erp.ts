@@ -110,7 +110,7 @@ function checkContracts(module: string): Finding[] {
   return findings;
 }
 
-// ---- Check C: DB Schema Exists ----
+// ---- Check C: DB Schema Exists + tenant_id enforcement ----
 
 function checkDbSchema(module: string): Finding[] {
   const findings: Finding[] = [];
@@ -127,6 +127,11 @@ function checkDbSchema(module: string): Finding[] {
         problem: "Missing DB schema folder",
         hint: `Create: packages/db/src/erp/base/ or packages/db/src/erp/audit/`,
       });
+    }
+    // Check audit tables have tenant_id
+    const auditPath = path.join(DB_ERP, "audit");
+    if (exists(auditPath)) {
+      findings.push(...checkTenantId(module, auditPath));
     }
     return findings;
   }
@@ -147,6 +152,45 @@ function checkDbSchema(module: string): Finding[] {
       problem: "Missing DB barrel export",
       hint: `Create: packages/db/src/erp/${moduleName}/index.ts`,
     });
+  }
+
+  // Check all tables have tenant_id
+  findings.push(...checkTenantId(module, dbPath));
+
+  return findings;
+}
+
+// ---- Check C.1: tenant_id content enforcement ----
+
+function checkTenantId(module: string, dbPath: string): Finding[] {
+  const findings: Finding[] = [];
+  const schemaFiles = walkFiles(dbPath, ".ts").filter((f) => !f.endsWith("index.ts"));
+
+  for (const file of schemaFiles) {
+    const content = read(file);
+    const relativePath = path.relative(ROOT, file);
+
+    // Look for pgTable definitions
+    const tableMatches = content.matchAll(/export\s+const\s+(\w+)\s*=\s*pgTable\s*\(/g);
+
+    for (const match of tableMatches) {
+      const tableName = match[1];
+
+      // Check if table has tenant_id or tenantId
+      const hasTenantId =
+        content.includes('tenant_id"') ||
+        content.includes("tenant_id'") ||
+        content.includes('tenantId"') ||
+        content.includes("tenantId'");
+
+      if (!hasTenantId) {
+        findings.push({
+          module,
+          problem: `Table "${tableName}" in ${relativePath} missing tenant_id`,
+          hint: "All ERP tables MUST include tenant_id column. Add: tenantId: uuid('tenant_id').notNull()",
+        });
+      }
+    }
   }
 
   return findings;

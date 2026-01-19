@@ -67,10 +67,21 @@ export interface TransitionPayload {
   note?: string;
 }
 
+// ---- Transaction Type ----
+
+/**
+ * Drizzle transaction context
+ * Services must pass this to ensure audit durability
+ */
+export type AuditTransaction = any; // Will be typed as DrizzleTransaction in impl
+
 // ---- Service Interface ----
 
 /**
  * AuditService - emits durable audit events for ERP entities
+ *
+ * CRITICAL: All compliance audit events MUST be emitted within a transaction.
+ * This ensures audit records are never lost due to rollback.
  *
  * Usage in domain services:
  * ```ts
@@ -78,8 +89,8 @@ export interface TransitionPayload {
  *   // 1. Update entity
  *   const order = await tx.update(...).returning();
  *
- *   // 2. Emit audit (same transaction)
- *   await auditService.emit(ctx, {
+ *   // 2. Emit audit (same transaction - REQUIRED)
+ *   await auditService.emitTx(tx, ctx, {
  *     entityType: 'erp.sales.order',
  *     entityId: order.id,
  *     eventType: 'erp.sales.order.approved',
@@ -92,18 +103,28 @@ export interface TransitionPayload {
  */
 export interface ErpAuditService {
   /**
-   * Emit a single audit event
+   * Emit a single audit event within a transaction (REQUIRED for compliance)
+   * @param tx - Drizzle transaction (ensures durability)
    * @param ctx - Audit context (tenant, actor, trace)
    * @param event - The audit event to record
    */
-  emit(ctx: AuditContext, event: AuditEvent): Promise<void>;
+  emitTx(tx: AuditTransaction, ctx: AuditContext, event: AuditEvent): Promise<void>;
 
   /**
-   * Emit multiple audit events in a batch
+   * Emit multiple audit events in a batch within a transaction
+   * @param tx - Drizzle transaction (ensures durability)
    * @param ctx - Audit context (shared across all events)
    * @param events - Array of audit events to record
    */
-  emitBatch(ctx: AuditContext, events: AuditEvent[]): Promise<void>;
+  emitBatchTx(tx: AuditTransaction, ctx: AuditContext, events: AuditEvent[]): Promise<void>;
+
+  /**
+   * Emit diagnostic event (non-compliance, best-effort)
+   * Use only for operational telemetry, NOT for business audit trail
+   * @param ctx - Audit context
+   * @param event - Diagnostic event
+   */
+  emitDiagnostic(ctx: AuditContext, event: AuditEvent): Promise<void>;
 }
 
 // ---- Token ----

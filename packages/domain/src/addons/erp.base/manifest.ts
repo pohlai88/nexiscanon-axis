@@ -19,14 +19,14 @@ export const erpBaseAddon: AddonManifest = {
   dependsOn: ["core"], // depends on core for IdService
 
   async register(api: AddonAPI) {
-    const { provideValue, deps } = api;
+    const { provideValue } = api;
 
-    // AuditService placeholder implementation
-    // Full implementation will be added when DB connection is wired
+    // AuditService implementation
+    // Phase 0: uses event bus (will use DB transaction in Phase 1)
     const auditService: ErpAuditService = {
-      async emit(ctx, event) {
-        // Phase 0: emit to domain event bus for now
-        // Phase 1: will insert into erp_audit_events table
+      async emitTx(tx, ctx, event) {
+        // Phase 1: will use tx.insert(erpAuditEvents).values(...)
+        // For now: emit to event bus (Phase 0 only)
         api.events.emit({
           name: event.eventType,
           at: new Date().toISOString(),
@@ -37,14 +37,30 @@ export const erpBaseAddon: AddonManifest = {
             entityType: event.entityType,
             entityId: event.entityId,
             payload: event.payload,
+            _note: "Phase 0: event bus only, not durable",
           },
         });
       },
 
-      async emitBatch(ctx, events) {
+      async emitBatchTx(tx, ctx, events) {
         for (const event of events) {
-          await this.emit(ctx, event);
+          await this.emitTx(tx, ctx, event);
         }
+      },
+
+      async emitDiagnostic(ctx, event) {
+        // Diagnostic events (no tx required)
+        api.events.emit({
+          name: `diagnostic.${event.eventType}`,
+          at: new Date().toISOString(),
+          traceId: ctx.traceId,
+          tenantId: ctx.tenantId,
+          data: {
+            entityType: event.entityType,
+            entityId: event.entityId,
+            payload: event.payload,
+          },
+        });
       },
     };
 
