@@ -40,3 +40,6 @@ yarn-error.log*
 # IDE
 .vscode/
 .idea/
+
+# Legacy nested repo (removed)
+my-axis/
