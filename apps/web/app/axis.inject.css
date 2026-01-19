@@ -1,0 +1,19 @@
+/**
+ * Optional CSS variable overrides for this app
+ * 
+ * This file is validated by CI to contain ONLY CSS variables
+ * No other selectors or properties are allowed
+ * 
+ * Example (uncomment to use):
+ * 
+ * @layer app.overrides {
+ *   :root {
+ *     --primary: oklch(0.70 0.16 280);
+ *     --radius: 0.75rem;
+ *   }
+ *
+ *   .dark {
+ *     --primary: oklch(0.80 0.14 280);
+ *   }
+ * }
+ */

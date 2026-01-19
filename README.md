@@ -24,6 +24,8 @@ This Turborepo includes the following packages/apps:
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
+**Next.js (web):** [docs/nextjs-best-practices.md](docs/nextjs-best-practices.md) (routing, API, Server Actions, Proxy, E2E). [docs/nextjs-refactoring-best-practices.md](docs/nextjs-refactoring-best-practices.md) (refactoring, upgrades, codemods).
+
 ### Utilities
 
 This Turborepo has some additional tools already setup for you:
@@ -37,7 +39,7 @@ This Turborepo has some additional tools already setup for you:
 To build all apps and packages, run the following command:
 
 ```
-cd my-turborepo
+cd my-axis
 
 # With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
 turbo build
@@ -65,7 +67,7 @@ pnpm exec turbo build --filter=docs
 To develop all apps and packages, run the following command:
 
 ```
-cd my-turborepo
+cd my-axis
 
 # With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
 turbo dev
@@ -98,7 +100,7 @@ Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/do
 By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
 
 ```
-cd my-turborepo
+cd my-axis
 
 # With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
 turbo login

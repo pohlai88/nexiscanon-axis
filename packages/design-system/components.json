@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "radix-vega",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "stone",
+    "cssVariables": true
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@workspace/design-system/components",
+    "utils": "@workspace/design-system/lib/utils",
+    "hooks": "@workspace/design-system/hooks",
+    "lib": "@workspace/design-system/lib",
+    "ui": "@workspace/design-system/components"
+  }
+}
+

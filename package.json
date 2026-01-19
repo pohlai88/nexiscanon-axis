@@ -1,14 +1,21 @@
 {
-  "name": "my-turborepo",
+  "name": "my-axis",
   "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "check-types": "turbo run check-types",
+    "validate:css": "turbo run validate:css",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "changeset": "changeset",
+    "version": "changeset version"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "glob": "^11.0.0",
+    "postcss-nesting": "^14.0.0",
     "prettier": "^3.7.4",
     "turbo": "^2.7.5",
     "typescript": "5.9.2"

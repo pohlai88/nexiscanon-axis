@@ -5,17 +5,27 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "check-types": {
-      "dependsOn": ["^check-types"]
+      "outputs": [".next/**", "dist/**", "!.next/cache/**"],
+      "description": "Build the application"
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "description": "Start development server"
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "description": "Run linter"
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"],
+      "description": "Type check all files"
+    },
+    "test:e2e": {
+      "cache": false,
+      "persistent": false,
+      "description": "Run end-to-end tests"
     }
-  }
+  },
+  "globalDependencies": ["**/tsconfig.json", ".env", ".env.local"]
 }
