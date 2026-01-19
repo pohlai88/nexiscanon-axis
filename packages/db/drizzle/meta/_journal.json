@@ -15,6 +15,13 @@
       "when": 1768845776167,
       "tag": "0001_tearful_boomerang",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1768846072416,
+      "tag": "0002_lonely_cable",
+      "breakpoints": true
     }
   ]
 }
