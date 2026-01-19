@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Gate: API Kernel",
+      "type": "shell",
+      "command": "pnpm -w check:api-kernel",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Gate: Typecheck Core",
+      "type": "shell",
+      "command": "pnpm -w typecheck:core",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Gate: DB Migrations",
+      "type": "shell",
+      "command": "pnpm -w check:db-migrations",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Gate: Lint",
+      "type": "shell",
+      "command": "pnpm -w lint",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Gate: Core Integrity (Tier-0)",
+      "type": "shell",
+      "command": "pnpm -w check:api-kernel && pnpm -w typecheck:core && pnpm -w check:db-migrations && pnpm -w lint",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    }
+  ]
+}

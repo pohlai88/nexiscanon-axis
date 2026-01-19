@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 import { toast } from "sonner";
 import * as z from "zod";
 import {
@@ -32,12 +31,13 @@ export function BasicTanStackForm() {
       title: "",
       description: "",
     },
-    validatorAdapter: zodValidator(),
-    validators: {
-      onSubmit: formSchema,
-    },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value);
+      const result = formSchema.safeParse(value);
+      if (!result.success) {
+        toast.error("Validation failed");
+        return;
+      }
+      console.log("Form submitted:", result.data);
       toast.success("Bug report submitted successfully!");
     },
   });
@@ -53,6 +53,9 @@ export function BasicTanStackForm() {
       <FieldGroup>
         <form.Field
           name="title"
+          validators={{
+            onChange: formSchema.shape.title,
+          }}
           children={(field) => {
             const isInvalid =
               field.state.meta.isTouched && !field.state.meta.isValid;
@@ -80,6 +83,9 @@ export function BasicTanStackForm() {
 
         <form.Field
           name="description"
+          validators={{
+            onChange: formSchema.shape.description,
+          }}
           children={(field) => {
             const isInvalid =
               field.state.meta.isTouched && !field.state.meta.isValid;

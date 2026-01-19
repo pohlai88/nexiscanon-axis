@@ -297,4 +297,26 @@ After this:
 
 ---
 
+# L) Strictness Budget v0 (Governance)
+
+**Purpose:** Prevent random expansion of quality gates. Define what MUST pass in CI vs. what's advisory.
+
+## Tier-0 Gates (CI FAIL = Block Merge)
+
+- `pnpm check:api-kernel` (API drift enforcement)
+- `pnpm typecheck:core` (strict TypeScript for core packages)
+- `pnpm check:db-migrations` (schema drift detection)
+- `pnpm lint` (ESLint 9 flat config)
+
+## Tier-1/2 (Non-Blocking)
+
+Everything else is advisory or local-only:
+- `pnpm test` (once in CI, may be Tier-0 later)
+- Playwright suite (once in CI, may be Tier-0 later)
+- Metrics/observability checks (informational only)
+
+**Freeze rule:** Do not promote checks to Tier-0 without a documented trigger.
+
+---
+
 **End of Checklist**

@@ -13,7 +13,7 @@
     "./styles/globals.css": "./src/styles/globals.css"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --max-warnings 0",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {

@@ -107,23 +107,207 @@ curl -X POST http://localhost:3000/api/requests/req-123/approve \
 
 ---
 
-## Output Template (Paste When Executed)
+## EVI002-A: DB Proof (Completed ✅)
+
+**Execution Date:** 2026-01-19  
+**Environment:**
+- Neon project: `dark-band-87285012`
+- DB region: `ap-southeast-1.aws.neon.tech`
+- Database: `neondb`
+- Migration: `0000_hot_the_leader.sql`
+
+### Operational Note: drizzle.config.ts Fix
+
+Fixed path configuration in `packages/db/drizzle.config.ts`:
+- Changed `./packages/db/src/schema.ts` → `./src/schema.ts`
+- Changed `./packages/db/drizzle` → `./drizzle`
+- Reason: drizzle-kit runs from `packages/db/` directory, paths must be relative
+
+### [1] Apply Migrations to Neon
+
+```bash
+$ cd packages/db
+$ DATABASE_URL="postgresql://neondb_owner:npg_ljY4G2SeHrBO@ep-fancy-wildflower-a1o82bpk-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+$ pnpm drizzle-kit migrate
+
+No config path provided, using default 'drizzle.config.ts'
+Reading config file 'C:\AI-BOS\NexusCanon-AXIS\packages\db\drizzle.config.ts'
+Using '@neondatabase/serverless' driver for database querying
+ Warning  '@neondatabase/serverless' can only connect to remote Neon/Vercel Postgres/Supabase instances through a websocket
+✓ migrations applied successfully!
+```
+
+**Result:** ✅ Migrations deployed to Neon DB successfully
+
+---
+
+### [2] DB Smoke Test (Roundtrip + Rollback)
+
+```bash
+$ pnpm tsx scripts/smoke-db.ts
+
+🧪 DB Smoke Test (roundtrip proof)
+
+✅ Tenant created: 43131ce4-330e-4d75-860a-8262570dad03
+✅ User created: 051102b2-c262-4b2f-a9d9-01cdc3e9d7cb
+✅ Request created: 4b1bf06e-c715-4c5d-a080-7c00679759e5 (status: SUBMITTED)
+✅ Request approved: 4b1bf06e-c715-4c5d-a080-7c00679759e5 (status: APPROVED)
+✅ Roundtrip verified: 4b1bf06e-c715-4c5d-a080-7c00679759e5
+
+✅ DB Smoke Test: PASS (test data cleaned up)
+```
+
+**Proof Points:**
+- ✅ Real UUIDs (not mocked): `43131ce4-330e-4d75-860a-8262570dad03`, `051102b2-c262-4b2f-a9d9-01cdc3e9d7cb`, `4b1bf06e-c715-4c5d-a080-7c00679759e5`
+- ✅ Insert/update/read operations work
+- ✅ tenant_id discipline maintained (test creates tenant, user, request)
+- ✅ Rollback/cleanup successful
+
+---
+
+### [3] Wiring Log (Drizzle Connection Proof)
+
+```bash
+$ pnpm tsx scripts/check-wiring.ts
+
+🔌 Checking domain container wiring...
+
+{"event":"domain.wiring","wired":"drizzle","repos":["domain.requests.RequestRepository"],"timestamp":"2026-01-19T11:26:36.412Z"}
+
+✅ Domain container initialized successfully
+   (Check JSON log above for wiring details)
+```
+
+**Proof Points:**
+- ✅ `"wired":"drizzle"` (not in-memory)
+- ✅ Repo token: `"domain.requests.RequestRepository"`
+- ✅ Timestamp: `2026-01-19T11:26:36.412Z`
+
+---
+
+### Audit Event Persistence
+
+**Status:** ⚠️ Not yet proven in EVI002-A
+
+Domain emits audit events at service layer; persistence to `audit_logs` table is not yet wired/proven in this evidence capture. This will be addressed in a future EVI or EVI002-B extension.
+
+---
+
+### EVI002-A Acceptance Criteria: PASS ✅
+
+- ✅ Migrations applied to Neon DB successfully
+- ✅ Roundtrip proof with real UUIDs and tenant_id discipline
+- ✅ Wiring log shows `"wired":"drizzle"` with canonical token ID
+- ⚠️ Audit persistence: pending proof (documented above)
+
+---
+
+## EVI002-B: API Proof (Blocked - Turbopack Issue)
+
+**Status:** ⚠️ Execution blocked by Next.js/Turbopack crash
+
+### Kernel Tenant Resolver Contract (Canonical) ✅
+
+Location: `packages/api-kernel/src/tenant.ts`
+
+```typescript
+export function resolveTenant(request: Request): TenantResult {
+  // Check headers (case-insensitive)
+  const tenantId =
+    request.headers.get("X-Tenant-ID") ??
+    request.headers.get("x-tenant-id") ??
+    undefined;
+
+  return { tenantId };
+}
+```
+
+**Contract:** ✅ Kernel reads `X-Tenant-ID` or `x-tenant-id` header (case-insensitive).
+
+### Auth Contract (Dev Mode) ✅
+
+Location: `packages/api-kernel/src/auth.ts`
+
+The auth extractor has dev-mode bypass headers:
+
+```typescript
+// Line 33-34: Dev mode auth override
+const actorId = request.headers.get("X-Actor-ID") ?? undefined;
+const rolesHeader = request.headers.get("X-Actor-Roles");
+```
+
+**Dev Auth Contract:**
+- `Authorization: Bearer <any-token>` (required, any value accepted in dev)
+- `X-Actor-ID: <user-uuid>` (dev override for actorId)
+- `X-Actor-Roles: role1,role2` (optional, dev override for roles)
+
+### Request Schemas ✅
+
+Both endpoints accept **empty JSON body** (`{}`):
+
+```typescript
+// packages/validation/src/api.ts
+export const requestCreateInputSchema = z.object({
+  // Empty body - requesterId comes from auth context
+});
+
+export const requestApproveInputSchema = z.object({
+  // Empty body - approverId comes from auth context
+});
+```
+
+### Blocker: Turbopack Crash
+
+**Issue:** Next.js 16.1.0 with Turbopack panics on Windows with symlink error:
+
+```
+FATAL: An unexpected Turbopack error occurred.
+Turbopack Error: create symlink to ../../../../node_modules/.pnpm/pino@9.14.0/node_modules/pino
+```
+
+**Attempted Solutions:**
+1. ❌ `pnpm dev --filter web` → Turbopack crash
+2. ❌ `next dev --turbo=false` → command not found (needs pnpm context)
+3. ⚠️ Need to either:
+   - Fix Turbopack symlink issue on Windows
+   - OR run webpack mode via `pnpm dev:webpack` (script doesn't exist yet)
+   - OR execute tests manually via browser
+
+**Recommendation:** Complete EVI002-B manually via browser + REST Client or wait for Turbopack fix.
+
+### API Test Steps (Ready to Execute When Server Runs)
+
+### [4] POST /api/requests
+```bash
+curl -X POST http://localhost:3000/api/requests \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: <tenant-id>" \
+  -d '{"requesterId": "<user-id>"}'
+```
+
+### [5] POST /api/requests/[id]/approve
+```bash
+curl -X POST http://localhost:3000/api/requests/<request-id>/approve \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: <tenant-id>" \
+  -d '{"approverId": "<user-id>"}'
+```
+
+### [6] Cross-tenant isolation proof
+```bash
+curl -X POST http://localhost:3000/api/requests/<request-id>/approve \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: <different-tenant-id>" \
+  -d '{"approverId": "<user-id>"}'
+```
+
+**Expected:** 404/403 (repository returns null due to tenant mismatch)
+
+---
+
+## Output Template (For EVI002-B Execution)
 
 ```markdown
-## Environment
-- Neon project: <name>
-- DB branch: <branch>
-- Migration: 0000_hot_the_leader.sql
-
-## [1] pnpm -w db:migrate
-<paste output>
-
-## [2] DATABASE_URL=<url> pnpm -w tsx scripts/smoke-db.ts
-<paste output>
-
-## [3] Startup wiring log
-<paste single JSON line from dev server startup>
-
 ## [4] POST /api/requests
 <paste response>
 
@@ -241,6 +425,109 @@ Once all outputs are captured and acceptance criteria pass, choose next developm
 2. **EVI003** (Observability stitching) ← traces + errors tied to real DB operations
 3. **Auth integration** ← `actorId` becomes real, audit logs are meaningful
 4. **Files** or **Jobs** ← first vertical feature with full observability + auth
+
+---
+
+## EVI002-C: Tenant Isolation Enhancement (Completed ✅)
+
+**Execution Date:** 2026-01-19  
+**Migration:** `0001_tenant_isolation_rls`
+
+### [1] Row-Level Security (RLS) Policies - Default Deny
+
+**Applied Policies:**
+
+✅ **users table:** `tenant_isolation_users`
+- Enforces: `tenant_id = current_setting('app.current_tenant_id')`
+- Applies to: SELECT, INSERT, UPDATE, DELETE
+
+✅ **requests table:** `tenant_isolation_requests`
+- Enforces: `tenant_id = current_setting('app.current_tenant_id')`
+- Applies to: SELECT, INSERT, UPDATE, DELETE
+
+✅ **audit_logs table:** `tenant_isolation_audit_logs`
+- Enforces: `tenant_id IS NULL OR tenant_id = current_setting('app.current_tenant_id')`
+- Special case: NULL tenant_id allowed (global audit events)
+
+**RLS Status Verification:**
+```sql
+SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname = 'public';
+
+audit_logs  | true
+requests    | true
+users       | true
+tenants     | false  (single-tenant table, no RLS needed)
+```
+
+### [2] Performance Indexes for Tenant-Scoped Queries
+
+**Created Indexes:**
+
+✅ `idx_users_tenant_email` - users(tenant_id, email)
+✅ `idx_users_tenant_id` - users(tenant_id, id)
+✅ `idx_requests_tenant_status` - requests(tenant_id, status)
+✅ `idx_requests_tenant_id` - requests(tenant_id, id)
+✅ `idx_requests_tenant_created` - requests(tenant_id, created_at DESC)
+✅ `idx_audit_logs_tenant_created` - audit_logs(tenant_id, created_at DESC) WHERE tenant_id IS NOT NULL
+✅ `idx_audit_logs_tenant_event` - audit_logs(tenant_id, event_name) WHERE tenant_id IS NOT NULL
+
+**Benefits:**
+- Composite indexes optimize tenant-scoped queries (common access pattern)
+- Partial indexes on audit_logs (WHERE tenant_id IS NOT NULL) reduce index size
+- DESC ordering on created_at supports pagination/sorting without extra sort operation
+
+### [3] Migration Applied via Neon MCP
+
+**Workflow:**
+1. ✅ Created temporary branch: `mcp-migration-2026-01-19T14-08-51` (br-proud-bird-a1zc96wi)
+2. ✅ Applied migration SQL to temporary branch
+3. ✅ Verified RLS policies and indexes in temporary branch
+4. ✅ Applied migration to production branch (br-icy-darkness-a1eom4rq)
+5. ✅ Deleted temporary branch (cleanup)
+
+**Migration ID:** `ee4f9563-1e68-4b8d-8ba1-d2c9505071ae`
+
+### [4] Defense-in-Depth Strategy
+
+**Layer 1: Application (Repository)**
+- All queries explicitly filter by `tenantId` parameter
+- Example: `and(eq(requests.tenantId, tenantId), eq(requests.id, requestId))`
+
+**Layer 2: Database (RLS Policies)**
+- PostgreSQL enforces tenant isolation at DB layer
+- Requires: `SET LOCAL app.current_tenant_id = '<tenant_id>'` before queries
+- Prevents accidental cross-tenant queries even if application code has bugs
+
+**Layer 3: Kernel (API Boundary)**
+- `resolveTenant()` extracts tenant from `X-Tenant-ID` header
+- `enforceTenant()` validates tenant is present when required
+- `tenantId` passed to all repository methods
+
+### [5] Future Enhancement: Branch-Per-Tenant
+
+**Status:** Documented for future consideration
+
+**Use Case:** Premium/enterprise tenants requiring strict database isolation
+
+**Strategy:**
+- Create dedicated Neon branch per high-value tenant
+- Store tenant → branch mapping in `tenants` table
+- Route tenant requests to their dedicated branch
+- Benefits: Complete data isolation, independent backups, dedicated compute
+
+**Implementation Notes:**
+- Use Neon MCP `create_branch` tool
+- Add `branch_id` column to `tenants` table
+- Update database client to route by branch_id
+- Cost consideration: Each branch counts toward plan limits
+
+**When to Consider:**
+- Tenant requires compliance certifications (SOC2, HIPAA, etc.)
+- Tenant pays premium for dedicated infrastructure
+- Tenant needs independent backup/restore schedule
+- Tenant requires geographic data residency
+
+**Recommendation:** Implement after EVI003 (Observability) and Auth integration
 
 ---
 

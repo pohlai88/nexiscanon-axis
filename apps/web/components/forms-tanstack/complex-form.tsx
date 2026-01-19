@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 import { toast } from "sonner";
 import * as z from "zod";
 import {
@@ -91,14 +90,15 @@ export function ComplexTanStackForm() {
       role: "",
       notifications: [] as string[],
       twoFactor: false,
-      accountType: "" as any,
-    },
-    validatorAdapter: zodValidator(),
-    validators: {
-      onChange: formSchema,
+      accountType: "free" as "free" | "pro" | "enterprise",
     },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value);
+      const result = formSchema.safeParse(value);
+      if (!result.success) {
+        toast.error(result.error.errors[0]?.message || "Validation failed");
+        return;
+      }
+      console.log("Form submitted:", result.data);
       toast.success("Account created successfully!");
     },
   });
@@ -357,7 +357,7 @@ export function ComplexTanStackForm() {
               <RadioGroup
                 name={field.name}
                 value={field.state.value}
-                onValueChange={field.handleChange}
+                onValueChange={(value) => field.handleChange(value as "free" | "pro" | "enterprise")}
               >
                 {accountTypes.map((type) => (
                   <label key={type.id} htmlFor={`account-tanstack-${type.id}`}>

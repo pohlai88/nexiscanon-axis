@@ -1,11 +1,7 @@
 // packages/domain/src/addons/requests/ports.ts
 // Repository port for request persistence
 
-import type {
-  Request,
-  RequestCreateInput,
-  RequestApproveInput,
-} from "./manifest";
+import type { Request, RequestCreateInput } from "./manifest";
 
 /**
  * RequestRepository port - persistence abstraction for requests.

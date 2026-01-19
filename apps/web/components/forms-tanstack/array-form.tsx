@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 import { XIcon } from "lucide-react";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -37,12 +36,13 @@ export function ArrayTanStackForm() {
     defaultValues: {
       emails: [{ address: "" }],
     },
-    validatorAdapter: zodValidator(),
-    validators: {
-      onSubmit: formSchema,
-    },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value);
+      const result = formSchema.safeParse(value);
+      if (!result.success) {
+        toast.error(result.error.errors[0]?.message || "Validation failed");
+        return;
+      }
+      console.log("Form submitted:", result.data);
       toast.success("Email addresses saved!");
     },
   });

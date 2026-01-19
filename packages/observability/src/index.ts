@@ -27,3 +27,6 @@ export {
   setSpanAttributes,
   withSpan,
 } from "./tracing";
+
+// Error capture (GlitchTip/Sentry)
+export { captureException } from "./errors";

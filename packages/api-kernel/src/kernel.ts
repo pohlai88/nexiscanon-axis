@@ -2,7 +2,7 @@
 // The single anti-drift pipeline wrapper
 
 import type { NextRequest } from "next/server";
-import { type z, ZodError } from "zod";
+import { type z } from "zod";
 import {
   runWithContext,
   generateId,
@@ -10,9 +10,10 @@ import {
   getActiveTraceId,
   markSpanError,
   setSpanAttributes,
+  captureException,
 } from "@workspace/observability";
 import type { RouteSpec, HandlerContext } from "./types";
-import { ok, fail, validationError } from "./http";
+import { ok, fail } from "./http";
 import { ErrorCode, KernelError, normalizeError } from "./errors";
 import { resolveTenant, enforceTenant } from "./tenant";
 import { extractAuth, enforceAuth } from "./auth";
@@ -227,7 +228,7 @@ export function kernel<
         // Normalize error
         const kernelError = normalizeError(error);
 
-        // Log error
+        // Log error ONCE (with full context)
         log.error(
           {
             error: {
@@ -238,6 +239,20 @@ export function kernel<
           },
           "Request failed"
         );
+
+        // Capture to GlitchTip ONCE (env-gated)
+        captureException(error, {
+          traceId: ctx.traceId,
+          requestId: ctx.requestId,
+          tenantId: ctx.tenantId,
+          actorId: ctx.actorId,
+          routeId: ctx.routeId,
+          extra: {
+            code: kernelError.code,
+            details: kernelError.details,
+            fieldErrors: kernelError.fieldErrors,
+          },
+        });
 
         // Return error envelope
         return fail(kernelError.code, kernelError.message, traceId, {

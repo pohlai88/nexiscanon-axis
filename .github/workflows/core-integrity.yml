@@ -43,6 +43,9 @@ jobs:
       - name: Typecheck core packages
         run: pnpm typecheck:core
 
+      - name: Lint workspace
+        run: pnpm -w lint
+
       - name: Check DB migration discipline
         run: pnpm check:db-migrations
         # No DATABASE_URL needed: db:generate only reads schema.ts

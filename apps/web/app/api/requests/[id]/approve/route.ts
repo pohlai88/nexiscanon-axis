@@ -22,7 +22,7 @@ export const POST = kernel({
   body: requestApproveInputSchema,
   output: requestApproveOutputSchema,
 
-  async handler({ params, body, tenantId, actorId, ctx }) {
+  async handler({ params, tenantId, actorId, ctx }) {
     if (!actorId) {
       throw new Error("Actor ID required");
     }

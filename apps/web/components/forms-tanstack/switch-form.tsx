@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 import { toast } from "sonner";
 import * as z from "zod";
 import {
@@ -25,12 +24,13 @@ export function SwitchTanStackForm() {
       twoFactor: false,
       marketing: false,
     },
-    validatorAdapter: zodValidator(),
-    validators: {
-      onSubmit: formSchema,
-    },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value);
+      const result = formSchema.safeParse(value);
+      if (!result.success) {
+        toast.error("Validation failed");
+        return;
+      }
+      console.log("Form submitted:", result.data);
       toast.success("Settings saved successfully!");
     },
   });

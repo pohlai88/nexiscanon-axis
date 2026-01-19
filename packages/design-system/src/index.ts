@@ -5,7 +5,7 @@ export {
   AccordionItem,
   AccordionTrigger,
 } from "./components/accordion";
-export { Alert, AlertDescription, AlertTitle } from "./components/alert";
+export { Alert, AlertAction, AlertDescription, AlertTitle } from "./components/alert";
 export {
   AlertDialog,
   AlertDialogAction,
@@ -21,7 +21,14 @@ export {
   AlertDialogTrigger,
 } from "./components/alert-dialog";
 export { AspectRatio } from "./components/aspect-ratio";
-export { Avatar, AvatarFallback, AvatarImage } from "./components/avatar";
+export {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage,
+} from "./components/avatar";
 export { Badge, badgeVariants } from "./components/badge";
 export {
   Breadcrumb,
@@ -33,15 +40,20 @@ export {
   BreadcrumbSeparator,
 } from "./components/breadcrumb";
 export { Button, buttonVariants } from "./components/button";
-export { ButtonGroup } from "./components/button-group";
-export { Calendar } from "./components/calendar";
+export {
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+  buttonGroupVariants,
+} from "./components/button-group";
+export { Calendar, CalendarDayButton } from "./components/calendar";
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
   CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "./components/card";
 export {
   Carousel,
@@ -50,9 +62,10 @@ export {
   CarouselNext,
   CarouselPrevious,
   type CarouselApi,
+  useCarousel,
 } from "./components/carousel";
+export type { ChartConfig } from "./components/chart";
 export {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -68,18 +81,18 @@ export {
 } from "./components/collapsible";
 export {
   Combobox,
-  ComboboxInput,
-  ComboboxContent,
-  ComboboxList,
-  ComboboxItem,
-  ComboboxGroup,
-  ComboboxLabel,
-  ComboboxCollection,
-  ComboboxEmpty,
-  ComboboxSeparator,
-  ComboboxChips,
   ComboboxChip,
+  ComboboxChips,
   ComboboxChipsInput,
+  ComboboxCollection,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+  ComboboxList,
+  ComboboxSeparator,
   ComboboxTrigger,
   ComboboxValue,
   useComboboxAnchor,
@@ -138,39 +151,39 @@ export {
 } from "./components/drawer";
 export {
   DropdownMenu,
-  DropdownMenuPortal,
-  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuLabel,
   DropdownMenuItem,
-  DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
-  DropdownMenuSubTrigger,
   DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from "./components/dropdown-menu";
 export {
   Empty,
-  EmptyActions,
   EmptyContent,
   EmptyDescription,
+  EmptyHeader,
   EmptyMedia,
   EmptyTitle,
 } from "./components/empty";
 export {
   Field,
-  FieldLabel,
+  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
+  FieldLabel,
   FieldLegend,
   FieldSeparator,
   FieldSet,
-  FieldContent,
   FieldTitle,
 } from "./components/field";
 export {
@@ -183,8 +196,8 @@ export {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupText,
   InputGroupInput,
+  InputGroupText,
   InputGroupTextarea,
 } from "./components/input-group";
 export {
@@ -198,12 +211,14 @@ export {
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemFooter,
   ItemGroup,
+  ItemHeader,
   ItemMedia,
   ItemSeparator,
   ItemTitle,
 } from "./components/item";
-export { Kbd } from "./components/kbd";
+export { Kbd, KbdGroup } from "./components/kbd";
 export { Label } from "./components/label";
 export {
   Menubar,
@@ -223,7 +238,11 @@ export {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "./components/menubar";
-export { NativeSelect } from "./components/native-select";
+export {
+  NativeSelect,
+  NativeSelectOptGroup,
+  NativeSelectOption,
+} from "./components/native-select";
 export {
   NavigationMenu,
   NavigationMenuContent,
@@ -244,26 +263,29 @@ export {
   PaginationNext,
   PaginationPrevious,
 } from "./components/pagination";
-export { Popover, PopoverContent, PopoverTrigger } from "./components/popover";
+export {
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "./components/popover";
 export { Progress } from "./components/progress";
 export { RadioGroup, RadioGroupItem } from "./components/radio-group";
-export {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "./components/resizable";
 export { ScrollArea, ScrollBar } from "./components/scroll-area";
 export {
   Select,
-  SelectTrigger,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectLabel,
-  SelectGroup,
-  SelectValue,
-  SelectSeparator,
   SelectScrollDownButton,
   SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
 } from "./components/select";
 export { Separator } from "./components/separator";
 export {
@@ -273,8 +295,6 @@ export {
   SheetDescription,
   SheetFooter,
   SheetHeader,
-  SheetOverlay,
-  SheetPortal,
   SheetTitle,
   SheetTrigger,
 } from "./components/sheet";
@@ -306,7 +326,7 @@ export {
 } from "./components/sidebar";
 export { Skeleton } from "./components/skeleton";
 export { Slider } from "./components/slider";
-export { Sonner, Toaster } from "./components/sonner";
+export { Toaster } from "./components/sonner";
 export { Spinner } from "./components/spinner";
 export { Switch } from "./components/switch";
 export {
@@ -319,7 +339,13 @@ export {
   TableHeader,
   TableRow,
 } from "./components/table";
-export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs";
+export {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  tabsListVariants,
+} from "./components/tabs";
 export { Textarea } from "./components/textarea";
 export { Toggle, toggleVariants } from "./components/toggle";
 export { ToggleGroup, ToggleGroupItem } from "./components/toggle-group";
@@ -330,15 +356,7 @@ export {
   TooltipTrigger,
 } from "./components/tooltip";
 
-// Theme + styling
-export { ThemeProvider, useColorTheme } from "./providers/theme-provider";
-export { useTheme } from "./hooks/use-theme";
-export { useThemeName } from "./hooks/use-theme-name";
-export { useIsMobile } from "./hooks/use-mobile";
-export type { Theme, ThemeColors, ThemeName } from "./tokens/theme";
-export { THEME_NAMES, THEME_LABELS } from "./tokens/theme";
-export type { TextureKind } from "./tokens/theme-textures";
-export { TEXTURE_PRESETS } from "./tokens/theme-textures";
+// Theme components
 export { SurfaceNoise } from "./components/surface-noise";
 export { TextureBackground } from "./components/texture-background";
 export { ThemeSwitcher } from "./components/theme-switcher";
@@ -347,6 +365,16 @@ export { ThemeSwitcher } from "./components/theme-switcher";
 export { LeatherButton } from "./themed/leather-button";
 export { VellumCard } from "./themed/vellum-card";
 export { WoodPanel } from "./themed/wood-panel";
+
+// Theme + styling
+export { ThemeProvider, useColorTheme } from "./providers/theme-provider";
+export { useTheme } from "./hooks/use-theme";
+export { useThemeName } from "./hooks/use-theme-name";
+export { useIsMobile } from "./hooks/use-mobile";
+export type { Theme, ThemeColors, ThemeName } from "./tokens/theme";
+export { THEME_LABELS, THEME_NAMES } from "./tokens/theme";
+export type { TextureKind } from "./tokens/theme-textures";
+export { TEXTURE_PRESETS } from "./tokens/theme-textures";
 
 // Utilities
 export { cn } from "./lib/utils";

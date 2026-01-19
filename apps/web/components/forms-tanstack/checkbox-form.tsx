@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 import { toast } from "sonner";
 import * as z from "zod";
 import {
@@ -35,12 +34,13 @@ export function CheckboxTanStackForm() {
     defaultValues: {
       tasks: [] as string[],
     },
-    validatorAdapter: zodValidator(),
-    validators: {
-      onSubmit: formSchema,
-    },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value);
+      const result = formSchema.safeParse(value);
+      if (!result.success) {
+        toast.error(result.error.errors[0]?.message || "Validation failed");
+        return;
+      }
+      console.log("Form submitted:", result.data);
       toast.success("Notification preferences saved!");
     },
   });

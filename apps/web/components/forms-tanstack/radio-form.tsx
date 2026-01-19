@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 import { toast } from "sonner";
 import * as z from "zod";
 import {
@@ -44,13 +43,14 @@ export function RadioTanStackForm() {
     defaultValues: {
       plan: "",
     },
-    validatorAdapter: zodValidator(),
-    validators: {
-      onSubmit: formSchema,
-    },
     onSubmit: async ({ value }) => {
-      console.log("Form submitted:", value);
-      toast.success(`${value.plan} plan selected!`);
+      const result = formSchema.safeParse(value);
+      if (!result.success) {
+        toast.error("Please select a plan");
+        return;
+      }
+      console.log("Form submitted:", result.data);
+      toast.success(`${result.data.plan} plan selected!`);
     },
   });
 

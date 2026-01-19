@@ -50,7 +50,7 @@ export const requestsAddon: AddonManifest = {
   version: "0.1.0",
   dependsOn: ["core"],
 
-  async register({ provide, container, events }) {
+  async register({ provide, container, events: _ }) {
     const auditService = container.get(CORE_TOKENS.AuditService);
 
     // RequestRepository: in-memory stub (will be swapped with Drizzle implementation)

@@ -3,7 +3,10 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "build:web": "turbo run build --filter=@workspace/web",
+    "build:affected": "turbo run build --affected",
     "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=@workspace/web",
     "lint": "turbo run lint",
     "check-types": "turbo run check-types",
     "typecheck:core": "turbo run check-types --filter=@workspace/api-kernel --filter=@workspace/domain --filter=@workspace/validation --filter=@workspace/observability",
@@ -20,14 +23,17 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.0",
+    "@playwright/test": "^1.49.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^22.0.0",
     "glob": "^11.0.0",
+    "playwright": "^1.57.0",
     "postcss-nesting": "^14.0.0",
     "prettier": "^3.7.4",
     "tsx": "^4.19.0",
     "turbo": "^2.7.5",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "typescript-eslint": "^8.53.0"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {
