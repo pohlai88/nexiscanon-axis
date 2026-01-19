@@ -68,7 +68,7 @@ export type ErpBasePermission = (typeof ERP_BASE_PERMISSIONS)[keyof typeof ERP_B
 
 // ---- Permission Descriptions (for UI/docs) ----
 
-export const ERP_BASE_PERMISSION_DESCRIPTIONS: Record<ErpBasePermission, string> = {
+export const ERP_BASE_PERMISSION_DESCRIPTIONS = {
   // UoM
   [UOM_PERMISSIONS.CREATE]: "Create units of measure",
   [UOM_PERMISSIONS.READ]: "View units of measure",
@@ -89,4 +89,4 @@ export const ERP_BASE_PERMISSION_DESCRIPTIONS: Record<ErpBasePermission, string>
   [PRODUCT_PERMISSIONS.READ]: "View products",
   [PRODUCT_PERMISSIONS.UPDATE]: "Modify products",
   [PRODUCT_PERMISSIONS.ARCHIVE]: "Archive products",
-};
+} as Record<ErpBasePermission, string>;

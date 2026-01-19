@@ -6,7 +6,6 @@ import { kernel } from "@workspace/api-kernel";
 import { z } from "zod";
 import { getR2Client, getEvidenceFilesRepo } from "@workspace/app-runtime";
 import { enqueueJob, type ConvertToPdfPayload } from "@workspace/jobs";
-import { randomUUID } from "crypto";
 
 // Force Node.js runtime (avoid edge/multipart issues)
 export const runtime = "nodejs";
@@ -75,7 +74,6 @@ export const POST = kernel({
     }
 
     const mimeType = getMimeType(file);
-    const fileId = randomUUID();
     const safeFilename = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
     const buffer = Buffer.from(await file.arrayBuffer());
     const r2 = getR2Client();
@@ -83,8 +81,9 @@ export const POST = kernel({
 
     // Branch: Office documents → conversion pipeline
     if (OFFICE_MIME_TYPES.includes(mimeType as any)) {
-      // Upload original to R2 (source)
-      const sourceR2Key = `t/${ctx.tenantId}/evidence/${fileId}/source/${safeFilename}`;
+      // Generate temp ID for R2 key (will be replaced by repo-generated ID)
+      const tempId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+      const sourceR2Key = `t/${ctx.tenantId}/evidence/${tempId}/source/${safeFilename}`;
 
       await r2.putObject({
         key: sourceR2Key,
@@ -92,18 +91,14 @@ export const POST = kernel({
         contentType: mimeType,
       });
 
-      console.log(
-        JSON.stringify({
-          event: "evidence.upload.r2.source",
-          fileId,
-          sourceR2Key,
-          bucket: process.env.R2_BUCKET_NAME,
-        })
-      );
+      ctx.log.info({
+        event: "evidence.upload.r2.source",
+        sourceR2Key,
+        bucket: process.env.R2_BUCKET_NAME,
+      });
 
-      // Save metadata with CONVERT_PENDING status
+      // Save metadata with CONVERT_PENDING status (repo generates ID)
       const record = await repo.create({
-        id: fileId,
         tenantId: ctx.tenantId!,
         uploadedBy: ctx.actorId || "anonymous",
         originalName: file.name,
@@ -117,21 +112,19 @@ export const POST = kernel({
       // Enqueue conversion job
       const jobId = await enqueueJob<ConvertToPdfPayload>({
         jobName: "files.convert_to_pdf",
-        payload: { evidenceFileId: fileId },
+        payload: { evidenceFileId: record.id },
         tenantId: ctx.tenantId!,
         actorId: ctx.actorId,
         traceId: ctx.traceId,
       });
 
-      console.log(
-        JSON.stringify({
-          event: "evidence.job.enqueued",
-          jobName: "files.convert_to_pdf",
-          jobId,
-          evidenceFileId: fileId,
-          traceId: ctx.traceId,
-        })
-      );
+      ctx.log.info({
+        event: "evidence.job.enqueued",
+        jobName: "files.convert_to_pdf",
+        jobId,
+        evidenceFileId: record.id,
+        traceId: ctx.traceId,
+      });
 
       // Return 202 Accepted with CONVERT_PENDING
       return Response.json(
@@ -151,7 +144,8 @@ export const POST = kernel({
 
     // Branch: Direct viewable (PDF, images)
     if (ALLOWED_MIME_TYPES.includes(mimeType as any)) {
-      const viewR2Key = `t/${ctx.tenantId}/evidence/${fileId}/view/${safeFilename}`;
+      const tempId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+      const viewR2Key = `t/${ctx.tenantId}/evidence/${tempId}/view/${safeFilename}`;
 
       await r2.putObject({
         key: viewR2Key,
@@ -159,17 +153,13 @@ export const POST = kernel({
         contentType: mimeType,
       });
 
-      console.log(
-        JSON.stringify({
-          event: "evidence.upload.r2.view",
-          fileId,
-          viewR2Key,
-          bucket: process.env.R2_BUCKET_NAME,
-        })
-      );
+      ctx.log.info({
+        event: "evidence.upload.r2.view",
+        viewR2Key,
+        bucket: process.env.R2_BUCKET_NAME,
+      });
 
       const record = await repo.create({
-        id: fileId,
         tenantId: ctx.tenantId!,
         uploadedBy: ctx.actorId || "anonymous",
         originalName: file.name,

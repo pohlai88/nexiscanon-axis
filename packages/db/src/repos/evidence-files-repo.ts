@@ -5,10 +5,11 @@ import { eq, and } from "drizzle-orm";
 import { type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import * as schema from "../schema";
 import type { EvidenceFile, NewEvidenceFile } from "../schema";
+import { randomUUID } from "node:crypto";
 
 export type EvidenceFileRepository = {
   create(params: {
-    id: string;
+    id?: string; // Optional: auto-generated if not provided
     tenantId: string;
     uploadedBy: string;
     originalName: string;
@@ -42,10 +43,12 @@ export function createEvidenceFileRepository(
 ): EvidenceFileRepository {
   return {
     async create(params) {
+      const fileId = params.id || randomUUID();
+      
       const [file] = await db
         .insert(schema.evidenceFiles)
         .values({
-          id: params.id,
+          id: fileId,
           tenantId: params.tenantId,
           uploadedBy: params.uploadedBy,
           originalName: params.originalName,

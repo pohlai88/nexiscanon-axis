@@ -82,15 +82,13 @@ export const GET = kernel({
     const r2 = getR2Client();
     const { url, expiresAt } = await r2.getSignedGetUrl(viewKey, 300);
 
-    console.log(
-      JSON.stringify({
-        event: "evidence.view",
-        evidenceFileId: file.id,
-        tenantId: ctx.tenantId,
-        actorId: ctx.actorId,
-        traceId: ctx.traceId,
-      })
-    );
+    ctx.log.info({
+      event: "evidence.view",
+      evidenceFileId: file.id,
+      tenantId: ctx.tenantId,
+      actorId: ctx.actorId,
+      traceId: ctx.traceId,
+    });
 
     return {
       url,
