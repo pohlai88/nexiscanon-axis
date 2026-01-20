@@ -16,6 +16,10 @@
     "hooks": "@workspace/design-system/hooks",
     "lib": "@workspace/design-system/lib",
     "ui": "@workspace/design-system/components"
+  },
+  "registries": {
+    "@ss-components": "https://registry.shadcn.studio/api/r/{name}.json",
+    "@ss-blocks": "https://registry.shadcn.studio/api/r/{name}.json"
   }
 }
 

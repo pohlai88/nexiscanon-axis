@@ -1,0 +1,6 @@
+/* Font: Nunito Sans - Friendly, rounded */
+@import "@fontsource-variable/nunito-sans";
+
+:root[data-font="nunito"] {
+  --font-sans: 'Nunito Sans Variable', ui-sans-serif, system-ui, sans-serif;
+}

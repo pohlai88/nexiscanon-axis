@@ -1,0 +1,93 @@
+name: Neon Branch Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+env:
+  NEON_PROJECT_ID: dark-band-87285012
+  NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+
+jobs:
+  manage-preview-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Neon Branch
+        if: github.event.action != 'closed'
+        id: create-branch
+        run: |
+          BRANCH_NAME="preview/pr-${{ github.event.number }}"
+          
+          # Create branch via Neon API
+          RESPONSE=$(curl -s -X POST \
+            "https://console.neon.tech/api/v2/projects/${NEON_PROJECT_ID}/branches" \
+            -H "Authorization: Bearer ${NEON_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"branch\": {
+                \"name\": \"${BRANCH_NAME}\",
+                \"parent_id\": \"br-icy-darkness-a1eom4rq\"
+              },
+              \"endpoints\": [{
+                \"type\": \"read_write\",
+                \"pooler_enabled\": true,
+                \"suspend_timeout_seconds\": 300,
+                \"autoscaling_limit_min_cu\": 0.25,
+                \"autoscaling_limit_max_cu\": 2
+              }]
+            }")
+          
+          BRANCH_ID=$(echo $RESPONSE | jq -r '.branch.id')
+          CONNECTION_URI=$(echo $RESPONSE | jq -r '.connection_uris[0].connection_uri')
+          
+          echo "branch_id=${BRANCH_ID}" >> $GITHUB_OUTPUT
+          echo "connection_uri=${CONNECTION_URI}" >> $GITHUB_OUTPUT
+          
+          echo "✅ Created Neon branch: ${BRANCH_NAME}"
+          echo "Branch ID: ${BRANCH_ID}"
+
+      - name: Comment PR with Branch Info
+        if: github.event.action != 'closed'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branchId = '${{ steps.create-branch.outputs.branch_id }}';
+            const connectionUri = '${{ steps.create-branch.outputs.connection_uri }}';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🗄️ Neon Preview Database Created
+              
+              Your preview database branch is ready!
+              
+              **Branch ID**: \`${branchId}\`
+              **Connection**: Ready (pooler enabled, auto-suspend: 5min)
+              
+              **View in Console**: [Open Neon Dashboard](https://console.neon.tech/app/projects/${process.env.NEON_PROJECT_ID}/branches/${branchId})
+              
+              This branch will be automatically deleted when the PR is closed.`
+            });
+
+      - name: Delete Neon Branch
+        if: github.event.action == 'closed'
+        run: |
+          BRANCH_NAME="preview/pr-${{ github.event.number }}"
+          
+          # Find branch by name
+          BRANCHES=$(curl -s \
+            "https://console.neon.tech/api/v2/projects/${NEON_PROJECT_ID}/branches" \
+            -H "Authorization: Bearer ${NEON_API_KEY}")
+          
+          BRANCH_ID=$(echo $BRANCHES | jq -r ".branches[] | select(.name==\"${BRANCH_NAME}\") | .id")
+          
+          if [ -n "$BRANCH_ID" ] && [ "$BRANCH_ID" != "null" ]; then
+            curl -X DELETE \
+              "https://console.neon.tech/api/v2/projects/${NEON_PROJECT_ID}/branches/${BRANCH_ID}" \
+              -H "Authorization: Bearer ${NEON_API_KEY}"
+            
+            echo "✅ Deleted Neon branch: ${BRANCH_NAME}"
+          else
+            echo "ℹ️ No branch found to delete"
+          fi

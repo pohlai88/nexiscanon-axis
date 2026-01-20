@@ -1,0 +1,40 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "generators": {
+    "component": {
+      "description": "Create a new design-system component with automatic export registration",
+      "prompts": [
+        {
+          "type": "input",
+          "name": "name",
+          "message": "Component name (e.g., Button, Card):"
+        },
+        {
+          "type": "list",
+          "name": "category",
+          "message": "Component category:",
+          "choices": [
+            { "name": "UI Component (button, card, input)", "value": "ui" },
+            { "name": "Layout (sidebar, header, footer)", "value": "layout" },
+            { "name": "Form (checkbox, radio, select)", "value": "form" },
+            { "name": "Feedback (alert, toast, spinner)", "value": "feedback" },
+            { "name": "Navigation (menu, tabs, breadcrumb)", "value": "navigation" },
+            { "name": "Data Display (table, chart, badge)", "value": "data" }
+          ]
+        },
+        {
+          "type": "confirm",
+          "name": "hasVariants",
+          "message": "Use class-variance-authority (CVA) for variants?",
+          "default": true
+        },
+        {
+          "type": "confirm",
+          "name": "needsClient",
+          "message": "Does this component use React hooks? (will add 'use client')",
+          "default": false
+        }
+      ]
+    }
+  }
+}

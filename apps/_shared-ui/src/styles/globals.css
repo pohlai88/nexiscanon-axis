@@ -1,0 +1,46 @@
+/* Import design system (includes @layer design-system with theme variables) */
+@import "@workspace/design-system/styles/globals.css";
+
+/* =========================================================
+   SHARED APP STYLES
+   Default styles for all apps - can be overridden
+   ========================================================= */
+@layer app-overrides {
+  :root {
+    --app-max-width: 100vw;
+  }
+
+  html,
+  body {
+    max-width: var(--app-max-width);
+    overflow-x: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .imgDark {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html {
+      color-scheme: dark;
+    }
+
+    .imgLight {
+      display: none;
+    }
+    .imgDark {
+      display: unset;
+    }
+  }
+}

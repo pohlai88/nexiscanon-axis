@@ -16,5 +16,9 @@
     "lib": "@/lib",
     "utils": "@workspace/design-system/lib/utils",
     "ui": "@workspace/design-system/components"
+  },
+  "registries": {
+    "@ss-components": "https://www.shadcn.io/r/{name}.json",
+    "@ss-blocks": "https://www.shadcn.io/r/{name}.json"
   }
 }

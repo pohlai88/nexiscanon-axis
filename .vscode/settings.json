@@ -1,34 +1,56 @@
 {
-  "cSpell.enabled": false,
+  // Code Quality
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  // TypeScript
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  
-  // Console Ninja - Show console.log in editor
+  // Total TypeScript - disable educational hints (they are not real errors)
+  "totalTypeScript.hideAllTips": true,
+  "totalTypeScript.hideBasicTips": true,
+  // JSON with Comments (for VSCode config files)
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnSave": true
+  },
+  // Console Ninja
   "console-ninja.featureSet": "Community",
-  
-  // Inline Fold - Collapse long classNames
+  // Inline Fold - Collapse classNames
   "inlineFold.regex": "(class|className)=\"([^\"]*)",
   "inlineFold.regexFlags": "g",
-  "inlineFold.regexGroup": 2,
+  "inlineFold.regexGroup": "1",
   "inlineFold.unfoldedOpacity": 0.6,
-  "inlineFold.maskChar": "...",
-  
-  // Turbo Console Log
-  "turboConsoleLog.quote": "\"",
-  "turboConsoleLog.insertEnclosingClass": false,
-  "turboConsoleLog.insertEnclosingFunction": true,
-  
+  "inlineFold.maskChar": "·",
   // REST Client
   "rest-client.enableTelemetry": false,
   "rest-client.environmentVariables": {
     "$shared": {
       "baseUrl": "http://localhost:3000"
     }
-  }
+  },
+  // Neon Database
+  "neon.projectId": "dark-band-87285012",
+  "neon.defaultBranch": "br-icy-darkness-a1eom4rq",
+  "neon.databaseName": "neondb",
+  "neon.region": "aws-ap-southeast-1",
+  // File Associations
+  "files.associations": {
+    "*.mdc": "markdown",
+    "**/drizzle/**/*.sql": "sql"
+  },
+  // SQL Formatting - using built-in
+  "[sql]": {
+    "editor.formatOnSave": false
+  },
+  // CSS Validation - Allow Tailwind @apply and other at-rules
+  "css.lint.unknownAtRules": "ignore",
+  "css.customData": [".vscode/css-custom-data.json"]
 }

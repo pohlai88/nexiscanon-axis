@@ -1,10 +1,11 @@
 {
-  "name": "docs",
+  "name": "@workspace/docs",
   "version": "0.1.0",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
+    "dev": "next dev --webpack --port 3001",
+    "dev:turbo": "next dev --turbopack --port 3001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --max-warnings 0",
@@ -12,6 +13,8 @@
   },
   "dependencies": {
     "@workspace/design-system": "workspace:*",
+    "@workspace/shared-ui": "workspace:*",
+    "@workspace/tailwind-config": "workspace:*",
     "next": "16.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

@@ -1,96 +1,207 @@
+// packages/auth/src/providers/auth-provider.tsx
+// Main AuthProvider - wraps NeonAuthProvider for Neon Auth integration
+//
+// ARCHITECTURE: This is the primary auth provider for the AXIS platform.
+// It integrates with Neon Auth for session management and authentication.
+// For direct Neon Auth access, use @workspace/auth/neon-client.
+
 "use client";
 
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useState, useEffect } from "react";
 import type { AuthSession, AuthError, AuthContextType } from "../types";
+import { createNeonAuthClient } from "../neon-client/client";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+type AuthProviderProps = {
+  children: React.ReactNode;
+  /**
+   * Neon Auth URL. If not provided, uses NEXT_PUBLIC_NEON_AUTH_URL.
+   */
+  authURL?: string;
+};
+
+export function AuthProvider({ children, authURL }: AuthProviderProps) {
   const [session, setSession] = useState<AuthSession | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<AuthError | null>(null);
 
-  const login = useCallback(async (email: string, password: string) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  // Resolve Neon Auth URL
+  const neonAuthUrl =
+    authURL || process.env.NEXT_PUBLIC_NEON_AUTH_URL;
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Login failed");
+  // Create Neon Auth client (memoized by URL)
+  const neonClient = neonAuthUrl ? createNeonAuthClient(neonAuthUrl) : null;
+
+  // Fetch session on mount
+  useEffect(() => {
+    async function fetchSession() {
+      if (!neonClient) {
+        setIsLoading(false);
+        return;
       }
 
-      const data = await response.json();
-      setSession(data);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      setError({ code: "LOGIN_ERROR", message });
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+      try {
+        const result = await neonClient.getSession();
 
-  const signup = useCallback(async (email: string, password: string) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Signup failed");
+        if (result.data) {
+          setSession({
+            user: {
+              id: result.data.user.id,
+              email: result.data.user.email,
+              name: result.data.user.name,
+              emailVerified: result.data.user.emailVerified,
+            },
+            token: result.data.accessToken || result.data.token,
+            expiresAt: result.data.expiresAt
+              ? new Date(result.data.expiresAt).getTime()
+              : undefined,
+          });
+        }
+      } catch {
+        // Session fetch failed - user not authenticated
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      setError({ code: "SIGNUP_ERROR", message });
-      throw err;
-    } finally {
-      setIsLoading(false);
     }
-  }, []);
 
-  const verifyEmail = useCallback(async (code: string) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch("/api/auth/verify-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      });
+    fetchSession();
+  }, [neonClient]);
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Verification failed");
+  const login = useCallback(
+    async (email: string, password: string) => {
+      if (!neonClient) {
+        throw new Error("Neon Auth not configured");
       }
 
-      const data = await response.json();
-      setSession(data);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      setError({ code: "VERIFY_ERROR", message });
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+      setIsLoading(true);
+      setError(null);
 
-  const logout = useCallback(() => {
+      try {
+        const result = await neonClient.signIn({ email, password });
+
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
+
+        if (result.data) {
+          setSession({
+            user: {
+              id: result.data.user.id,
+              email: result.data.user.email,
+              name: result.data.user.name,
+              emailVerified: result.data.user.emailVerified,
+            },
+            token: result.data.accessToken || result.data.token,
+            expiresAt: result.data.expiresAt
+              ? new Date(result.data.expiresAt).getTime()
+              : undefined,
+          });
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        setError({ code: "LOGIN_ERROR", message });
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [neonClient]
+  );
+
+  const signup = useCallback(
+    async (email: string, password: string, name?: string) => {
+      if (!neonClient) {
+        throw new Error("Neon Auth not configured");
+      }
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const result = await neonClient.signUp({
+          email,
+          password,
+          name: name || email.split("@")[0],
+        });
+
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
+
+        if (result.data) {
+          setSession({
+            user: {
+              id: result.data.user.id,
+              email: result.data.user.email,
+              name: result.data.user.name,
+              emailVerified: result.data.user.emailVerified,
+            },
+            token: result.data.accessToken || result.data.token,
+            expiresAt: result.data.expiresAt
+              ? new Date(result.data.expiresAt).getTime()
+              : undefined,
+          });
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        setError({ code: "SIGNUP_ERROR", message });
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [neonClient]
+  );
+
+  const verifyEmail = useCallback(
+    async (code: string) => {
+      if (!neonClient) {
+        throw new Error("Neon Auth not configured");
+      }
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const result = await neonClient.verifyEmail(code);
+
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
+
+        if (result.data) {
+          setSession({
+            user: {
+              id: result.data.user.id,
+              email: result.data.user.email,
+              name: result.data.user.name,
+              emailVerified: result.data.user.emailVerified,
+            },
+            token: result.data.accessToken || result.data.token,
+            expiresAt: result.data.expiresAt
+              ? new Date(result.data.expiresAt).getTime()
+              : undefined,
+          });
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        setError({ code: "VERIFY_ERROR", message });
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [neonClient]
+  );
+
+  const logout = useCallback(async () => {
+    if (neonClient) {
+      await neonClient.signOut();
+    }
     setSession(null);
     setError(null);
-    // Optionally call logout API
-    fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
-  }, []);
+  }, [neonClient]);
 
   return (
     <AuthContext.Provider

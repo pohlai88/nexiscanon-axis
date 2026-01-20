@@ -4,10 +4,14 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./neon-client": "./src/neon-client/index.ts",
+    "./neon-server": "./src/neon-server/index.ts"
   },
   "dependencies": {
+    "@neondatabase/neon-js": "0.1.0-beta.22",
     "@workspace/validation": "workspace:*",
+    "better-auth": "^1.4.16",
     "jose": "^5.9.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
@@ -22,4 +26,3 @@
     "react-dom": "^19.0.0"
   }
 }
-

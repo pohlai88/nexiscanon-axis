@@ -58,11 +58,7 @@ export function SurfaceNoise({
       ].join(" ")}
       style={{
         opacity,
-        backgroundImage: svgNoiseDataUri(
-          preset.baseFrequency,
-          preset.octaves,
-          seed
-        ),
+        backgroundImage: svgNoiseDataUri(preset.baseFrequency, preset.octaves, seed),
         backgroundSize: `${bgSize}px ${bgSize}px`,
       }}
     />

@@ -33,6 +33,7 @@
     
     /* "Ruby" - A rich jewel tone red, not a warning sign red */
     --destructive: oklch(0.55 0.18 20);
+    --destructive-foreground: oklch(0.98 0.005 85);
     
     --border: oklch(0.90 0.01 85);
     --input: oklch(0.90 0.01 85);
@@ -86,6 +87,7 @@
     --accent-foreground: oklch(0.98 0.005 85);
     
     --destructive: oklch(0.65 0.20 25);
+    --destructive-foreground: oklch(0.98 0.005 85);
     
     --border: oklch(1 0 0 / 12%);
     --input: oklch(1 0 0 / 16%);

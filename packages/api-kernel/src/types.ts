@@ -38,12 +38,18 @@ export type HandlerContext<TQuery = unknown, TBody = unknown> = {
   params: Record<string, string | string[]>;
   /** Request context from ALS */
   ctx: RequestContext;
-  /** Tenant ID (if tenant is required or resolved) */
+  /** Tenant ID (from header or JWT tenant_id claim) */
   tenantId: string | undefined;
-  /** Actor ID (authenticated user ID) */
+  /** Actor ID (authenticated user ID from JWT sub claim) */
   actorId: string | undefined;
-  /** Actor roles */
+  /** Actor roles (from JWT role/roles claim) */
   roles: string[];
+  /** Actor email (from JWT email claim) */
+  email?: string;
+  /** Organization ID (from JWT organization_id claim, Better Auth orgs) */
+  organizationId?: string;
+  /** Raw JWT claims (for advanced use cases) */
+  claims?: Record<string, unknown>;
   /** Raw Next.js request (escape hatch - prefer not to use) */
   rawRequest: Request;
 };

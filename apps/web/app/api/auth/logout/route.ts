@@ -1,39 +1,62 @@
 // apps/web/app/api/auth/logout/route.ts
-// Logout endpoint - uses kernel pattern
+// Logout endpoint - Neon Auth integration
+//
+// ARCHITECTURE: Proxies logout to Neon Auth service
+// Clears session in neon_auth.session table
 
 import { kernel } from "@workspace/api-kernel";
-import { logoutOutputSchema } from "@workspace/validation";
+import { z } from "zod";
+
+const LogoutOutput = z.object({
+  success: z.boolean(),
+  error: z.string().optional(),
+});
 
 /**
  * POST /api/auth/logout
  *
- * Logs out the current user by clearing the auth token
+ * Logs out the current user by invalidating their Neon Auth session.
  */
 export const POST = kernel({
   method: "POST",
   routeId: "auth.logout",
-  // Optional auth - works whether user is logged in or not
   auth: { mode: "optional" },
-  output: logoutOutputSchema,
+  output: LogoutOutput,
 
-  async handler({ actorId }) {
-    // TODO: Implement actual logout logic
-    // In production:
-    // 1. Invalidate session in database
-    // 2. Clear auth cookie (kernel could handle this via response headers)
-    // 3. Blacklist token if using JWT
+  async handler({ rawRequest }) {
+    const neonAuthUrl = process.env.NEON_AUTH_BASE_URL;
 
-    // For now, return success
-    // Note: Cookie clearing would need to be handled by extending kernel
-    // or by a middleware layer
-
-    if (actorId) {
-      // User was authenticated, invalidate their session
-      // await invalidateSession(actorId);
+    if (!neonAuthUrl) {
+      // No Neon Auth - just return success
+      return { success: true };
     }
 
-    return {
-      success: true,
-    };
+    try {
+      // Forward logout request to Neon Auth
+      // Include cookies from original request for session identification
+      const cookieHeader = rawRequest.headers.get("cookie") || "";
+
+      const response = await fetch(`${neonAuthUrl}/api/auth/sign-out`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: cookieHeader,
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        return {
+          success: false,
+          error: data.message || "Logout failed",
+        };
+      }
+
+      return { success: true };
+    } catch (err) {
+      // Log error but return success (client-side state will be cleared anyway)
+      console.warn("Logout error:", err);
+      return { success: true };
+    }
   },
 });

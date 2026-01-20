@@ -1,10 +1,10 @@
 {
-  "name": "web",
+  "name": "@workspace/web",
   "version": "0.1.0",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "next dev --webpack --port 3000",
     "dev:turbo": "next dev --turbopack --port 3000",
     "dev:webpack": "next dev --webpack --port 3000",
     "build": "next build",
@@ -20,6 +20,7 @@
     "@tanstack/zod-form-adapter": "^0.42.1",
     "@workspace/auth": "workspace:*",
     "@workspace/design-system": "workspace:*",
+    "@workspace/tailwind-config": "workspace:*",
     "@workspace/validation": "workspace:*",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",

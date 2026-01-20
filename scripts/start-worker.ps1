@@ -1,10 +1,10 @@
-# Start worker with environment loaded from env.localCopy
+# Start worker with environment loaded from .env.local
 # Run: .\scripts\start-worker.ps1
 
-Write-Host "Loading environment from env.localCopy..." -ForegroundColor Cyan
+Write-Host "Loading environment from .env.local..." -ForegroundColor Cyan
 
 # Load env file
-$envFile = Get-Content "env.localCopy" -ErrorAction Stop
+$envFile = Get-Content ".env.local" -ErrorAction Stop
 foreach ($line in $envFile) {
     if ($line -match '^\s*#' -or $line -match '^\s*$') {
         continue  # Skip comments and empty lines

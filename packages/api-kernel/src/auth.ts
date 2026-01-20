@@ -1,21 +1,39 @@
 // packages/api-kernel/src/auth.ts
 // Auth extraction and enforcement for kernel
+//
+// ARCHITECTURE: Extracts auth from requests using Neon Auth JWT verification
+// Supports multi-tenant via tenant_id claim in JWT
 
 import { KernelError, ErrorCode } from "./errors";
 import type { AuthConfig } from "./types";
 import { verifyJwt } from "@workspace/auth";
 
-/** Auth resolution result */
+/** Auth resolution result with Neon Auth claims */
 export type AuthResult = {
   actorId: string | undefined;
   roles: string[];
+  /** Tenant ID from JWT tenant_id claim (for multi-tenant RLS) */
+  tenantId?: string;
+  /** Organization ID from JWT organization_id claim (Better Auth orgs) */
+  organizationId?: string;
+  /** Email from JWT email claim */
+  email?: string;
+  /** Raw JWT claims for advanced use cases */
+  claims?: Record<string, unknown>;
 };
 
 /**
  * Extract auth from request.
- * Supports two modes:
+ * Supports:
  * 1. JWT verification (production): Authorization: Bearer <jwt>
- * 2. Dev headers (fallback): X-Actor-ID + X-Actor-Roles
+ * 2. Dev headers (fallback): X-Actor-ID + X-Actor-Roles + X-Tenant-ID
+ *
+ * Neon Auth JWT claims extracted:
+ * - sub: User ID (actorId)
+ * - email: User email
+ * - role: User role (single or array)
+ * - tenant_id: Multi-tenant scope
+ * - organization_id: Better Auth organization
  */
 export async function extractAuth(request: Request): Promise<AuthResult> {
   const authHeader = request.headers.get("Authorization");
@@ -31,17 +49,36 @@ export async function extractAuth(request: Request): Promise<AuthResult> {
     const principal = await verifyJwt(token);
 
     if (principal) {
-      // JWT verified successfully
-      // Extract roles from claims if present (Neon Auth may include roles)
-      const roles =
-        Array.isArray(principal.claims.roles) &&
-        principal.claims.roles.every((r): r is string => typeof r === "string")
-          ? principal.claims.roles
-          : [];
+      // JWT verified successfully - extract Neon Auth claims
+      const claims = principal.claims as Record<string, unknown>;
+
+      // Extract roles from claims (can be string or array)
+      let roles: string[] = [];
+      if (Array.isArray(claims.roles)) {
+        roles = claims.roles.filter(
+          (r): r is string => typeof r === "string"
+        );
+      } else if (typeof claims.role === "string" && claims.role) {
+        roles = [claims.role];
+      }
+
+      // Extract tenant_id for multi-tenant RLS
+      const tenantId =
+        typeof claims.tenant_id === "string" ? claims.tenant_id : undefined;
+
+      // Extract organization_id for Better Auth orgs
+      const organizationId =
+        typeof claims.organization_id === "string"
+          ? claims.organization_id
+          : undefined;
 
       return {
         actorId: principal.actorId,
+        email: principal.email,
         roles,
+        tenantId,
+        organizationId,
+        claims,
       };
     }
   } catch (error) {
@@ -54,6 +91,7 @@ export async function extractAuth(request: Request): Promise<AuthResult> {
   // In production with JWKS_URL set, invalid tokens return undefined auth
   const devActorId = request.headers.get("X-Actor-ID");
   const devRolesHeader = request.headers.get("X-Actor-Roles");
+  const devTenantId = request.headers.get("X-Tenant-ID");
 
   if (devActorId || token === "dev") {
     const roles = devRolesHeader
@@ -63,6 +101,7 @@ export async function extractAuth(request: Request): Promise<AuthResult> {
     return {
       actorId: devActorId || "dev-user",
       roles,
+      tenantId: devTenantId || undefined,
     };
   }
 

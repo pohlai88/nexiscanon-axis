@@ -6,7 +6,7 @@
 // - All queries MUST be tenant-scoped (no route-level queries)
 // - Use getTenantDb() helper to ensure tenant scoping
 
-import { pgTable, text, timestamp, uuid, bigint, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, bigint, integer, boolean, index } from "drizzle-orm/pg-core";
 
 // ---- Common columns ----
 
@@ -41,7 +41,10 @@ export const users = pgTable("users", {
   email: text("email").notNull(),
   name: text("name"),
   ...timestamps,
-});
+}, (table) => ({
+  // Index for multi-tenant queries (most common)
+  tenantIdIdx: index("users_tenant_id_idx").on(table.tenantId),
+}));
 
 // ---- Example: Audit log table ----
 
@@ -55,7 +58,12 @@ export const auditLogs = pgTable("audit_logs", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
-});
+}, (table) => ({
+  // Index for multi-tenant queries
+  tenantIdIdx: index("audit_logs_tenant_id_idx").on(table.tenantId),
+  // Composite index for sorted, filtered queries
+  tenantCreatedIdx: index("audit_logs_tenant_created_idx").on(table.tenantId, table.createdAt.desc()),
+}));
 
 // ---- Type exports ----
 
@@ -87,7 +95,16 @@ export const requests = pgTable("requests", {
   evidenceTtlSeconds: integer("evidence_ttl_seconds"), // NULL = no TTL check
   
   ...timestamps,
-});
+}, (table) => ({
+  // Index for multi-tenant queries (most critical)
+  tenantIdIdx: index("requests_tenant_id_idx").on(table.tenantId),
+  // Index for status filtering
+  statusIdx: index("requests_status_idx").on(table.status),
+  // Composite index for sorted, filtered queries (best for list views)
+  tenantCreatedIdx: index("requests_tenant_created_idx").on(table.tenantId, table.createdAt.desc()),
+  // Index for requester-specific queries
+  requesterIdx: index("requests_requester_id_idx").on(table.requesterId),
+}));
 
 export type Request = typeof requests.$inferSelect;
 export type NewRequest = typeof requests.$inferInsert;
@@ -109,7 +126,10 @@ export const requestTemplates = pgTable("request_templates", {
   evidenceTtlSeconds: integer("evidence_ttl_seconds"), // NULL = no TTL check
   
   ...timestamps,
-});
+}, (table) => ({
+  // Index for multi-tenant queries
+  tenantIdIdx: index("request_templates_tenant_id_idx").on(table.tenantId),
+}));
 
 export type RequestTemplate = typeof requestTemplates.$inferSelect;
 export type NewRequestTemplate = typeof requestTemplates.$inferInsert;
@@ -141,7 +161,14 @@ export const evidenceFiles = pgTable("evidence_files", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
-});
+}, (table) => ({
+  // Index for multi-tenant queries
+  tenantIdIdx: index("evidence_files_tenant_id_idx").on(table.tenantId),
+  // Index for status filtering (conversion queue)
+  statusIdx: index("evidence_files_status_idx").on(table.status),
+  // Index for uploader queries
+  uploadedByIdx: index("evidence_files_uploaded_by_idx").on(table.uploadedBy),
+}));
 
 export type EvidenceFile = typeof evidenceFiles.$inferSelect;
 export type NewEvidenceFile = typeof evidenceFiles.$inferInsert;
@@ -163,7 +190,14 @@ export const requestEvidenceLinks = pgTable("request_evidence_links", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
-});
+}, (table) => ({
+  // Index for multi-tenant queries
+  tenantIdIdx: index("request_evidence_links_tenant_id_idx").on(table.tenantId),
+  // Index for finding evidence by request
+  requestIdIdx: index("request_evidence_links_request_id_idx").on(table.requestId),
+  // Index for finding links by evidence file
+  evidenceFileIdIdx: index("request_evidence_links_evidence_file_id_idx").on(table.evidenceFileId),
+}));
 
 export type RequestEvidenceLink = typeof requestEvidenceLinks.$inferSelect;
 export type NewRequestEvidenceLink = typeof requestEvidenceLinks.$inferInsert;

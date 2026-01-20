@@ -1,52 +1,19 @@
 // packages/domain/src/addons/requests/manifest.ts
 // Requests addon: handles request lifecycle (DRAFT -> SUBMITTED -> APPROVED)
 
-import type { AddonManifest, RequestContext } from "../../types";
+import type { AddonManifest } from "../../types";
 import { CORE_TOKENS } from "../core/manifest";
-import { REQUESTS_TOKENS } from "./tokens";
-import type { RequestRepository } from "./ports";
+import { REQUESTS_TOKENS, type RequestService, type RequestRepository } from "./tokens";
+import type { Request, RequestCreateInput } from "./types";
 
-// ---- Request Types ----
-
-export type RequestStatus = "DRAFT" | "SUBMITTED" | "APPROVED" | "REJECTED";
-
-export interface Request {
-  id: string;
-  tenantId: string;
-  requesterId: string;
-  status: RequestStatus;
-  createdAt: string;
-  updatedAt?: string;
-  approvedAt?: string;
-  approvedBy?: string;
-  evidenceRequiredForApproval?: boolean;
-  evidenceTtlSeconds?: number | null;
-}
-
-export interface RequestCreateInput {
-  requesterId: string;
-  templateId?: string; // Optional template to inherit policy from (EVI013)
-  evidenceRequiredForApproval?: boolean; // Override template policy (EVI013)
-  evidenceTtlSeconds?: number | null; // Override template policy (EVI013)
-}
-
-export interface RequestApproveInput {
-  requestId: string;
-  approverId: string;
-}
-
-// ---- Service Interfaces ----
-
-export interface RequestService {
-  /** Create a new request in SUBMITTED state */
-  create(ctx: RequestContext, input: RequestCreateInput): Promise<Request>;
-
-  /** Approve a request */
-  approve(ctx: RequestContext, input: RequestApproveInput): Promise<Request>;
-
-  /** Get request by ID */
-  getById(ctx: RequestContext, requestId: string): Promise<Request | null>;
-}
+// Re-export types for convenience
+export type {
+  RequestStatus,
+  Request,
+  RequestCreateInput,
+  RequestApproveInput,
+} from "./types";
+export type { RequestService, RequestRepository } from "./tokens";
 
 // ---- Requests Addon Manifest ----
 

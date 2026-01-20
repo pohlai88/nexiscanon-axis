@@ -1,0 +1,5 @@
+/* Menu Color: Default - Standard sidebar colors */
+:root[data-menu-color="default"],
+:root:not([data-menu-color]) {
+  /* Uses the theme's sidebar-* tokens as-is */
+}

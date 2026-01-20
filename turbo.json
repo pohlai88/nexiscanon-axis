@@ -26,6 +26,21 @@
       "cache": false,
       "persistent": false,
       "description": "Run end-to-end tests"
+    },
+    "validate:architecture": {
+      "cache": true,
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".dependency-cruiser.js",
+        "packages/*/package.json",
+        "apps/*/package.json"
+      ],
+      "description": "Validate architectural boundaries with Dependency Cruiser"
+    },
+    "test:design-system-freeze": {
+      "dependsOn": ["validate:architecture"],
+      "cache": false,
+      "description": "Run all design-system freeze validation checks"
     }
   },
   "globalDependencies": ["**/tsconfig.json", ".env", ".env.local"]

@@ -19,7 +19,7 @@ export interface AuthContextType {
   isLoading: boolean;
   error: AuthError | null;
   login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string, name?: string) => Promise<void>;
   verifyEmail: (code: string) => Promise<void>;
-  logout: () => void;
+  logout: () => void | Promise<void>;
 }

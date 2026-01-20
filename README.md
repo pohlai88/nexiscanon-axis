@@ -1,6 +1,30 @@
-# Turborepo starter
+# NexusCanon-AXIS
 
-This Turborepo starter is maintained by the Turborepo core team.
+A production-grade Turborepo monorepo with architectural guardrails.
+
+## Design System (Guardrails / Lock Strategy)
+
+This repo uses **architectural guardrails** (positive constraints + automation) to prevent design-system drift.
+
+**Entry Point (Canonical):**
+- [`packages/design-system/README.md`](packages/design-system/README.md) ← **start here**
+
+**Key rules (TL;DR):**
+- Apps must import only from **public subpath exports** (no deep imports).
+- Theme variables live in the design-system and are protected via **CSS Layers**.
+- New components must be created via **generator** (prevents export drift).
+- Architecture is validated as a **DAG** (Dependency Cruiser) and fails CI on violations.
+
+**Commands:**
+```bash
+pnpm validate:architecture  # Validate dependency boundaries
+pnpm graph:architecture     # Generate architecture diagram
+pnpm test:architecture      # Run all guardrail gates (CI local)
+```
+
+**Current Implementation Status:** Track in [`packages/design-system/README.md#tracking-checklist-implementation-status`](packages/design-system/README.md#8-tracking-checklist-implementation-status).
+
+---
 
 ## Using this example
 

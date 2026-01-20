@@ -182,15 +182,19 @@ export function kernel<
         // Await route params
         const params = await routeContext.params;
 
-        // Build handler context
+        // Build handler context with Neon Auth claims
         const handlerCtx: HandlerContext<z.infer<TQuery>, z.infer<TBody>> = {
           query: query as z.infer<TQuery>,
           body: body as z.infer<TBody>,
           params,
           ctx,
-          tenantId,
+          // Use JWT tenant_id claim if available, fallback to header-based tenant
+          tenantId: auth.tenantId || tenantId,
           actorId: auth.actorId,
           roles: auth.roles,
+          email: auth.email,
+          organizationId: auth.organizationId,
+          claims: auth.claims,
           rawRequest: request,
         };
 

@@ -1,5 +1,13 @@
 import type { ThemeName } from "./theme";
 
+/**
+ * Texture preset configuration for SVG noise effects.
+ * These presets control the visual texture applied to different component types.
+ */
+
+/**
+ * Component types that support texture effects.
+ */
 export type TextureKind = "bg" | "card" | "button" | "panel";
 
 export const TEXTURE_PRESETS: Record<

@@ -1,0 +1,5 @@
+/* Menu Accent: Bold - Strong primary color on active items */
+:root[data-menu-accent="bold"] {
+  --sidebar-accent: var(--primary);
+  --sidebar-accent-foreground: var(--primary-foreground);
+}

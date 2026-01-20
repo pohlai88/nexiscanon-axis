@@ -1,47 +1,18 @@
 // packages/domain/src/addons/reports/manifest.ts
 // Reports addon: handles report generation contracts (EVI020)
 
-import type { AddonManifest, RequestContext } from "../../types";
+import type { AddonManifest } from "../../types";
 import { CORE_TOKENS } from "../core/manifest";
-import { REPORTS_TOKENS } from "./tokens";
+import { REPORTS_TOKENS, type ReportService } from "./tokens";
+import type { ReportGenerateInput, ReportReceipt, ReportArtifact } from "./types";
 
-// ---- Report Types ----
-
-export interface ReportGenerateInput {
-  reportType: string;
-  entityId: string;
-  format: string;
-  locale?: string;
-  timeZone?: string;
-  filters?: Record<string, unknown>;
-}
-
-export interface ReportArtifact {
-  kind: "inline_json" | "placeholder";
-  summary?: Record<string, unknown>;
-  note?: string;
-}
-
-export interface ReportReceipt {
-  jobId: string;
-  reportId: string;
-  reportType: string;
-  entityId: string;
-  format: string;
-  status: "ACCEPTED";
-  artifact: ReportArtifact | null;
-  createdAt: string;
-}
-
-// ---- Service Interfaces ----
-
-export interface ReportService {
-  /** Generate a report (returns receipt) */
-  generate(ctx: RequestContext, input: ReportGenerateInput): Promise<ReportReceipt>;
-
-  /** Get report status by reportId */
-  getStatus(ctx: RequestContext, reportId: string): Promise<ReportReceipt | null>;
-}
+// Re-export types for convenience
+export type {
+  ReportGenerateInput,
+  ReportArtifact,
+  ReportReceipt,
+} from "./types";
+export type { ReportService } from "./tokens";
 
 // ---- Reports Addon Manifest ----
 
