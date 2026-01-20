@@ -37,6 +37,8 @@ export {
   CORE_TOKENS,
   requestsAddon,
   REQUESTS_TOKENS,
+  reportsAddon,
+  REPORTS_TOKENS,
 } from "./addons";
 export type {
   IdService,
@@ -44,6 +46,9 @@ export type {
   RequestService,
   Request,
   RequestStatus,
+  ReportService,
+  ReportReceipt,
+  ReportGenerateInput,
 } from "./addons";
 
 // Repository ports (for app-layer wiring)

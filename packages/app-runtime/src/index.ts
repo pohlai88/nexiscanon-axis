@@ -86,6 +86,7 @@ export async function getDomainContainer(): Promise<Container> {
       _domainRuntime.events.on("audit.approval.succeeded", auditHandler);
       _domainRuntime.events.on("audit.approval.blocked.evidence_required", auditHandler);
       _domainRuntime.events.on("audit.approval.blocked.evidence_stale", auditHandler);
+      _domainRuntime.events.on("audit.report.generate.requested", auditHandler);
 
       // Emit one-time observable log (startup proof) with actual token IDs
       console.log(
