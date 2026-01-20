@@ -7,3 +7,6 @@
 export * from "./audit";
 export * from "./base";
 export * from "./sales";
+
+// Re-export accounting ledger at erp namespace level
+export * from "../acct";

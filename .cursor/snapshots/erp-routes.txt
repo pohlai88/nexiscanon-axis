@@ -1,3 +1,5 @@
+erp.accounting.ledgers.get | GET | apps\web\app\api\erp\accounting\ledger\[id]\route.ts
+erp.accounting.ledgers.list | GET | apps\web\app\api\erp\accounting\ledger\route.ts
 erp.base.partners.archive | DELETE | apps\web\app\api\erp\base\partners\[id]\route.ts
 erp.base.partners.create | POST | apps\web\app\api\erp\base\partners\route.ts
 erp.base.partners.get | GET | apps\web\app\api\erp\base\partners\[id]\route.ts

@@ -7,3 +7,4 @@
 export * from "./audit";
 export * from "./base";
 export * from "./sales";
+export * from "./accounting";

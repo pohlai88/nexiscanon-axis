@@ -57,6 +57,13 @@
       "when": 1768865885349,
       "tag": "0007_talented_thunderbird",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1768867588416,
+      "tag": "0008_abandoned_nightcrawler",
+      "breakpoints": true
     }
   ]
 }

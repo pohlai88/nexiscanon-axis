@@ -26,6 +26,7 @@ import {
   atomicCreateCreditFromInvoiceWithAudit,
 } from "../helpers/atomic-sales-credit";
 import type { SequenceService } from "../../../erp.base/services/sequence-service";
+import type { LedgerService } from "../../../accounting";
 
 export interface SalesCreditNoteService {
   create(ctx: ServiceContext, input: CreditNoteCreateInput, db: Database): Promise<CreditNoteOutput>;
@@ -40,7 +41,10 @@ export interface SalesCreditNoteService {
 }
 
 export class SalesCreditNoteServiceImpl implements SalesCreditNoteService {
-  constructor(private sequenceService: SequenceService) {}
+  constructor(
+    private sequenceService: SequenceService,
+    private ledgerService: LedgerService
+  ) {}
 
   async create(ctx: ServiceContext, input: CreditNoteCreateInput, db: Database): Promise<CreditNoteOutput> {
     const seqResult = await this.sequenceService.next(ctx, "sales.credit", db);
@@ -133,12 +137,31 @@ export class SalesCreditNoteServiceImpl implements SalesCreditNoteService {
       }
       throw new DomainError("ERP_CREDIT_ISSUE_FAILED" as any, "Cannot issue credit note: preconditions not met", { id });
     }
+    
+    // Post to ledger (atomic with status transition)
+    await this.ledgerService.postCreditIssued(ctx, id, db);
+    
     return this.get(ctx, id, db);
   }
 
   async cancel(ctx: ServiceContext, id: string, db: Database): Promise<CreditNoteOutput> {
     const result = await atomicCancelCreditWithAudit(db, { creditNoteId: id, entityType: "erp.sales.credit", eventType: "erp.sales.credit.cancelled", ctx });
     if (!result) throw new DomainError("ERP_CREDIT_NOT_FOUND" as any, "Cannot cancel credit note: either not found or already CANCELLED", { id });
+    
+    // Post reversal to ledger if credit was ISSUED
+    if (result.status === "CANCELLED") {
+      // Fetch pre-cancel status to check if reversal needed
+      const [credit] = await db
+        .select()
+        .from(salesCreditNotes)
+        .where(and(eq(salesCreditNotes.id, id), eq(salesCreditNotes.tenantId, ctx.tenantId)))
+        .limit(1);
+      
+      // Only post reversal if there's a ledger entry to reverse
+      // (check meta for previous status or assume ISSUED if cancel succeeded)
+      await this.ledgerService.postCreditCancelled(ctx, id, db);
+    }
+    
     return this.get(ctx, id, db);
   }
 

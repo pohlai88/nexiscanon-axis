@@ -6,13 +6,20 @@ import { coreAddon } from "./core/manifest";
 import { requestsAddon } from "./requests/manifest";
 import { erpBaseAddon } from "./erp.base/manifest";
 import { salesAddon } from "./sales/manifest";
+import { accountingAddon } from "./accounting/manifest";
 import type { AddonManifest } from "../types";
 
 /**
  * All addons to load during domain bootstrap.
  * Order doesn't matter - bootstrap uses topological sort by dependsOn.
  */
-export const allAddons: AddonManifest[] = [coreAddon, requestsAddon, erpBaseAddon, salesAddon];
+export const allAddons: AddonManifest[] = [
+  coreAddon,
+  requestsAddon,
+  erpBaseAddon,
+  salesAddon,
+  accountingAddon,
+];
 
 // Re-export core addon and tokens for convenience
 export { coreAddon, CORE_TOKENS } from "./core/manifest";
@@ -41,3 +48,8 @@ export type {
 export { salesAddon } from "./sales/manifest";
 export { SALES_TOKENS } from "./sales/tokens";
 export type { SalesQuoteService } from "./sales";
+
+// Re-export Accounting addon and tokens
+export { accountingAddon } from "./accounting/manifest";
+export { ACCOUNTING_TOKENS } from "./accounting/tokens";
+export type { LedgerService } from "./accounting";

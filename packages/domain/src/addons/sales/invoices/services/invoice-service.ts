@@ -29,6 +29,7 @@ import {
   atomicCreateInvoiceFromOrderWithAudit,
 } from "../helpers/atomic-sales-invoice";
 import type { SequenceService } from "../../../erp.base/services/sequence-service";
+import type { LedgerService } from "../../../accounting";
 
 // ---- Service Interface ----
 
@@ -72,7 +73,10 @@ export interface SalesInvoiceService {
 // ---- Implementation ----
 
 export class SalesInvoiceServiceImpl implements SalesInvoiceService {
-  constructor(private sequenceService: SequenceService) {}
+  constructor(
+    private sequenceService: SequenceService,
+    private ledgerService: LedgerService
+  ) {}
 
   // ---- CREATE ----
 
@@ -365,6 +369,9 @@ export class SalesInvoiceServiceImpl implements SalesInvoiceService {
       );
     }
 
+    // Post to ledger (atomic with status transition)
+    await this.ledgerService.postInvoiceIssued(ctx, id, db);
+
     const lines = await this.fetchLines(ctx, id, db);
     return this.mapToOutput(result, lines);
   }
@@ -385,6 +392,16 @@ export class SalesInvoiceServiceImpl implements SalesInvoiceService {
         "Cannot cancel invoice: must be in DRAFT or ISSUED status",
         { invoiceId: id }
       );
+    }
+
+    // Post reversal to ledger if invoice was ISSUED
+    // (only ISSUED invoices have ledger entries to reverse)
+    if (result.status === "CANCELLED") {
+      // Check if there's an issued entry (need to reverse it)
+      const previousStatus = result.meta?.previousStatus;
+      if (previousStatus === "ISSUED") {
+        await this.ledgerService.postInvoiceCancelled(ctx, id, db);
+      }
     }
 
     const lines = await this.fetchLines(ctx, id, db);
