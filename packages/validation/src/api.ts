@@ -56,7 +56,10 @@ export type UserOutput = z.infer<typeof userOutputSchema>;
 // ---- Requests endpoints ----
 
 export const requestCreateInputSchema = z.object({
-  // Empty body for now - requesterId comes from auth context
+  // EVI013: Template inheritance + policy overrides
+  templateId: z.string().uuid().optional(),
+  evidenceRequiredForApproval: z.boolean().optional(),
+  evidenceTtlSeconds: z.number().int().positive().nullable().optional(),
 });
 
 export const requestCreateOutputSchema = z.object({
@@ -87,3 +90,39 @@ export type RequestCreateInput = z.infer<typeof requestCreateInputSchema>;
 export type RequestCreateOutput = z.infer<typeof requestCreateOutputSchema>;
 export type RequestApproveInput = z.infer<typeof requestApproveInputSchema>;
 export type RequestApproveOutput = z.infer<typeof requestApproveOutputSchema>;
+
+// ---- Templates endpoints ----
+
+export const templateCreateInputSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().optional(),
+  evidenceRequiredForApproval: z.boolean().optional(),
+  evidenceTtlSeconds: z.number().int().positive().nullable().optional(),
+});
+
+export const templateOutputSchema = z.object({
+  id: z.string().uuid(),
+  tenantId: z.string().uuid(),
+  name: z.string(),
+  description: z.string().nullable(),
+  evidenceRequiredForApproval: z.boolean(),
+  evidenceTtlSeconds: z.number().int().positive().nullable(),
+  createdAt: z.string(),
+});
+
+export const templatesListOutputSchema = z.object({
+  templates: z.array(
+    z.object({
+      id: z.string().uuid(),
+      name: z.string(),
+      description: z.string().nullable(),
+      evidenceRequiredForApproval: z.boolean(),
+      evidenceTtlSeconds: z.number().int().positive().nullable(),
+      createdAt: z.string(),
+    })
+  ),
+});
+
+export type TemplateCreateInput = z.infer<typeof templateCreateInputSchema>;
+export type TemplateOutput = z.infer<typeof templateOutputSchema>;
+export type TemplatesListOutput = z.infer<typeof templatesListOutputSchema>;

@@ -1,0 +1,135 @@
+// packages/domain/src/addons/reports/manifest.ts
+// Reports addon: handles report generation contracts (EVI020)
+
+import type { AddonManifest, RequestContext } from "../../types";
+import { CORE_TOKENS } from "../core/manifest";
+import { REPORTS_TOKENS } from "./tokens";
+
+// ---- Report Types ----
+
+export interface ReportGenerateInput {
+  reportType: string;
+  entityId: string;
+  format: string;
+  locale?: string;
+  timeZone?: string;
+  filters?: Record<string, unknown>;
+}
+
+export interface ReportArtifact {
+  kind: "inline_json" | "placeholder";
+  summary?: Record<string, unknown>;
+  note?: string;
+}
+
+export interface ReportReceipt {
+  jobId: string;
+  reportId: string;
+  reportType: string;
+  entityId: string;
+  format: string;
+  status: "ACCEPTED";
+  artifact: ReportArtifact | null;
+  createdAt: string;
+}
+
+// ---- Service Interfaces ----
+
+export interface ReportService {
+  /** Generate a report (returns receipt) */
+  generate(ctx: RequestContext, input: ReportGenerateInput): Promise<ReportReceipt>;
+
+  /** Get report status by reportId */
+  getStatus(ctx: RequestContext, reportId: string): Promise<ReportReceipt | null>;
+}
+
+// ---- Reports Addon Manifest ----
+
+export const reportsAddon: AddonManifest = {
+  id: "reports",
+  version: "0.1.0",
+  dependsOn: ["core"],
+
+  async register({ provide, container }) {
+    const auditService = container.get(CORE_TOKENS.AuditService);
+    const idService = container.get(CORE_TOKENS.IdService);
+
+    // In-memory store for report receipts (stub)
+    const receipts = new Map<string, ReportReceipt>();
+
+    // ReportService: generates report contracts (no renderer yet)
+    provide(REPORTS_TOKENS.ReportService, () => {
+      const service: ReportService = {
+        async generate(ctx, input) {
+          if (!ctx.tenantId) {
+            throw new Error("Tenant ID required");
+          }
+
+          const jobId = idService.newId();
+          const reportId = idService.newId();
+          const now = new Date().toISOString();
+
+          // Generate stub artifact based on format
+          let artifact: ReportArtifact | null = null;
+
+          if (input.format === "json") {
+            artifact = {
+              kind: "inline_json",
+              summary: {
+                reportType: input.reportType,
+                entityId: input.entityId,
+                note: "Stub data - renderer not implemented",
+              },
+            };
+          } else if (input.format === "pdf_placeholder") {
+            artifact = {
+              kind: "placeholder",
+              note: "renderer_not_enabled",
+            };
+          }
+
+          const receipt: ReportReceipt = {
+            jobId,
+            reportId,
+            reportType: input.reportType,
+            entityId: input.entityId,
+            format: input.format,
+            status: "ACCEPTED",
+            artifact,
+            createdAt: now,
+          };
+
+          // Store receipt
+          receipts.set(`${ctx.tenantId}:${reportId}`, receipt);
+
+          // Emit audit event
+          await auditService.write({
+            name: "report.generate.requested",
+            ctx,
+            data: {
+              reportId,
+              jobId,
+              reportType: input.reportType,
+              entityId: input.entityId,
+              format: input.format,
+              locale: input.locale ?? null,
+              source: "api",
+            },
+          });
+
+          return receipt;
+        },
+
+        async getStatus(ctx, reportId) {
+          if (!ctx.tenantId) {
+            throw new Error("Tenant ID required");
+          }
+
+          return receipts.get(`${ctx.tenantId}:${reportId}`) ?? null;
+        },
+      };
+
+      return service;
+    });
+  },
+};

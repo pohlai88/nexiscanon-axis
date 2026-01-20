@@ -4,13 +4,14 @@
 
 import { coreAddon } from "./core/manifest";
 import { requestsAddon } from "./requests/manifest";
+import { reportsAddon } from "./reports/manifest";
 import type { AddonManifest } from "../types";
 
 /**
  * All addons to load during domain bootstrap.
  * Order doesn't matter - bootstrap uses topological sort by dependsOn.
  */
-export const allAddons: AddonManifest[] = [coreAddon, requestsAddon];
+export const allAddons: AddonManifest[] = [coreAddon, requestsAddon, reportsAddon];
 
 // Re-export core addon and tokens for convenience
 export { coreAddon, CORE_TOKENS } from "./core/manifest";
@@ -24,3 +25,12 @@ export type {
   Request,
   RequestStatus,
 } from "./requests/manifest";
+
+// Re-export reports addon and tokens
+export { reportsAddon } from "./reports/manifest";
+export { REPORTS_TOKENS } from "./reports/tokens";
+export type {
+  ReportService,
+  ReportReceipt,
+  ReportGenerateInput,
+} from "./reports/manifest";

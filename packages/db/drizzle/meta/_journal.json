@@ -22,6 +22,27 @@
       "when": 1768853958622,
       "tag": "0002_misty_invisible_woman",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1768857735217,
+      "tag": "0003_quick_maria_hill",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1768858759815,
+      "tag": "0004_mushy_wolverine",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1768862624406,
+      "tag": "0005_brave_mongoose",
+      "breakpoints": true
     }
   ]
 }

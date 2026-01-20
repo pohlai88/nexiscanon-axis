@@ -55,6 +55,38 @@ export async function getDomainContainer(): Promise<Container> {
         );
       }
 
+      // EVI018: Wire audit event listener to persist audit logs to DB
+      const { getDb, createAuditLogsRepository } = await import("@workspace/db");
+      const db = getDb();
+      const auditRepo = createAuditLogsRepository(db);
+      
+      // Subscribe to all audit.* events (wildcard by listening to each known event)
+      const auditHandler = async (event: any) => {
+        const cleanEventName = event.name.replace(/^audit\./, "");
+        try {
+          await auditRepo.append({
+            tenantId: event.tenantId || "",
+            actorId: event.actorId || "",
+            traceId: event.traceId || "",
+            eventName: cleanEventName,
+            eventData: event.data,
+          });
+        } catch (err) {
+          console.error("Failed to persist audit event:", err);
+        }
+      };
+      
+      // Register handler for all known audit event types
+      _domainRuntime.events.on("audit.request.created", auditHandler);
+      _domainRuntime.events.on("audit.request.approved", auditHandler);
+      _domainRuntime.events.on("audit.template.created", auditHandler);
+      _domainRuntime.events.on("audit.template.listed", auditHandler);
+      _domainRuntime.events.on("audit.template.read", auditHandler);
+      _domainRuntime.events.on("audit.approval.attempted", auditHandler);
+      _domainRuntime.events.on("audit.approval.succeeded", auditHandler);
+      _domainRuntime.events.on("audit.approval.blocked.evidence_required", auditHandler);
+      _domainRuntime.events.on("audit.approval.blocked.evidence_stale", auditHandler);
+
       // Emit one-time observable log (startup proof) with actual token IDs
       console.log(
         JSON.stringify({
@@ -88,4 +120,31 @@ export async function getEvidenceFilesRepo() {
   const { getDb, createEvidenceFileRepository } = await import("@workspace/db");
   const db = getDb();
   return createEvidenceFileRepository(db);
+}
+
+/**
+ * Get request-evidence links repository.
+ */
+export async function getRequestEvidenceLinksRepo() {
+  const { getDb, createRequestEvidenceLinksRepository } = await import("@workspace/db");
+  const db = getDb();
+  return createRequestEvidenceLinksRepository(db);
+}
+
+/**
+ * Get audit logs repository.
+ */
+export async function getAuditLogsRepo() {
+  const { getDb, createAuditLogsRepository } = await import("@workspace/db");
+  const db = getDb();
+  return createAuditLogsRepository(db);
+}
+
+/**
+ * Get templates repository.
+ */
+export async function getTemplatesRepo() {
+  const { getDb, createTemplatesRepo } = await import("@workspace/db");
+  const db = getDb();
+  return createTemplatesRepo(db);
 }

@@ -7,7 +7,7 @@ import type {
   Request,
   RequestCreateInput,
 } from "@workspace/domain/addons/requests/manifest";
-import { requests } from "../schema";
+import { requests, requestTemplates } from "../schema";
 import type { Database } from "../client";
 
 /**
@@ -22,12 +22,51 @@ export function createRequestsRepo(db: Database): RequestRepository {
     ): Promise<Request> {
       const now = new Date();
 
+      // EVI013: Resolve evidence policy (template inheritance + override)
+      let evidenceRequiredForApproval = false;
+      let evidenceTtlSeconds: number | null = null;
+      let hadTemplate = false;
+
+      if (input.templateId) {
+        // Load template to inherit policy
+        const [template] = await db
+          .select()
+          .from(requestTemplates)
+          .where(
+            and(
+              eq(requestTemplates.tenantId, tenantId),
+              eq(requestTemplates.id, input.templateId)
+            )
+          )
+          .limit(1);
+
+        if (template) {
+          hadTemplate = true;
+          evidenceRequiredForApproval = template.evidenceRequiredForApproval;
+          evidenceTtlSeconds = template.evidenceTtlSeconds;
+        }
+      }
+
+      // Apply overrides (if provided)
+      const hasOverride =
+        input.evidenceRequiredForApproval !== undefined ||
+        input.evidenceTtlSeconds !== undefined;
+
+      if (input.evidenceRequiredForApproval !== undefined) {
+        evidenceRequiredForApproval = input.evidenceRequiredForApproval;
+      }
+      if (input.evidenceTtlSeconds !== undefined) {
+        evidenceTtlSeconds = input.evidenceTtlSeconds;
+      }
+
       const [row] = await db
         .insert(requests)
         .values({
           tenantId,
           requesterId: input.requesterId,
           status: "SUBMITTED",
+          evidenceRequiredForApproval, // EVI013: inherited/overridden
+          evidenceTtlSeconds, // EVI013: inherited/overridden
           createdAt: now,
           updatedAt: now,
         })
@@ -40,7 +79,15 @@ export function createRequestsRepo(db: Database): RequestRepository {
         status: row.status as "SUBMITTED",
         createdAt: row.createdAt.toISOString(),
         updatedAt: row.updatedAt.toISOString(),
-      };
+        evidenceRequiredForApproval: row.evidenceRequiredForApproval,
+        evidenceTtlSeconds: row.evidenceTtlSeconds,
+        // EVI018: Include metadata for audit source determination
+        _policySource: hasOverride
+          ? "override"
+          : hadTemplate
+          ? "template"
+          : "default",
+      } as Request & { _policySource: string };
     },
 
     async findById(

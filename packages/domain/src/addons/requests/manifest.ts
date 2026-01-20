@@ -19,10 +19,15 @@ export interface Request {
   updatedAt?: string;
   approvedAt?: string;
   approvedBy?: string;
+  evidenceRequiredForApproval?: boolean;
+  evidenceTtlSeconds?: number | null;
 }
 
 export interface RequestCreateInput {
   requesterId: string;
+  templateId?: string; // Optional template to inherit policy from (EVI013)
+  evidenceRequiredForApproval?: boolean; // Override template policy (EVI013)
+  evidenceTtlSeconds?: number | null; // Override template policy (EVI013)
 }
 
 export interface RequestApproveInput {
@@ -114,11 +119,22 @@ export const requestsAddon: AddonManifest = {
           // Delegate to repository
           const request = await repo.create(ctx.tenantId, input);
 
-          // Emit audit event
+          // EVI018: Emit audit event with full policy context
+          const policySource = (request as any)._policySource || "default";
           await auditService.write({
             name: "request.created",
             ctx,
-            data: { requestId: request.id, status: "SUBMITTED" },
+            data: {
+              requestId: request.id,
+              requesterId: input.requesterId,
+              templateId: input.templateId ?? null,
+              effectivePolicy: {
+                evidenceRequiredForApproval:
+                  request.evidenceRequiredForApproval ?? false,
+                evidenceTtlSeconds: request.evidenceTtlSeconds ?? null,
+              },
+              source: policySource,
+            },
           });
 
           return request;

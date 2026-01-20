@@ -29,6 +29,8 @@ export const ErrorCode = {
   CONFLICT: "CONFLICT",
   ALREADY_EXISTS: "ALREADY_EXISTS",
   VERSION_CONFLICT: "VERSION_CONFLICT",
+  EVIDENCE_REQUIRED: "EVIDENCE_REQUIRED", // EVI010: Evidence required for approval
+  EVIDENCE_STALE: "EVIDENCE_STALE", // EVI010: Evidence TTL exceeded
 
   // Rate limit errors (429)
   RATE_LIMITED: "RATE_LIMITED",
@@ -66,6 +68,8 @@ export function getHttpStatus(code: ErrorCodeType): number {
     case ErrorCode.CONFLICT:
     case ErrorCode.ALREADY_EXISTS:
     case ErrorCode.VERSION_CONFLICT:
+    case ErrorCode.EVIDENCE_REQUIRED:
+    case ErrorCode.EVIDENCE_STALE:
       return 409;
 
     case ErrorCode.RATE_LIMITED:
