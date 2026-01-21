@@ -61,4 +61,16 @@ export const TEXTURE_PRESETS: Record<
     button: { baseFrequency: 0.65, opacity: 0.12, octaves: 2 },
     panel: { baseFrequency: 0.52, opacity: 0.14, octaves: 3 },
   },
+  slate: {
+    bg: { baseFrequency: 0.82, opacity: 0.075, octaves: 3 },
+    card: { baseFrequency: 0.77, opacity: 0.13, octaves: 3 },
+    button: { baseFrequency: 0.87, opacity: 0.095, octaves: 2 },
+    panel: { baseFrequency: 0.74, opacity: 0.11, octaves: 3 },
+  },
+  zenith: {
+    bg: { baseFrequency: 0.88, opacity: 0.065, octaves: 3 },
+    card: { baseFrequency: 0.83, opacity: 0.115, octaves: 3 },
+    button: { baseFrequency: 0.93, opacity: 0.085, octaves: 2 },
+    panel: { baseFrequency: 0.8, opacity: 0.105, octaves: 3 },
+  },
 };

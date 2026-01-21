@@ -1,0 +1,126 @@
+---
+description: "Template system + design system compliance for apps. Always check templates first."
+alwaysApply: true
+globs:
+  - "apps/**/*.{ts,tsx,js,jsx}"
+---
+
+# Template Enforcement Rule (Always Apply in Apps)
+
+> Applies on top of `00-global.always.mdc`. Do NOT restate global rules.
+
+## Quick Reference
+
+**When:** Generating any code in `apps/`
+**First action:** Check `apps/_shared-ui/_template-registry/TEMPLATE_INDEX.md`
+
+---
+
+## Code Generation Workflow
+
+### Step 1: Template Lookup (MANDATORY)
+
+Before writing code:
+1. Read `apps/_shared-ui/_template-registry/TEMPLATE_INDEX.md`
+2. Find matching pattern (landing/dashboard/form/table)
+3. If exists → follow pattern; if not → apply rules below
+
+### Step 2: Apply Hard Rules (NON-NEGOTIABLE)
+
+**Rule 1: Workspace Imports Only**
+```tsx
+// ✅ CORRECT
+import { Button, Card } from "@workspace/design-system";
+import { HeroSection01 } from "@workspace/shared-ui/blocks";
+import { cn } from "@workspace/design-system/lib/utils";
+
+// ❌ STOP - Fix immediately
+import { Button } from "./components/ui/button";
+```
+
+**Rule 2: cn() for className (Never Template Literals)**
+```tsx
+// ✅ CORRECT
+className={cn("base", condition && "conditional")}
+
+// ❌ STOP - Fix immediately
+className={`base ${condition ? 'active' : ''}`}
+```
+
+**Rule 3: Semantic Color Tokens (Never Hardcoded)**
+```tsx
+// ✅ CORRECT
+"bg-primary text-primary-foreground"
+
+// ❌ STOP - Fix immediately
+"bg-blue-500 text-white"
+```
+
+**Rule 4: Explicit Transition Durations**
+```tsx
+// ✅ CORRECT
+"transition-all duration-300"
+
+// ❌ STOP - Fix immediately
+"transition-all"
+```
+
+### Step 3: Pre-Return Verification
+
+**MANDATORY:** Before returning code, check:
+- [ ] Workspace imports only
+- [ ] cn() used (no template literals)
+- [ ] Semantic tokens (no bg-blue-500)
+- [ ] Transition durations specified
+
+**If ANY fails → Fix before returning.**
+
+---
+
+## Common Patterns by Request Type
+
+**"Create landing page"** → Use TEMPLATE_INDEX.md landing pattern + blocks
+**"Create dashboard"** → Use TEMPLATE_INDEX.md dashboard + ApplicationShell01
+**"Create data table"** → Use DataFortress from @workspace/shared-ui/blocks
+**"Add form"** → Use Button/Input/Label from @workspace/design-system + cn()
+
+---
+
+## Error Prevention
+
+**Critical Mistakes (STOP immediately if detected):**
+
+1. **Local component creation:** `export function Button()`
+   → Fix: Import from @workspace/design-system
+
+2. **Template literals:** `className={\`base ${active}\`}`
+   → Fix: Use cn()
+
+3. **Hardcoded colors:** `bg-blue-500`
+   → Fix: Use semantic tokens
+
+---
+
+## Compliance Format
+
+Per global rules, report:
+
+```
+Compliance: 100% (Verified)
+
+Reasons:
+- Workspace imports used
+- cn() utility applied
+- Semantic tokens enforced
+- Transition durations specified
+- Template pattern followed: [name]
+```
+
+---
+
+## References
+
+- `apps/_shared-ui/_template-registry/TEMPLATE_INDEX.md` - Template patterns
+- `apps/_shared-ui/_template-registry/TEMPLATE_REGISTRY_ARCHITECTURE.md` - Architecture
+- `packages/design-system/README.md` - Component API
+- `apps/_shared-ui/README.md` - Blocks catalog

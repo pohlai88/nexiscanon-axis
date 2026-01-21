@@ -51,8 +51,8 @@ export {
   CarouselPrevious,
   type CarouselApi,
 } from "./components/carousel"
+export type { ChartConfig } from "./components/chart"
 export {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -155,7 +155,7 @@ export {
 } from "./components/dropdown-menu"
 export {
   Empty,
-  EmptyActions,
+  EmptyHeader,
   EmptyContent,
   EmptyDescription,
   EmptyMedia,
@@ -273,8 +273,6 @@ export {
   SheetDescription,
   SheetFooter,
   SheetHeader,
-  SheetOverlay,
-  SheetPortal,
   SheetTitle,
   SheetTrigger,
 } from "./components/sheet"
@@ -306,7 +304,7 @@ export {
 } from "./components/sidebar"
 export { Skeleton } from "./components/skeleton"
 export { Slider } from "./components/slider"
-export { Sonner, Toaster } from "./components/sonner"
+export { Toaster } from "./components/sonner"
 export { Spinner } from "./components/spinner"
 export { Switch } from "./components/switch"
 export {
@@ -339,9 +337,13 @@ export type { Theme, ThemeColors, ThemeName } from "./tokens/theme"
 export { THEME_NAMES, THEME_LABELS } from "./tokens/theme"
 export type { TextureKind } from "./tokens/theme-textures"
 export { TEXTURE_PRESETS } from "./tokens/theme-textures"
-export { SurfaceNoise } from "./components/surface-noise"
-export { TextureBackground } from "./components/texture-background"
+export { SurfaceNoise } from "./components/custom/surface-noise"
+export { TextureBackground } from "./components/custom/texture-background"
 export { ThemeSwitcher } from "./components/theme-switcher"
+export { SolarisThemeSwitcher } from "./components/custom/solaris-theme-switcher"
+export { ShimmerButton } from "./components/custom/shimmer-button"
+export { SpotlightCard } from "./components/custom/spotlight-card"
+export type { SpotlightCardProps } from "./components/custom/spotlight-card"
 
 // Utilities
 export { cn } from "./lib/utils"

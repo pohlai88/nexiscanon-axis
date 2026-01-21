@@ -52,5 +52,56 @@
   },
   // CSS Validation - Allow Tailwind @apply and other at-rules
   "css.lint.unknownAtRules": "ignore",
-  "css.customData": [".vscode/css-custom-data.json"]
+  "css.customData": [
+    ".vscode/css-custom-data.json"
+  ],
+  // Tailwind CSS IntelliSense
+  "tailwindCSS.experimental.configFile": {
+    "apps/docs/**/*": "packages/design-system/src/styles/globals.css",
+    "apps/web/**/*": "packages/design-system/src/styles/globals.css",
+    "apps/_shared-ui/**/*": "packages/design-system/src/styles/globals.css",
+    "packages/design-system/**/*": "packages/design-system/src/styles/globals.css"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    [
+      "cva\\(([^)]*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ],
+    [
+      "cn\\(([^)]*)\\)",
+      "(?:'|\"|`)([^']*)(?:'|\"|`)"
+    ],
+    [
+      "(?:const|let|var)\\s+[\\w$_]+\\s*=\\s*[\"'`]([^\"'`]+)[\"'`]",
+      "([^\"'`]+)"
+    ]
+  ],
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "classList",
+    "ngClass"
+  ],
+  // Vitest
+  "vitest.enable": true,
+  "vitest.commandLine": "pnpm vitest",
+  "vitest.include": [
+    "**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"
+  ],
+  "vitest.exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/cypress/**",
+    "**/.{idea,git,cache,output,temp}/**",
+    "**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*"
+  ],
+  "vitest.rootConfig": "./vitest.config.ts",
+  "vitest.disableWorkspaceWarning": false,
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  }
 }

@@ -6,12 +6,18 @@
   "exports": {
     "./blocks": "./src/blocks/index.ts",
     "./blocks/*": "./src/blocks/*.tsx",
+    "./templates/*": "./src/templates/**/*.tsx",
+    "./patterns/*": "./src/patterns/*.tsx",
     "./lib/*": "./src/lib/*.ts",
     "./styles/*": "./src/styles/*.css"
   },
   "scripts": {
     "lint": "eslint --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@workspace/design-system": "workspace:*",

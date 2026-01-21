@@ -1,3 +1,3 @@
-import rootConfig from "../../eslint.config.js";
+import rootConfig from "../../eslint.config.mjs";
 
 export default [...rootConfig];

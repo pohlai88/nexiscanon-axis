@@ -44,9 +44,16 @@
     "@changesets/cli": "^2.27.0",
     "@playwright/test": "^1.49.0",
     "@tailwindcss/postcss": "^4.1.18",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.0.0",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/browser": "^4.0.17",
+    "@vitest/ui": "^4.0.17",
     "dependency-cruiser": "^17.3.6",
     "glob": "^13.0.0",
+    "happy-dom": "^20.3.4",
     "playwright": "^1.57.0",
     "postcss": "^8.5.6",
     "postcss-nesting": "^14.0.0",
@@ -54,7 +61,8 @@
     "tsx": "^4.19.0",
     "turbo": "^2.7.5",
     "typescript": "5.9.2",
-    "typescript-eslint": "^8.53.0"
+    "typescript-eslint": "^8.53.0",
+    "vitest": "^4.0.17"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

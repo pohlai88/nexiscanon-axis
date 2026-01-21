@@ -9,7 +9,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 /** @type {import("eslint").Linter.Config[]} */
 export default tseslint.config(
   {
-    ignores: [".next/**", ".turbo/**", "node_modules/**", "dist/**"],
+    ignores: [
+      ".next/**",
+      ".turbo/**",
+      "node_modules/**",
+      "dist/**",
+      "*.config.js",
+      "*.config.mjs",
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

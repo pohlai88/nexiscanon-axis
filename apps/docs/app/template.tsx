@@ -1,3 +1,1 @@
-export default function Template({ children }: { children: React.ReactNode }) {
-  return <div className="template-wrapper">{children}</div>;
-}
+// TODO: Add template WHAT IS THE PURPOSE OF THIS?

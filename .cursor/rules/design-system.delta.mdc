@@ -1,243 +1,175 @@
+---
+description: "Design System boundaries: Import rules, theme protection, component generation."
+alwaysApply: false
+globs:
+  - "apps/**/*.{ts,tsx,js,jsx}"
+  - "packages/design-system/**/*.{ts,tsx,js,jsx,css}"
+---
+
 # Design System Lock (Delta Rule)
 
-Applies on top of `00-global.always.mdc`. Do NOT restate global rules.
+> Applies on top of `00-global.always.mdc`. Do NOT restate global rules.
 
-## Purpose
+## Quick Reference
 
-Enforce design-system boundaries using architectural guardrails (positive constraints + automation).
+**When to use this rule:** Working in apps/ or packages/design-system/
 
----
-
-## Forbidden Operations (HARD RULES)
-
-### 1. Apps CANNOT Import Raw Components or Internals
-
-**Forbidden:**
-```typescript
-import { Button } from '@workspace/design-system/src/components/button';
-import '../../packages/design-system/src/components/button';
-import { cn } from 'tailwind-merge';  // Must use DS utils
-```
-
-**Required:**
-```typescript
-import { Button } from '@workspace/design-system/button';
-import { cn } from '@workspace/design-system/utils';
-```
-
-**Enforcement:** Dependency Cruiser + ESLint + TypeScript paths
+**Core principle:** Apps consume design-system via public API only.
 
 ---
 
-### 2. Apps CANNOT Redefine Theme Color Variables
+## Import Rules (ENFORCED)
 
-**Forbidden in `apps/*/globals.css`:**
-```css
-:root {
-  --background: #fff;      /* ❌ Overrides DS theme */
-  --foreground: #000;      /* ❌ Overrides DS theme */
-  --primary: blue;         /* ❌ Overrides DS theme */
-}
-```
-
-**Required:**
-```css
-@layer app-overrides {
-  :root {
-    --app-sidebar-width: 280px;  /* ✅ App-specific variable */
-    --app-header-height: 64px;   /* ✅ Uses --app-* prefix */
-  }
-  
-  /* To override theme (rare, requires approval) */
-  [data-app="web"][data-theme-override="custom"] {
-    --background: red;  /* ✅ Explicit and scoped */
-  }
-}
-```
-
-**Enforcement:** CSS Layers (`@layer design-system` < `@layer app-overrides`)
-
----
-
-### 3. Apps CANNOT Copy or Reimplement Utilities
-
-**Forbidden:**
-```typescript
-// apps/web/lib/utils.ts
-export function cn(...inputs) {  /* ❌ Duplicates DS utility */
-  return twMerge(clsx(inputs));
-}
-```
-
-**Required:**
-```typescript
-import { cn } from '@workspace/design-system/utils';  /* ✅ Single source */
-```
-
-**Enforcement:** Dependency Cruiser blocks direct `clsx`/`tailwind-merge` imports from apps
-
----
-
-### 4. Apps CANNOT Modify `packages/design-system/src/styles/globals.css`
-
-Theme color primitives in `globals.css` require explicit approval.
-
-**Exception Process:**
-1. Propose change in `packages/design-system/src/styles/globals.css`
-2. Get user approval
-3. Update in design-system package (never in apps)
-
----
-
-### 5. New Reusable Tokens MUST Be Registered
-
-**For reusable tokens:**
-- Add to `packages/design-system/src/tokens/`
-- Export from design-system
-
-**For app-specific tokens:**
-- Use `--app-*` prefix
-- Define in `apps/*/globals.css` under `@layer app-overrides`
-
----
-
-### 6. Apps CANNOT Import Themed Showcase Components
-
-**Forbidden:**
-```typescript
-import { LeatherButton } from '@workspace/design-system/themed/leather-button';
-```
-
-**Reason:** `src/themed/` components are reference/showcase only, not production-ready.
-
-**Required:** Use primitives from `src/components/` instead.
-
-**Enforcement:** Dependency Cruiser + `.cursorignore` (hidden from AI autocomplete)
-
----
-
-### 7. New Components MUST Use Generator (No Manual Creation)
-
-**Forbidden:**
-1. Manually creating `src/components/new-component.tsx`
-2. Manually updating `package.json` exports
-3. Manually updating `src/index.ts`
-
-**Required:**
-```bash
-pnpm turbo gen component
-```
-
-**Why:** Generator auto-maintains exports, prevents drift, validates architecture.
-
----
-
-## Allowed Patterns (APPROVED)
-
-### ✅ Import from Public API
+### ✅ Use Public Exports Only
 
 ```typescript
 import { Button, Card } from '@workspace/design-system';
 import { Button } from '@workspace/design-system/button';
 import { cn } from '@workspace/design-system/utils';
-import '@workspace/design-system/styles/globals.css';
 ```
 
-### ✅ App-Specific Variables
+### ❌ Never Import Internals
+
+```typescript
+import { Button } from '@workspace/design-system/src/components/button';
+import { cn } from 'tailwind-merge';
+```
+
+**Tool enforcement:** Dependency Cruiser blocks deep imports
+
+---
+
+## Theme & Styling Rules
+
+### ❌ Never Override Theme Variables in Apps
 
 ```css
+/* apps/*/globals.css - FORBIDDEN */
+:root {
+  --background: #fff;  /* ❌ Breaks theme system */
+  --primary: blue;     /* ❌ Breaks theme system */
+}
+```
+
+### ✅ Use App-Specific Namespaced Variables
+
+```css
+/* apps/*/globals.css - APPROVED */
 @layer app-overrides {
   :root {
     --app-sidebar-width: 280px;
-    --app-navbar-height: 64px;
-    --app-custom-z-index: 100;
+    --app-header-height: 64px;
   }
 }
 ```
 
-### ✅ App-Scoped Styling
+**Tool enforcement:** CSS Layers hierarchy
 
-```css
-@layer app-overrides {
-  [data-app="web"] {
-    /* App-specific styles scoped to web app */
-  }
-}
+---
+
+## Utility Functions
+
+### ❌ Never Duplicate Design System Utils
+
+```typescript
+// apps/web/lib/utils.ts - FORBIDDEN
+export function cn(...inputs) { return twMerge(clsx(inputs)); }
+```
+
+### ✅ Import from Design System
+
+```typescript
+import { cn } from '@workspace/design-system/utils';
+```
+
+**Tool enforcement:** Dependency Cruiser blocks `clsx`/`tailwind-merge` in apps
+
+---
+
+## Component Generation
+
+### ❌ Never Create Components Manually
+
+Manual creation breaks export surface and causes drift.
+
+### ✅ Always Use Generator
+
+```bash
+pnpm turbo gen component
+```
+
+**Why:** Auto-maintains `package.json` exports, `src/index.ts`, and prevents errors.
+
+---
+
+## Token Registration
+
+**Reusable tokens:** Add to `packages/design-system/src/tokens/`
+**App-specific tokens:** Use `--app-*` prefix in `apps/*/globals.css`
+
+---
+
+## Before Changes: Validation Checklist
+
+Run these commands before claiming completion:
+```bash
+pnpm validate:architecture
+pnpm check-types
+pnpm lint
+```
+
+**If any fails → STOP and fix.**
+
+---
+
+## Design System Freeze Status
+
+**Status:** FROZEN (as of 2026-01-20)
+
+### Allowed: Fixes Only
+- Component behavior bugs
+- CVA variant bugs
+- Export surface issues
+- Objectively broken theme variables
+
+### Forbidden: No Architecture Changes
+- Token renaming
+- Theme variable semantic changes
+- New token systems
+- Allowing app deep imports
+- Adding blocks (blocks belong in apps/)
+
+### Before DS Changes: Required Verification
+
+**MANDATORY:** Run and report results:
+```bash
+pnpm check-types
+pnpm lint
+pnpm validate:architecture
+```
+
+**If ANY fails → STOP and report failure.**
+
+---
+
+## Quick Decision Tree
+
+```
+Working in apps/?
+├─ Import component → Use @workspace/design-system/[component]
+├─ Style variable → Use --app-* prefix in @layer app-overrides
+├─ Need utility → Import from @workspace/design-system/utils
+└─ Need new token → Add to packages/design-system/src/tokens/
+
+Working in packages/design-system/?
+├─ New component → pnpm turbo gen component
+├─ Fix bug → Fix + validate:architecture
+└─ Change theme → Get user approval first
 ```
 
 ---
 
-## Before Making Design-System Changes
+## References
 
-**MANDATORY CHECKLIST:**
-
-1. ✅ Is this change reusable across apps? → design-system package
-2. ✅ Is this app-specific? → app package with `--app-*` prefix
-3. ✅ Does this add a new component? → Use `pnpm turbo gen component`
-4. ✅ Run validation before committing:
-   ```bash
-   pnpm validate:architecture
-   pnpm test:architecture  # (if available)
-   ```
-
----
-
-## Enforcement Layers (Where Rules Live)
-
-| Rule | Tool | File |
-|------|------|------|
-| No deep imports | Dependency Cruiser | `.dependency-cruiser.js` |
-| No circular deps | Dependency Cruiser | `.dependency-cruiser.js` |
-| No themed in apps | Dependency Cruiser | `.dependency-cruiser.js` |
-| No utility duplication | Dependency Cruiser | `.dependency-cruiser.js` |
-| Theme vars protected | CSS Layers | `packages/design-system/src/styles/globals.css` |
-| Exports complete | Generator + CI | `turbo/generators/*` + CI workflow |
-| TypeScript paths | TypeScript | `apps/*/tsconfig.json` |
-| AI behavior | This file | `.cursor/rules/design-system.delta.mdc` |
-
----
-
-## When in Doubt
-
-**Ask yourself:**
-1. Am I importing from a public export path?
-2. Am I using `--app-*` prefix for app variables?
-3. Did I use the generator for new components?
-4. Did I validate architecture after changes?
-
-**If answer is "no" to any → STOP and fix before proceeding.**
-
----
-
-## Related Documentation
-
-- **Canonical Entry Point:** `packages/design-system/README.md`
-- **Implementation Status:** `packages/design-system/README.md#tracking-checklist-implementation-status`
-- **Architecture Plan:** `.cursor/plans/design_system_lock_strategy_*.plan.md`
-
----
-
-## Freeze Mode (HARD)
-
-**Design System is FROZEN + SEALED as of 2026-01-20.**
-
-### Allowed Changes (Only)
-- Fix broken component behavior
-- Fix incorrect variants / CVA bugs
-- Fix export surface issues
-- Fix theme variable mistakes ONLY if they are objectively broken (not redesign)
-
-### Forbidden Changes
-- Renaming tokens
-- Changing meanings of theme variables
-- Introducing new theme systems or new token architectures
-- Allowing apps to import DS internals
-- Adding "blocks" into design-system (blocks belong to apps)
-
-### Mandatory Output Before Any DS PR
-The agent MUST paste results:
-- `pnpm check-types`
-- `pnpm lint`
-- `pnpm validate:architecture`
-
-If any check fails → STOP and report failure.
+- `packages/design-system/README.md` - Canonical documentation
+- `.cursor/plans/design_system_lock_strategy_*.plan.md` - Architecture plan

@@ -28,8 +28,12 @@ apps/web   apps/docs   (App-specific)
 ## Structure
 
 ```
-apps/_shared/
+apps/_shared-ui/
 ├── package.json              # @workspace/shared-ui
+├── _template-registry/       # AI training & documentation
+│   ├── TEMPLATE_INDEX.md     # AI training guide
+│   ├── DESIGN_SYSTEM_ENFORCEMENT_STRATEGY.md
+│   └── TEMPLATE_REGISTRY_ARCHITECTURE.md
 ├── src/
 │   ├── blocks/               # Shared UI blocks (shadcn naming)
 │   │   ├── index.ts          # Barrel export
@@ -38,6 +42,16 @@ apps/_shared/
 │   │   ├── sidebar-01.tsx    # Docs sidebar navigation
 │   │   ├── hero-01.tsx       # Landing page hero section
 │   │   └── navbar-01.tsx     # Navigation bar with mobile menu
+│   ├── templates/            # 🎯 NEW: Full page templates
+│   │   ├── README.md         # Template catalog
+│   │   ├── marketing/        # Landing, pricing, features pages
+│   │   ├── dashboard/        # Dashboard, settings, tables
+│   │   └── auth/             # Login, signup pages
+│   ├── patterns/             # 🎯 NEW: Common patterns
+│   │   ├── README.md         # Pattern guide
+│   │   ├── form-with-validation.tsx
+│   │   ├── loading-skeleton.tsx
+│   │   └── empty-state.tsx
 │   ├── lib/                  # Shared utilities
 │   │   └── navigation-config.ts
 │   └── styles/               # Shared styles
@@ -52,13 +66,152 @@ apps/_shared/
   "exports": {
     "./blocks": "./src/blocks/index.ts",
     "./blocks/*": "./src/blocks/*.tsx",
+    "./templates/*": "./src/templates/**/*.tsx",
+    "./patterns/*": "./src/patterns/*.tsx",
     "./lib/*": "./src/lib/*.ts",
     "./styles/*": "./src/styles/*.css"
   }
 }
 ```
 
+---
+
+## 🎯 Template System (NEW)
+
+**Problem**: A+ design system but inconsistent app usage.
+
+**Solution**: Hybrid template system (shadcn best practices + AI training).
+
+### Quick Start
+
+```bash
+# Browse templates
+ls apps/_shared-ui/src/templates/
+
+# Copy template
+cp apps/_shared-ui/src/templates/marketing/landing-page-01.tsx \
+   apps/web/app/page.tsx
+
+# Or ask AI: "Create a landing page using the template"
+```
+
+### Available Templates
+
+**Marketing** (`templates/marketing/`)
+- `landing-page-01.tsx` - Hero + Features + CTA + Footer
+- `pricing-page-01.tsx` - Pricing tiers with FAQ
+- `features-page-01.tsx` - Feature showcase
+
+**Dashboard** (`templates/dashboard/`)
+- `dashboard-home-01.tsx` - Stats + charts + activity
+- `users-table-01.tsx` - DataFortress table with filters
+- `settings-page-01.tsx` - Tabbed settings interface
+
+**Auth** (`templates/auth/`)
+- `login-page-01.tsx` - Login with social auth
+- `signup-page-01.tsx` - Multi-step signup flow
+
+### Pattern Library
+
+**Reference implementations** (`patterns/`)
+- `form-with-validation.tsx` - Form validation patterns
+- `loading-skeleton.tsx` - Loading state skeletons
+- `empty-state.tsx` - Empty state displays
+
+### Template Usage
+
+```tsx
+// Option 1: Import template
+import { LandingPage01 } from "@workspace/shared-ui/templates/marketing/landing-page-01";
+
+// Option 2: Ask AI (reads template registry automatically)
+// "Create a landing page using our design system"
+
+// Option 3: Copy/paste and customize
+```
+
+### Template Rules (Enforced)
+
+All templates follow:
+1. ✅ Import from workspace packages only
+2. ✅ Use `cn()` for conditional classes
+3. ✅ Use semantic color tokens
+4. ✅ Specify transition durations
+
+**[📚 Template Documentation](./_template-registry/TEMPLATE_INDEX.md)**
+
+---
+
 ## Available Blocks
+
+### 🚀 DataFortress - PostgreSQL-Level Data Table
+
+**The Ultimate ERP Data Table** - Rivals Neon, Prisma Studio, Drizzle Studio
+
+| Feature | Description |
+|---------|-------------|
+| `DataFortress` | Advanced data table with sorting, filtering, pagination, audit trail, export (CSV/Excel/JSON), bulk actions, row selection, search, and resizable columns |
+
+**Key Features:**
+- ✅ Multi-column sorting & advanced filtering
+- ✅ Built-in audit trail with right drawer overlay
+- ✅ Export to CSV, Excel, JSON
+- ✅ Bulk actions & row selection
+- ✅ Server-side pagination support
+- ✅ Loading skeletons & empty states
+- ✅ Custom cell renderers & formatters
+- ✅ Resizable & toggleable columns
+
+**[📚 Full Documentation](./DATA_FORTRESS_DOCS.md)**
+
+```tsx
+import { DataFortress } from "@workspace/shared-ui/blocks";
+
+<DataFortress
+  data={customers}
+  columns={columns}
+  selectable
+  auditEnabled
+  exportable
+/>
+```
+
+---
+
+### ✨ MagicApprovalTable - CEO Approval Table
+
+**Lightweight approval table** for executive workflows with todo linking
+
+| Feature | Description |
+|---------|-------------|
+| `MagicApprovalTable` | Quick approve/reject, inline editing, attachments, comments, and task linking (Tenant ID + Case ID) |
+
+**Key Features:**
+- ✅ One-click approve/reject from table
+- ✅ Double-click inline editing (amounts, titles)
+- ✅ Attachments & comments in right drawer
+- ✅ Link to todo items by Tenant ID + Case ID
+- ✅ Status tracking (pending, approved, rejected, review)
+- ✅ Priority levels (low, normal, high, urgent)
+- ✅ Group by tenant (multi-tenant support)
+- ✅ Visual status (green=approved, red=rejected)
+
+**[📚 Full Documentation](./MAGIC_APPROVAL_TABLE_DOCS.md)**
+
+```tsx
+import { MagicApprovalTable } from "@workspace/shared-ui/blocks";
+
+<MagicApprovalTable
+  data={approvals}
+  onApprove={handleApprove}
+  onReject={handleReject}
+  onLinkTodo={handleLinkTodo}
+  showQuickApproval
+  allowInlineEdit
+/>
+```
+
+---
 
 ### Marketing UI Blocks (Shadcn Studio)
 

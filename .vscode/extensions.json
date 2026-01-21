@@ -15,14 +15,14 @@
     "databricks.neon-local-connect",
     "dsznajder.es7-react-js-snippets",
     "pulkitgangwar.nextjs-snippets",
-    "themeselection.shadcn-studio-vscode-extension"
+    "themeselection.shadcn-studio-vscode-extension",
+    "vitest.explorer"
   ],
   "unwantedRecommendations": [
     "apollographql.vscode-apollo",
     "graphql.vscode-graphql",
     "graphql.vscode-graphql-syntax",
     "firsttris.vscode-jest-runner",
-    "orta.vscode-jest",
-    "zixuanchen.vitest-explorer"
+    "orta.vscode-jest"
   ]
 }

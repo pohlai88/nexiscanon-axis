@@ -74,6 +74,203 @@ export { NewsletterSignup } from "./newsletter-signup";
 export type { NewsletterProps } from "./newsletter-signup";
 
 // ============================================================
+// BUSINESS INNOVATION BLOCKS (Real-World UX Solutions)
+// ============================================================
+export { InteractiveMetricCard, MetricsDashboard } from "./interactive-metric-card";
+export type { MetricCardProps, MetricsDashboardProps } from "./interactive-metric-card";
+
+export { SmartTaskList } from "./smart-task-list";
+export type { SmartTaskListProps, Task } from "./smart-task-list";
+
+export { CollaborativeFormBuilder } from "./collaborative-form-builder";
+export type { CollaborativeFormBuilderProps, FormField } from "./collaborative-form-builder";
+
+export { NotificationCenter } from "./notification-center";
+export type { NotificationCenterProps, Notification } from "./notification-center";
+
+export { InteractiveDataTable } from "./interactive-data-table";
+export type { DataTableProps, Column } from "./interactive-data-table";
+
+export { MultiStepWizard } from "./multi-step-wizard";
+export type { MultiStepWizardProps, WizardStep } from "./multi-step-wizard";
+
+export { FileUploadZone } from "./file-upload-zone";
+export type { FileUploadZoneProps, UploadedFile } from "./file-upload-zone";
+
+export { ActivityFeed } from "./activity-feed";
+export type { ActivityFeedProps, Activity } from "./activity-feed";
+
+export { SearchCommandPalette } from "./search-command-palette";
+export type { SearchCommandPaletteProps, SearchResult } from "./search-command-palette";
+
+export { QuickActionToolbar, CommonToolbarPresets } from "./quick-action-toolbar";
+export type { QuickActionToolbarProps, QuickAction } from "./quick-action-toolbar";
+
+export { DoubleScreenLayout } from "./double-screen-layout";
+export type { DoubleScreenLayoutProps } from "./double-screen-layout";
+
+export { NavbarOverlay } from "./navbar-overlay";
+export type { NavbarOverlayProps } from "./navbar-overlay";
+
+export { AuditTrailViewer } from "./audit-trail-viewer";
+export type { AuditTrailViewerProps, AuditEntry, AuditFilters } from "./audit-trail-viewer";
+
+export { CommandKPalette, useCommandK, CommonCommands } from "./command-k-palette";
+export type { CommandKPaletteProps, CommandAction, CommandGroup } from "./command-k-palette";
+
+export { CRUDSPToolbar, ERPModulePresets } from "./crudsp-toolbar";
+export type { CRUDSPToolbarProps, CRUDSPButtonConfig, CRUDSPAction } from "./crudsp-toolbar";
+
+export { ComparisonCockpit } from "./comparison-cockpit";
+export type {
+  ComparisonCockpitProps,
+  ComparisonDocument,
+  DocumentField,
+  HighlightedText,
+} from "./comparison-cockpit";
+
+export { MagicPaste } from "./magic-paste";
+export type {
+  MagicPasteProps,
+  OCRField,
+  DocumentTemplate,
+} from "./magic-paste";
+
+export { DocumentManager } from "./document-manager";
+export type {
+  DocumentManagerProps,
+  DocumentMetadata,
+  DocumentVersion,
+  SharePermission,
+} from "./document-manager";
+
+export { AuditableField, AuditableForm, RecentChangesWidget } from "./micro-audit-field";
+export type {
+  AuditableFieldProps,
+  AuditableFormProps,
+  RecentChangesWidgetProps,
+  AuditChange,
+} from "./micro-audit-field";
+
+export { SmartQueueWorkbench } from "./smart-queue-workbench";
+export type {
+  SmartQueueWorkbenchProps,
+  QueueItem,
+  QueueAction,
+} from "./smart-queue-workbench";
+
+export { ExceptionFirstMode, DEFAULT_EXCEPTION_TYPES } from "./exception-first-mode";
+export type {
+  ExceptionFirstModeProps,
+  ExceptionType,
+  ExceptionItem,
+  ExceptionGroup,
+} from "./exception-first-mode";
+
+export { TemplateSystem, DEFAULT_CATEGORIES } from "./template-system";
+export type {
+  TemplateSystemProps,
+  Template,
+  TemplateCategory,
+} from "./template-system";
+
+export { TimelinePlayback, TimelineWidget } from "./timeline-playback";
+export type {
+  TimelinePlaybackProps,
+  TimelineWidgetProps,
+  TimelineEvent,
+} from "./timeline-playback";
+
+export { InlineChat, ChatButton } from "./inline-chat";
+export type {
+  InlineChatProps,
+  ChatButtonProps,
+  ChatMessage,
+} from "./inline-chat";
+
+export {
+  PolicyAwareButton,
+  PolicyAwareInput,
+  PolicyAwareSection,
+  COMMON_POLICIES,
+} from "./policy-aware-ui";
+export type {
+  PolicyAwareButtonProps,
+  PolicyAwareInputProps,
+  PolicyAwareSectionProps,
+  PolicyRule,
+} from "./policy-aware-ui";
+
+export { CollaborativeCanvas, CanvasWidget, CANVAS_TEMPLATES } from "./collaborative-canvas";
+export type {
+  CollaborativeCanvasProps,
+  CanvasWidgetProps,
+  CanvasElement,
+  CanvasUser,
+  CanvasTimer,
+} from "./collaborative-canvas";
+
+export { GlobalAdminPage } from "./global-admin-page";
+export type {
+  GlobalAdminPageProps,
+  SystemMetrics,
+  UserAccount,
+  AuditLog,
+  SystemSetting,
+} from "./global-admin-page";
+
+export { PersonalConfigPage } from "./personal-config-page";
+export type {
+  PersonalConfigPageProps,
+  PersonalNote,
+  DrawerItem,
+  PersonalStatus,
+  UserPreferences,
+  PersonalStats,
+} from "./personal-config-page";
+
+export { TeamRoom } from "./team-room";
+export type {
+  TeamRoomProps,
+  RoomMessage,
+  RoomTask,
+  RoomApproval,
+  MeetingNote,
+  JobQueueItem,
+} from "./team-room";
+
+// Alias exports with brand name
+export { TeamRoom as Afanda } from "./team-room";
+export type { TeamRoomProps as AfandaProps } from "./team-room";
+
+// ============================================================
+// DATA FORTRESS (PostgreSQL-Level Data Table)
+// ============================================================
+export { DataFortress } from "./data-fortress";
+export type {
+  DataFortressProps,
+  DataFortressColumn,
+  DataFortressSortConfig,
+  DataFortressFilterConfig,
+  DataFortressRow,
+  AuditTrail,
+} from "./data-fortress";
+
+// ============================================================
+// MAGIC APPROVAL TABLE (CEO Approval with Todo Linking)
+// ============================================================
+export { MagicApprovalTable } from "./magic-approval-table";
+export type {
+  MagicApprovalTableProps,
+  MagicApprovalColumn,
+  MagicApprovalItem,
+  ApprovalStatus,
+  ApprovalPriority,
+  Attachment,
+  Comment,
+} from "./magic-approval-table";
+
+// ============================================================
 // LEGACY BLOCKS (deprecated - use Shadcn Studio equivalents)
 // ============================================================
 export { Header01 } from "./header-01";

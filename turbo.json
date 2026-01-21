@@ -27,6 +27,23 @@
       "persistent": false,
       "description": "Run end-to-end tests"
     },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"],
+      "cache": true,
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "**/*.{test,spec}.{ts,tsx}",
+        "vitest.config.ts"
+      ],
+      "description": "Run unit tests"
+    },
+    "test:coverage": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"],
+      "cache": true,
+      "description": "Run unit tests with coverage"
+    },
     "validate:architecture": {
       "cache": true,
       "inputs": [

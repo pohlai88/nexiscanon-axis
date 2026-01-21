@@ -9,6 +9,16 @@ const nextConfig = {
   ],
   typedRoutes: true,
 
+  // Performance optimizations
+  experimental: {
+    optimizePackageImports: ["@workspace/design-system", "lucide-react"],
+  },
+
+  // Compiler optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
+  },
+
   async headers() {
     return [
       {
@@ -21,6 +31,25 @@ const nextConfig = {
           {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+          },
+        ],
+      },
+      // Cache static assets aggressively
+      {
+        source: "/fonts/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*.{jpg,jpeg,png,gif,webp,svg,ico}",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },

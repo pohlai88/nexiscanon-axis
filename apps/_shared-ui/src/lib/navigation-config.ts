@@ -21,6 +21,17 @@ export const docsNavigation: NavItem[] = [
     ],
   },
   {
+    title: "Blocks",
+    href: "/docs/blocks",
+    items: [
+      { title: "Overview", href: "/docs/blocks" },
+      { title: "Command-K Palette", href: "/docs/blocks/command-k" },
+      { title: "Audit Trail System", href: "/docs/blocks/audit-trail" },
+      { title: "Double Screen Layout", href: "/docs/blocks/double-screen" },
+      { title: "All Blocks", href: "/docs/blocks/all" },
+    ],
+  },
+  {
     title: "Themes",
     href: "/docs/themes",
     items: [
