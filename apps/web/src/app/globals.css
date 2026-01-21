@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/* Light theme (default) */
+:root,
+.light {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(222.2 84% 4.9%);
+  --primary: hsl(222.2 47.4% 11.2%);
+  --primary-foreground: hsl(210 40% 98%);
+  --muted: hsl(210 40% 96.1%);
+  --muted-foreground: hsl(215.4 16.3% 46.9%);
+  --border: hsl(214.3 31.8% 91.4%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(222.2 84% 4.9%);
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(210 40% 98%);
+}
+
+/* Dark theme */
+.dark {
+  --background: hsl(222.2 84% 4.9%);
+  --foreground: hsl(210 40% 98%);
+  --primary: hsl(210 40% 98%);
+  --primary-foreground: hsl(222.2 47.4% 11.2%);
+  --muted: hsl(217.2 32.6% 17.5%);
+  --muted-foreground: hsl(215 20.2% 65.1%);
+  --border: hsl(217.2 32.6% 17.5%);
+  --card: hsl(222.2 84% 4.9%);
+  --card-foreground: hsl(210 40% 98%);
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(210 40% 98%);
+}
+
+/* System preference fallback (when no class is set) */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not(.dark) {
+    --background: hsl(222.2 84% 4.9%);
+    --foreground: hsl(210 40% 98%);
+    --primary: hsl(210 40% 98%);
+    --primary-foreground: hsl(222.2 47.4% 11.2%);
+    --muted: hsl(217.2 32.6% 17.5%);
+    --muted-foreground: hsl(215 20.2% 65.1%);
+    --border: hsl(217.2 32.6% 17.5%);
+    --card: hsl(222.2 84% 4.9%);
+    --card-foreground: hsl(210 40% 98%);
+    --destructive: hsl(0 62.8% 30.6%);
+    --destructive-foreground: hsl(210 40% 98%);
+  }
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Prevent flash of wrong theme */
+html {
+  color-scheme: light dark;
+}

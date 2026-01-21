@@ -1,0 +1,19 @@
+{
+  "name": "@nexuscanon-axis/turbo-v2-migration",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Turborepo 2.0 migration documentation and upgrade guide",
+  "type": "module",
+  "keywords": [
+    "turborepo",
+    "turbo",
+    "migration",
+    "monorepo",
+    "documentation"
+  ],
+  "files": [
+    "README.md",
+    "DEFERRED.md",
+    "VALIDATION.md"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@nexuscanon-axis/nextjs-16-migration",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Documentation for Next.js 16 migration in NexusCanon AXIS monorepo.",
+  "keywords": [
+    "nextjs",
+    "nextjs-16",
+    "migration",
+    "async-apis",
+    "turbopack",
+    "monorepo"
+  ],
+  "author": "NexusCanon",
+  "license": "MIT",
+  "files": [
+    "README.md",
+    "COMPLETE.md"
+  ]
+}

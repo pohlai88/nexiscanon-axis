@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    // ✅ CRITICAL for tsup/esbuild - prevents import elision bugs
+    "verbatimModuleSyntax": true,
+
+    // ✅ Required for esbuild (each file is a module)
+    "isolatedModules": true,
+
+    // ✅ Module system for modern bundlers
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    // ✅ React 19 JSX (for type checking only, tsup handles transpilation)
+    "jsx": "react-jsx",
+
+    // ✅ Emit configuration (tsup handles .js via esbuild)
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+
+    // ✅ Paths and module resolution
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "test/fixtures", "dist"]
+}

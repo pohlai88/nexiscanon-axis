@@ -1,0 +1,24 @@
+{
+  "name": "@nexuscanon-axis/typescript5-react19-config",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TypeScript 5 + React 19 configuration guide and breaking changes documentation",
+  "type": "module",
+  "keywords": [
+    "typescript",
+    "react",
+    "configuration",
+    "typescript5",
+    "react19",
+    "documentation"
+  ],
+  "files": [
+    "README.md",
+    "QUICK-REFERENCE.md",
+    "TYPESCRIPT-CLI-REFERENCE.md",
+    "VALIDATION.md",
+    "VERBATIM-MODULE-SYNTAX.md",
+    "MIGRATION-PLAN.md",
+    "IMPLEMENTATION-COMPLETE.md"
+  ]
+}

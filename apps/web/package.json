@@ -1,0 +1,35 @@
+{
+  "name": "@axis/web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.972.0",
+    "@aws-sdk/s3-request-presigner": "^3.972.0",
+    "@axis/db": "workspace:*",
+    "@axis/kernel": "workspace:*",
+    "@neondatabase/serverless": "^0.10.4",
+    "next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "resend": "^6.8.0",
+    "stripe": "^20.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "dotenv": "^16.4.7",
+    "postcss": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:"
+  }
+}

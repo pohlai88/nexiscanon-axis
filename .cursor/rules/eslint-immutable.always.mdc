@@ -1,0 +1,51 @@
+# ESLint Configuration Immutability Rule (Always Apply)
+
+> Applies on top of `00-global.always.mdc`. Do NOT restate global rules.
+
+## Purpose
+Protect ESLint configuration from accidental or unauthorized modifications.
+
+## Protected Files (HARD BAN - NO EXCEPTIONS)
+
+The following files are **IMMUTABLE** and MUST NOT be modified by the IDE/agent:
+
+```
+eslint.config.mjs                          # Root config (single source of truth)
+apps/*/eslint.config.js                    # App configs (extend root only)
+packages/*/eslint.config.js                # Package configs (extend root only)
+.eslintignore                              # If exists
+```
+
+## Prohibited Actions (HARD ENFORCEMENT)
+
+**FORBIDDEN** (without explicit user approval AND justification):
+- ❌ Creating new ESLint config files
+- ❌ Modifying existing ESLint config files
+- ❌ Deleting ESLint config files
+- ❌ Adding ESLint-related dependencies
+- ❌ Changing ESLint rules in any file
+- ❌ Adding inline `eslint-disable` comments (except for documented exceptions)
+
+## Allowed Actions
+
+**PERMITTED**:
+- ✅ Running `pnpm lint` to check for errors
+- ✅ Reporting lint errors to the user
+- ✅ Suggesting rule changes (but NOT implementing them)
+
+## Exception Protocol
+
+If a user explicitly requests ESLint config changes:
+
+1. **STOP** and confirm the request
+2. State: "ESLint config is protected. You've requested: [specific change]"
+3. Ask: "This will modify immutable config. Confirm? (yes/no)"
+4. Only proceed if user confirms with explicit "yes"
+5. Document the change in commit message
+
+## Rationale
+
+- ESLint config follows shadcn/ui's single-source-of-truth pattern
+- All apps extend root config to ensure consistency
+- Prevents accidental rule fragmentation across packages
+- Enforced by git pre-commit hook as additional safeguard

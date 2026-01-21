@@ -1,0 +1,34 @@
+{
+  "eslint.useFlatConfig": true,
+  "eslint.experimental.useFlatConfig": true,
+  "eslint.workingDirectories": [
+    { "pattern": "packages/*/" }
+  ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "tailwindCSS.classFunctions": ["cva", "cn"],
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "vitest.debugExclude": [
+    "<node_internals>/**",
+    "**/node_modules/**",
+    "**/fixtures/**"
+  ],
+  "files.exclude": {
+    "deprecated": true
+  },
+  "search.exclude": {
+    "packages/design-system/tailwindV4/registry/radix-*": true,
+    "packages/design-system/tailwindV4/public/r/*": true,
+    "packages/design-system/shadcn/test/fixtures/*": true
+  }
+}

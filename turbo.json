@@ -1,0 +1,67 @@
+{
+  "$schema": "https://turbo.build/schema.v2.json",
+  "ui": "tui",
+  "globalEnv": ["NODE_ENV"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "!dist/**/*.map"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "outputs": []
+    },
+    "lint:fix": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "outputs": []
+    },
+    "format:check": {
+      "cache": false,
+      "outputs": []
+    },
+    "format:write": {
+      "cache": false,
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "check": {
+      "dependsOn": ["lint", "typecheck", "format:check"],
+      "cache": false
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "outputs": ["coverage/**"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "registry": {
+      "cache": false
+    },
+    "registry:build": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "registry:capture": {
+      "cache": false
+    },
+    "examples:build": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "preview": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

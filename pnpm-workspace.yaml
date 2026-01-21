@@ -1,0 +1,62 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "packages/design-system/*"
+  - "!**/test/**"
+  - "!**/fixtures/**"
+  - "!**/temp/**"
+
+catalog:
+  # Core frameworks
+  react: ^19.2.3
+  react-dom: ^19.2.3
+  next: ^16.1.4
+  
+  # Build tools
+  typescript: ^5.5.3
+  vite: ^7.1.12
+  turbo: ^2.7.5
+  vitest: ^2.1.9
+  tsx: ^4.1.4
+  tsup: ^8.5.0
+  
+  # Styling
+  tailwindcss: ^4.1.11
+  '@tailwindcss/postcss': ^4.1.11
+  autoprefixer: ^10.4.14
+  postcss: ^8.5.6
+  
+  # Code quality
+  eslint: ^9.17.0
+  '@eslint/js': ^9.17.0
+  '@eslint/eslintrc': ^3.2.0
+  '@typescript-eslint/eslint-plugin': ^8.49.0
+  '@typescript-eslint/parser': ^8.49.0
+  'eslint-config-prettier': ^9.1.0
+  'eslint-config-turbo': ^2.7.5
+  'eslint-config-next': 16.0.0
+  'eslint-plugin-react': ^7.32.2
+  # 'eslint-plugin-tailwindcss': 3.13.1  # Removed: Incompatible with Tailwind 4
+  prettier: ^3.4.2
+  '@ianvs/prettier-plugin-sort-imports': ^4.4.1
+  
+  # Babel
+  '@babel/core': ^7.28.0
+  '@babel/parser': ^7.28.0
+  
+  # Motion/Animation
+  motion: ^12.12.1
+  
+  # Testing
+  'start-server-and-test': ^2.0.12
+  
+  # Types
+  '@types/node': ^20.11.27
+  '@types/react': 19.2.2
+  '@types/react-dom': 19.2.2
+  '@types/hast': ^3.0.4
+  
+  # Utils
+  rimraf: ^6.0.1
+  'cross-env': ^7.0.3
+  chokidar: ^4.0.3

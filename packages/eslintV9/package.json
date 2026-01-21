@@ -1,0 +1,20 @@
+{
+  "name": "@nexuscanon-axis/eslint-v9-migration",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ESLint v9 flat config migration documentation and deferred tasks",
+  "type": "module",
+  "keywords": [
+    "eslint",
+    "migration",
+    "flat-config",
+    "documentation"
+  ],
+  "files": [
+    "README.md",
+    "DEFERRED.md",
+    "PATTERNS.md",
+    "ESLINT-PRETTIER-RELATIONSHIP.md",
+    "VALIDATION-REPORT.md"
+  ]
+}

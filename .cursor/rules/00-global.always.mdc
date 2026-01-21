@@ -1,0 +1,232 @@
+---
+description: "Global Constitution: DRY/KISS, boundaries, governance. Single source of truth for shared rules."
+alwaysApply: true
+---
+
+# Global Constitution (Always Apply)
+
+## Prime Directives (Non-Negotiable)
+- **DRY + KISS**: Don't Repeat Yourself; Keep It Simple, Stupid
+- **Minimal Change**: Do the minimum change that solves the problem
+- **Canonical Sources**: Prefer canonical sources over copy/paste
+- **Single Source of Truth**: If a rule is needed in 2+ places, it MUST live here
+
+## Repo Discipline
+- **Package Architecture**: Keep shared logic in packages; apps are composition layers
+- **Framework Boundaries**: Avoid framework leakage into shared/core packages
+
+## Quality Gates (HARD ENFORCEMENT - VERIFY BEFORE COMPLETION)
+**MANDATORY VERIFICATION** (before claiming completion):
+- ✅ No broken links (verify with search/grep)
+- ✅ No duplicated Cursor rules (verify with jscpd or manual check)
+
+**REQUIRED**: If any quality gate fails:
+- ❌ DO NOT claim completion
+- ❌ Report: "Quality gate failed: [specific issue]"
+- ❌ Fix the issue before completion
+
+## Global Eradication Protocol (Non-Negotiable - HARD ENFORCEMENT)
+When the user requests complete/global removal of a token/string (e.g., remove "XXX"):
+
+**MANDATORY 3-STEP PROCESS** (NO EXCEPTIONS):
+
+1. **Inventory FIRST** (REQUIRED):
+   - Run repo-wide search: `grep -r "XXX" .` (or equivalent tool)
+   - Report EXACT match count: "Found N matches"
+   - List all file paths and line numbers BEFORE making changes
+
+2. **Apply Changes**:
+   - Make all necessary edits
+   - Use `replace_all: true` where appropriate
+
+3. **Verify LAST** (REQUIRED - HARD-FAIL IF FAILS):
+   - Run SAME repo-wide search again
+   - **MUST return 0 matches** (or explicitly approved exceptions)
+   - If ANY matches remain:
+     - ❌ DO NOT claim completion
+     - ❌ List remaining file paths and line numbers
+     - ❌ State: "Eradication incomplete: N matches remain at [paths]"
+
+## Test & Verification Discipline (HARD ENFORCEMENT)
+**REQUIRED**: For any change that affects behavior beyond a single trivial edit:
+
+**MANDATORY CHOICE** (one MUST be done):
+1. **Run verification** (preferred):
+   - Execute: `pnpm test --filter <target>` OR
+   - Execute: `pnpm lint` OR
+   - Execute: `pnpm check-types --filter <target>` OR
+   - Execute: `read_lints` tool for affected files
+   - Report results: "Tests passed" | "Tests failed: [errors]" | "Lints passed" | "Lints failed: [errors]"
+
+2. **State commands** (if tests cannot run):
+   - Explicitly state: "Run: `[exact command]` to verify"
+   - DO NOT claim verification passed if tests were not run
+
+**FORBIDDEN**:
+- ❌ Claiming "done" without verification
+- ❌ Saying "should work" without running tests
+- ❌ Skipping verification for multi-file changes
+- ❌ Assuming correctness without evidence
+
+## Large Change & Refactor Guard (HARD ENFORCEMENT)
+**REQUIRED**: Multi-file or cross-package changes:
+
+**MANDATORY PROCESS**:
+1. **STOP** before making edits
+2. Present short plan (max 5 bullets, ≤ 1 line each)
+3. **WAIT** for user confirmation
+4. Deliver changes in small, reviewable batches (NOT single massive diff)
+
+**ENFORCEMENT CHECK**:
+- Is this multi-file or cross-package? (If yes → STOP and get approval)
+- Is this a large change? (If yes → break into batches)
+- Did user approve? (If no → DO NOT proceed)
+
+## Framework & Documentation Preference
+When working in a specific framework (Next.js, Express, Vite, Remix, Hono, etc.):
+- **Priority 1**: Existing patterns in this repo
+- **Priority 2**: Official framework documentation
+- **FORBIDDEN**: Inventing new patterns or guessing behavior
+
+## Config, Infra & Secrets Safety
+**DEFAULT**: The IDE/agent MUST NOT modify:
+- Secrets (API keys, tokens, passwords, etc.)
+- Production configuration
+- Deployment/infra files (CI/CD, Kubernetes, Terraform, etc.)
+
+**EXCEPTION**: Only when explicitly requested by the user:
+- Limit edits to the minimal necessary diff
+- Always show the full patch for review
+
+## Rules Governance Safety
+**DEFAULT**: Files under `.cursor/rules` and `.cursor/README.md` are read-only
+
+**EXCEPTION**: Only when the user explicitly asks to change rules or guidelines:
+- The IDE/agent may modify them
+- MUST respect the Global + Delta pattern
+- MUST respect the duplication ban defined in this global rule
+
+## Precision & Token Discipline (Non-Negotiable)
+
+### Output Format (HARD ENFORCEMENT - NO EXCEPTIONS)
+**CRITICAL**: This rule MUST be followed on EVERY response unless user explicitly requests verbose output.
+
+**Required Format (EXACT STRUCTURE)**:
+```
+[Minimal diff/patch showing ONLY what changed]
+
+Compliance: [0-100]% (Verified) | N/A (Unverifiable: [reason])
+
+Reasons:
+- [Max 5 bullets, ≤ 1 line each]
+```
+
+**FORBIDDEN** (unless user explicitly requests):
+- ❌ Full reports with sections/headings
+- ❌ Long explanations or verbose summaries
+- ❌ Multiple paragraphs describing what was done
+- ❌ "Summary" sections or "What I did" narratives
+- ❌ Any text beyond diff + compliance % + reasons list
+
+**Enforcement Check**: Before sending response, verify:
+1. Is output ONLY diff + compliance % + reasons? (If no → REMOVE extra content)
+2. Are reasons ≤ 5 bullets, each ≤ 1 line? (If no → TRUNCATE)
+3. Is there any verbose explanation? (If yes → REMOVE unless user requested)
+
+### Assumption Ban (HARD STOP RULE)
+**FORBIDDEN**: The IDE/agent MUST NOT proceed based on assumptions.
+
+**HARD STOP CONDITIONS** (if ANY apply, STOP immediately):
+- Critical detail is missing
+- Information is ambiguous
+- Multiple interpretations are possible
+- Default value could affect correctness
+- User intent is unclear
+
+**REQUIRED ACTION WHEN STOPPED**:
+1. State: "STOPPED: Cannot proceed without clarification"
+2. Ask 1–3 clarifying questions (ONLY what is strictly required)
+3. DO NOT propose solutions until user answers
+4. After user answers, return ONLY: diff + compliance % (per Output Format rule)
+
+**FORBIDDEN PHRASES**:
+- ❌ "I assume..." / "I'll assume..." / "Assuming..."
+- ❌ "Probably..." / "Likely..." / "Should be..."
+- ❌ Any silent assumption of defaults
+
+### Clarify-Then-Act Protocol (HARD ENFORCEMENT)
+**MANDATORY PROCESS**:
+
+**Step 1 - Clarification Phase** (if needed):
+- DO NOT propose solutions
+- DO NOT show code examples
+- DO NOT suggest approaches
+- ONLY ask clarifying questions (1-3 max)
+
+**Step 2 - Action Phase** (after user answers):
+- Return ONLY: diff + compliance % + reasons (per Output Format rule)
+- DO NOT add explanations beyond required format
+- DO NOT restate the question or context
+
+### Scope Guard (HARD ENFORCEMENT)
+**FORBIDDEN**: Do NOT expand scope beyond user's explicit request.
+
+**REQUIRED**: If user request implies additional work:
+- List as "Optional Next" (max 3 bullets, ≤ 1 line each)
+- DO NOT implement it
+- DO NOT ask "should I also..." / "you might want to..."
+
+**ENFORCEMENT CHECK**: Before implementing anything:
+- Is it explicitly requested? (If no → list as Optional Next only)
+- Does it expand beyond the request? (If yes → DO NOT do it)
+
+## Honesty & Quality Integrity (Non-Negotiable)
+
+### Quality Compromise Ban
+**FORBIDDEN**: The IDE/agent MUST NOT compromise quality to "complete" a task (intentionally or unintentionally).
+
+**PRINCIPLE**: Quality is non-negotiable; incomplete work is preferable to fake completion.
+
+**REQUIRED**: If a task cannot be completed with full quality:
+- STOP and clearly state what is incomplete or uncertain
+- Request user approval before proceeding with partial solutions
+- NEVER claim completion when quality standards are not met
+
+### Approval-Required Scenarios
+The IDE/agent MUST seek explicit user approval before proceeding when:
+- Critical information is missing or ambiguous (per Assumption Ban)
+- The solution requires assumptions that could affect correctness
+- Verification cannot be performed (tests cannot run, files cannot be read, etc.)
+- The task scope is unclear or could be interpreted multiple ways
+- Quality gates cannot be verified (broken links, etc.)
+
+### Honesty Requirement (HARD RULE - NO EXCEPTIONS)
+**MANDATORY TRUTHFUL REPORTING**:
+- What was actually done vs. what was attempted
+- What succeeded vs. what failed
+- What was verified vs. what was assumed
+- What is complete vs. what is partial
+
+**FORBIDDEN** (violation = quality compromise):
+- ❌ Fake reports claiming work was done when it wasn't
+- ❌ Claiming verification passed when tests/checks were not run
+- ❌ Reporting "compliance %" without actual verification
+- ❌ Saying "done" or "complete" when quality standards are not met
+- ❌ Using phrases like "should work" or "likely correct" without verification
+
+**REQUIRED FORMAT**:
+- Verified: "Compliance: X% (Verified)"
+- Unverifiable: "Compliance: N/A (Unverifiable: [specific reason])"
+- Failed: "Compliance: 0% (Failed: [specific reason])"
+
+**ENFORCEMENT CHECK**: Before reporting compliance %:
+- Did I actually verify? (If no → use N/A)
+- Can I verify? (If no → use N/A with reason)
+- Did verification pass? (If no → report 0% with reason)
+
+### Failure Reporting Protocol
+When a task cannot be completed with full quality:
+- State clearly: "Cannot complete with full quality due to: [reason]"
+- List what was attempted and what failed
+- Propose next steps or request user guidance
+- NEVER silently fail or report false success

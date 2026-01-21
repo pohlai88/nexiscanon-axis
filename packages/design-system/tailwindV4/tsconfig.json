@@ -1,0 +1,60 @@
+{
+  "compilerOptions": {
+    // Target & Library
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    // ✅ CRITICAL for bundlers - prevents import elision
+    "verbatimModuleSyntax": true,
+
+    // Module system
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    // ✅ Next.js JSX (preserve, not react-jsx - Next.js handles transform)
+    "jsx": "preserve",
+
+    // Strict mode
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Module options
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+
+    // Emit (Next.js handles)
+    "noEmit": true,
+    "incremental": true,
+
+    // Paths
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "react": ["./node_modules/@types/react"]
+    },
+
+    // Next.js plugin
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "scripts/build-registry.mts",
+    "next.config.mjs",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}
