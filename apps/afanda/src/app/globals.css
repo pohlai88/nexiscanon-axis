@@ -6,6 +6,7 @@
  *
  * @see .cursor/ERP/B11-AFANDA.md for architecture
  * @see .cursor/ERP/A01-CANONICAL.md §8 for philosophy
+ * @see DESIGN_SYSTEM_GUIDE.md for theme system documentation
  */
 
 /* =================================================================
@@ -15,6 +16,9 @@
 /* Base globals with all 9 theme variants */
 @import "@workspace/design-system/styles/globals.css";
 
+/* Glass morphism effects */
+@import "@workspace/design-system/styles/glass.css";
+
 /* =================================================================
    Tailwind Source Scanning
    ================================================================= */
@@ -23,17 +27,69 @@
 /* =================================================================
    AFANDA Theme Configuration
    
-   Default: midnight theme (Electric ink - professional dashboard feel)
-   Available: neutral, gray, stone, slate, zinc, midnight, opulence, heirloom, zenith
+   Multi-dimensional theming system:
    
-   Style: mia (balanced density)
-   Available: vega, nova, mia, lyra, mira
+   Base Themes (9): Set via data-theme attribute
+   - neutral, gray, stone, zinc, slate (Standard)
+   - midnight (Default - Electric ink, professional dashboard)
+   - opulence, heirloom (Premium - Luxury accents)
+   - zenith (Minimal - Content-first)
    
-   Glass effects: Available via CSS classes from design-system
+   Style Presets (5): Set via data-style attribute
+   - vega (Default - Balanced)
+   - nova (Sharp, minimal)
+   - mia (Soft, rounded - AFANDA default)
+   - lyra (Compact, tight)
+   - mira (Pill-shaped, full radius)
+   
+   Accent Colors (9): Set via data-accent attribute
+   - neutral, rose, orange, amber, emerald, cyan, blue, violet, fuchsia
+   
+   Dark Mode: Managed by next-themes via .dark class
+   
+   Texture Effects: Set via data-texture="enabled" attribute
+   - Subtle grain overlay on surfaces
+   - Per-theme texture configurations
+   - Toggle via ThemeSwitcher component
+   
+   Glass Effects: Available via CSS classes
    - glass, glass-solid, glass-subtle, glass-ethereal
    - glass-card, glass-modal, glass-sidebar, glass-header
    - glass-grain, glass-tint-primary, etc.
    ================================================================= */
+
+/* =================================================================
+   Texture Effects Integration
+   ================================================================= */
+
+/* Texture overlay for enabled state */
+[data-texture="enabled"] .afanda-widget,
+[data-texture="enabled"] .afanda-chart,
+[data-texture="enabled"] .afanda-table {
+  position: relative;
+}
+
+[data-texture="enabled"] .afanda-widget::before,
+[data-texture="enabled"] .afanda-chart::before,
+[data-texture="enabled"] .afanda-table::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+/* Increase texture opacity in dark mode */
+.dark[data-texture="enabled"] .afanda-widget::before,
+.dark[data-texture="enabled"] .afanda-chart::before,
+.dark[data-texture="enabled"] .afanda-table::before {
+  opacity: 0.05;
+}
 
 /* =================================================================
    AFANDA Dashboard Grid System

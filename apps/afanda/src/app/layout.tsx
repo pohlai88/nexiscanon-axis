@@ -71,15 +71,34 @@ export default function RootLayout({
       className={inter.variable}
     >
       <head>
-        {/* Prevent flash of wrong theme */}
+        {/* Prevent flash of wrong theme - Initialize theme before render */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  var theme = localStorage.getItem('afanda-theme');
+                  // Dark mode
+                  var theme = localStorage.getItem('theme');
                   if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                     document.documentElement.classList.add('dark');
+                  }
+                  
+                  // Base theme
+                  var baseTheme = localStorage.getItem('axis:base-theme') || 'midnight';
+                  document.documentElement.setAttribute('data-theme', baseTheme);
+                  
+                  // Style preset
+                  var style = localStorage.getItem('axis:style') || 'mia';
+                  document.documentElement.setAttribute('data-style', style);
+                  
+                  // Accent color
+                  var accent = localStorage.getItem('axis:accent') || 'neutral';
+                  document.documentElement.setAttribute('data-accent', accent);
+                  
+                  // Texture effects
+                  var texture = localStorage.getItem('afanda-texture-enabled');
+                  if (texture === 'true') {
+                    document.documentElement.setAttribute('data-texture', 'enabled');
                   }
                 } catch (e) {}
               })();
