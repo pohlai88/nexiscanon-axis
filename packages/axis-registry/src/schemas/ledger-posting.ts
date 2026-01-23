@@ -26,9 +26,9 @@ export const ledgerPostingRegistrySchema = metadataLiteSchema
     entityType: z.literal("ledger_posting"),
 
     // Posting-specific fields
-    economicEventId: z.string().uuid(), // Parent event
-    batchId: z.string().uuid(), // Groups DR/CR pairs
-    accountId: z.string().uuid(),
+    economicEventId: z.uuid(), // Parent event
+    batchId: z.uuid(), // Groups DR/CR pairs
+    accountId: z.uuid(),
     direction: z.enum(POSTING_DIRECTION),
     amount: z.string().regex(/^\d+(\.\d{1,4})?$/), // Always positive
     currency: z.string().length(3).default("USD"),
@@ -57,7 +57,7 @@ export const ledgerPostingInsertSchema = ledgerPostingRegistrySchema.omit({
  */
 export const postingBatchSchema = z
   .object({
-    batchId: z.string().uuid(),
+    batchId: z.uuid(),
     postings: z.array(ledgerPostingInsertSchema).min(2),
   })
   .refine(

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { X } from "lucide-react"
-import { Button } from "@/components/button"
+import { Button } from "../../components/button"
 import {
   Dialog,
   DialogClose,
@@ -12,8 +12,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/dialog"
-import { cn } from "@/lib/utils"
+} from "../../components/dialog"
+import { cn } from "../../lib/utils"
 
 export interface DashboardDialog01Props {
   trigger?: React.ReactNode

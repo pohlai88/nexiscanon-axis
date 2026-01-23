@@ -20,8 +20,8 @@ export const salesOrderLineSchema = salesLineBaseSchema.extend({
   quantityCancelled: z.number().min(0).default(0),
 
   // Reservation (optional)
-  reservationId: z.string().uuid().optional(),
-  reservedLocationId: z.string().uuid().optional(),
+  reservationId: z.uuid().optional(),
+  reservedLocationId: z.uuid().optional(),
 });
 
 export type SalesOrderLine = z.infer<typeof salesOrderLineSchema>;
@@ -32,15 +32,15 @@ export type SalesOrderLine = z.infer<typeof salesOrderLineSchema>;
 
 export const salesOrderSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Source
-  sourceQuoteId: z.string().uuid().optional(),
+  sourceQuoteId: z.uuid().optional(),
 
   // Customer
-  customerId: z.string().uuid(),
+  customerId: z.uuid(),
   customerName: z.string().max(255),
   customerPO: z.string().max(100).optional(), // Customer's PO number
 
@@ -55,7 +55,7 @@ export const salesOrderSchema = z.object({
   promisedDeliveryDate: z.string().datetime().optional(),
 
   // Pricing
-  priceListId: z.string().uuid().optional(),
+  priceListId: z.uuid().optional(),
   currency: z.string().length(3),
 
   // Lines
@@ -68,20 +68,20 @@ export const salesOrderSchema = z.object({
   grandTotal: z.string(),
 
   // Terms
-  paymentTermId: z.string().uuid().optional(),
+  paymentTermId: z.uuid().optional(),
   shippingMethod: z.string().max(100).optional(),
   notes: z.string().max(2000).optional(),
 
   // Fulfillment tracking
-  deliveryIds: z.array(z.string().uuid()).optional(),
-  invoiceIds: z.array(z.string().uuid()).optional(),
+  deliveryIds: z.array(z.uuid()).optional(),
+  invoiceIds: z.array(z.uuid()).optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  confirmedBy: z.string().uuid().optional(),
+  confirmedBy: z.uuid().optional(),
   confirmedAt: z.string().datetime().optional(),
 });
 

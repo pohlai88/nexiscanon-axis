@@ -11,7 +11,7 @@ import { z } from "zod";
 // ============================================================================
 
 export const signOffSchema = z.object({
-  signedBy: z.string().uuid().optional(),
+  signedBy: z.uuid().optional(),
   signedAt: z.string().datetime().optional(),
   role: z.string().max(100).optional(),
   notes: z.string().max(1000).optional(),
@@ -24,9 +24,9 @@ export type SignOff = z.infer<typeof signOffSchema>;
 // ============================================================================
 
 export const cutoverGatesSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Balance gates
   trialBalanceMatched: z.boolean().default(false),
@@ -64,12 +64,12 @@ export const cutoverGatesSchema = z.object({
   // Overall status
   allGatesGreen: z.boolean().default(false),
   cutoverApproved: z.boolean().default(false),
-  cutoverApprovedBy: z.string().uuid().optional(),
+  cutoverApprovedBy: z.uuid().optional(),
   cutoverApprovedAt: z.string().datetime().optional(),
 
   // Evaluation
   evaluatedAt: z.string().datetime(),
-  evaluatedBy: z.string().uuid().optional(),
+  evaluatedBy: z.uuid().optional(),
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
@@ -98,8 +98,8 @@ export type GateCheckResult = z.infer<typeof gateCheckResultSchema>;
 // ============================================================================
 
 export const cutoverReadinessReportSchema = z.object({
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
   evaluatedAt: z.string().datetime(),
 
   // Gate results

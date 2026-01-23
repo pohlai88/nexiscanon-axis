@@ -12,8 +12,8 @@ import { ROLE_TYPE, PERMISSION_SCOPE } from "./constants";
 // ============================================================================
 
 export const roleSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   code: z.string().min(1).max(50),
@@ -24,7 +24,7 @@ export const roleSchema = z.object({
   roleType: z.enum(ROLE_TYPE).default("custom"),
 
   // Hierarchy
-  parentRoleId: z.string().uuid().optional(),
+  parentRoleId: z.uuid().optional(),
   level: z.number().int().min(0).default(0),
 
   // Status
@@ -32,7 +32,7 @@ export const roleSchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type Role = z.infer<typeof roleSchema>;
@@ -42,8 +42,8 @@ export type Role = z.infer<typeof roleSchema>;
 // ============================================================================
 
 export const rolePermissionSchema = z.object({
-  roleId: z.string().uuid(),
-  permissionId: z.string().uuid(),
+  roleId: z.uuid(),
+  permissionId: z.uuid(),
 
   // Override default scope
   scope: z.enum(PERMISSION_SCOPE).optional(),
@@ -52,7 +52,7 @@ export const rolePermissionSchema = z.object({
   conditions: z.record(z.string(), z.unknown()).optional(),
 
   grantedAt: z.string().datetime(),
-  grantedBy: z.string().uuid(),
+  grantedBy: z.uuid(),
 });
 
 export type RolePermission = z.infer<typeof rolePermissionSchema>;
@@ -62,16 +62,16 @@ export type RolePermission = z.infer<typeof rolePermissionSchema>;
 // ============================================================================
 
 export const userRoleSchema = z.object({
-  userId: z.string().uuid(),
-  roleId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  userId: z.uuid(),
+  roleId: z.uuid(),
+  tenantId: z.uuid(),
 
   // Effective period
   effectiveFrom: z.string().datetime(),
   effectiveTo: z.string().datetime().optional(),
 
   assignedAt: z.string().datetime(),
-  assignedBy: z.string().uuid(),
+  assignedBy: z.uuid(),
 });
 
 export type UserRole = z.infer<typeof userRoleSchema>;

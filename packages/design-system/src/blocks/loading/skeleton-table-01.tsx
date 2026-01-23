@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Skeleton } from "@/components/skeleton"
+import { Skeleton } from "../../components/skeleton"
 import {
   Table,
   TableBody,
@@ -9,8 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/table"
-import { cn } from "@/lib/utils"
+} from "../../components/table"
+import { cn } from "../../lib/utils"
 
 export interface SkeletonTable01Props {
   columns?: number

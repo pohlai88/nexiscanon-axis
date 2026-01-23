@@ -18,13 +18,13 @@ export const debitNoteLineSchema = z.object({
   billLineNumber: z.number().int().optional(),
 
   // Item
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
 
   // Quantity
   quantity: z.number().positive(),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
 
   // Pricing
@@ -32,7 +32,7 @@ export const debitNoteLineSchema = z.object({
   discountAmount: z.string().default("0"),
 
   // Tax
-  taxCodeId: z.string().uuid().optional(),
+  taxCodeId: z.uuid().optional(),
   taxRate: z.number().min(0).max(100).default(0),
   taxAmount: z.string().default("0"),
 
@@ -50,16 +50,16 @@ export type DebitNoteLine = z.infer<typeof debitNoteLineSchema>;
 
 export const purchaseDebitNoteSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Source bill
-  sourceBillId: z.string().uuid(),
+  sourceBillId: z.uuid(),
   sourceBillNumber: z.string().max(50),
 
   // Supplier (reference by UUID, not FK per B02)
-  supplierId: z.string().uuid(),
+  supplierId: z.uuid(),
   supplierName: z.string().max(255),
 
   // Debit Note details
@@ -83,20 +83,20 @@ export const purchaseDebitNoteSchema = z.object({
   refundRequested: z.boolean().default(false),
 
   // Return goods (if applicable)
-  returnReceiptId: z.string().uuid().optional(),
+  returnReceiptId: z.uuid().optional(),
 
   // Notes
   notes: z.string().max(2000).optional(),
 
   // Posting reference (B01)
-  postingBatchId: z.string().uuid().optional(),
+  postingBatchId: z.uuid().optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  postedBy: z.string().uuid().optional(),
+  postedBy: z.uuid().optional(),
   postedAt: z.string().datetime().optional(),
 });
 

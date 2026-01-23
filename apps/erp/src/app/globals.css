@@ -1,0 +1,14 @@
+@import "@workspace/design-system/styles/globals.css";
+
+/**
+ * @axis/erp - Tailwind CSS v4 Styles
+ *
+ * Theme tokens and 9 theme variants are provided by @workspace/design-system/styles/globals.css
+ * Available themes: neutral, gray, stone, slate, zinc, midnight, opulence, heirloom, zenith
+ * Set theme with: <html data-theme="stone">
+ *
+ * @source directive tells Tailwind to scan the design-system package
+ */
+@source "../../../node_modules/@workspace/design-system/src";
+
+/* App-specific styles can be added here */

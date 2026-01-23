@@ -14,7 +14,7 @@ import { gateColorSchema } from "./constants";
 export const signoffStatusSchema = z.object({
   required: z.boolean().default(true),
   signed: z.boolean().default(false),
-  signedBy: z.string().uuid().optional(),
+  signedBy: z.uuid().optional(),
   signedAt: z.string().datetime().optional(),
   note: z.string().max(1000).optional(),
 });
@@ -41,9 +41,9 @@ export type OperationalReadiness = z.infer<typeof operationalReadinessSchema>;
 // ============================================================================
 
 export const cutoverPrerequisitesSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Gate status
   gates: z.object({

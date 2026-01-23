@@ -26,18 +26,18 @@
  */
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/card"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
-import { Progress } from "@/components/progress"
-import { Avatar } from "@/components/avatar"
+import { cn } from "../../lib/utils"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/card"
+import { Badge } from "../../components/badge"
+import { Button } from "../../components/button"
+import { Progress } from "../../components/progress"
+import { Avatar } from "../../components/avatar"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/tooltip"
+} from "../../components/tooltip"
 import {
   Table,
   TableBody,
@@ -45,7 +45,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/table"
+} from "../../components/table"
 import {
   Eye,
   EyeOff,

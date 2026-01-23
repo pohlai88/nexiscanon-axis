@@ -4,6 +4,7 @@ import {
   uuid,
   varchar,
   jsonb,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -49,38 +50,54 @@ export interface TenantSettings {
  * Note: status and plan use VARCHAR with CHECK constraints in SQL,
  * represented as varchar here for compatibility.
  */
-export const tenants = pgTable("tenants", {
-  id: uuid("id").primaryKey().defaultRandom(),
+export const tenants = pgTable(
+  "tenants",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
 
-  /** URL-safe slug (used in path: /acme/dashboard) */
-  slug: varchar("slug", { length: 63 }).notNull().unique(),
+    /** URL-safe slug (used in path: /acme/dashboard) */
+    slug: varchar("slug", { length: 63 }).notNull().unique(),
 
-  /** Display name */
-  name: varchar("name", { length: 255 }).notNull(),
+    /** Display name */
+    name: varchar("name", { length: 255 }).notNull(),
 
-  /** Tenant type (organization, team, personal) */
-  type: varchar("type", { length: 20 }).notNull().default("organization").$type<TenantType>(),
+    /** Tenant type (organization, team, personal) */
+    type: varchar("type", { length: 20 })
+      .notNull()
+      .default("organization")
+      .$type<TenantType>(),
 
-  /** Parent tenant ID (for teams within orgs) */
-  parentId: uuid("parent_id"),
+    /** Parent tenant ID (for teams within orgs) */
+    parentId: uuid("parent_id"),
 
-  /** Tenant status (active, suspended, pending, deleted) */
-  status: varchar("status", { length: 20 }).notNull().default("active").$type<TenantStatus>(),
+    /** Tenant status (active, suspended, pending, deleted) */
+    status: varchar("status", { length: 20 })
+      .notNull()
+      .default("active")
+      .$type<TenantStatus>(),
 
-  /** Subscription plan (free, starter, professional, enterprise) */
-  plan: varchar("plan", { length: 20 }).notNull().default("free").$type<SubscriptionPlan>(),
+    /** Subscription plan (free, starter, professional, enterprise) */
+    plan: varchar("plan", { length: 20 })
+      .notNull()
+      .default("free")
+      .$type<SubscriptionPlan>(),
 
-  /** Settings stored as JSONB */
-  settings: jsonb("settings").$type<TenantSettings>().default({}),
+    /** Settings stored as JSONB */
+    settings: jsonb("settings").$type<TenantSettings>().default({}),
 
-  /** Timestamps */
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-});
+    /** Timestamps */
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => ({
+    // F01 B4 — Index Naming Convention: {table}_{columns}_unique
+    slugUniqueIdx: uniqueIndex("tenants_slug_unique").on(table.slug),
+  })
+);
 
 /**
  * Tenant relations.

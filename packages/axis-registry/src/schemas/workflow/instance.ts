@@ -12,21 +12,21 @@ import { INSTANCE_STATUS } from "./constants";
 // ============================================================================
 
 export const workflowInstanceSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Definition reference
-  workflowDefinitionId: z.string().uuid(),
+  workflowDefinitionId: z.uuid(),
   workflowCode: z.string().max(50),
   workflowVersion: z.number().int(),
 
   // Target document (cross-domain reference by UUID, not FK per B02)
   documentType: z.string().min(1).max(50),
-  documentId: z.string().uuid(),
+  documentId: z.uuid(),
   documentNumber: z.string().max(50).optional(),
 
   // Requester
-  requestedBy: z.string().uuid(),
+  requestedBy: z.uuid(),
   requestedAt: z.string().datetime(),
 
   // Current state
@@ -38,7 +38,7 @@ export const workflowInstanceSchema = z.object({
 
   // Completion
   completedAt: z.string().datetime().optional(),
-  completedBy: z.string().uuid().optional(),
+  completedBy: z.uuid().optional(),
 
   // Result
   finalDecision: z.enum(["approved", "rejected"]).optional(),

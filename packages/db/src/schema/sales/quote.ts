@@ -1,107 +1,124 @@
-/**
- * Sales Quote Table (B04)
- *
- * Non-binding commitment capturing customer requirements.
- */
-
 import {
   pgTable,
   timestamp,
   uuid,
   varchar,
-  jsonb,
-  integer,
   numeric,
+  jsonb,
   text,
   index,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { tenants } from "../tenant";
-import {
-  type QuoteStatus,
-  type AddressSnapshot,
-  type SalesQuoteLine,
-} from "@axis/registry/schemas";
+import { users } from "../user";
 
+/**
+ * Quote status values.
+ */
+export const QUOTE_STATUS = ["draft", "sent", "accepted", "rejected", "expired", "converted"] as const;
+export type QuoteStatus = (typeof QUOTE_STATUS)[number];
+
+/**
+ * Quote line item structure.
+ */
+export interface QuoteLineItem {
+  description: string;
+  quantity: number;
+  unit_price: string; // String for decimal precision
+  tax_rate?: string;
+  amount: string;
+}
+
+/**
+ * Sales Quotes table.
+ * 
+ * First step in sales cycle: Quote → Order → Invoice
+ */
 export const salesQuotes = pgTable(
   "sales_quotes",
   {
     id: uuid("id").primaryKey().defaultRandom(),
+
+    /** Tenant isolation */
     tenantId: uuid("tenant_id")
       .notNull()
       .references(() => tenants.id, { onDelete: "cascade" }),
 
-    // Identity
-    documentNumber: varchar("document_number", { length: 50 }).notNull(),
+    /** Quote details */
+    quoteNumber: varchar("quote_number", { length: 50 }).notNull(),
+    quoteDate: timestamp("quote_date", { withTimezone: true }).notNull(),
+    validUntil: timestamp("valid_until", { withTimezone: true }),
 
-    // Customer (reference by UUID, not FK per B02)
-    customerId: uuid("customer_id").notNull(),
+    /** Customer reference */
+    customerId: uuid("customer_id"),
     customerName: varchar("customer_name", { length: 255 }).notNull(),
+    customerEmail: varchar("customer_email", { length: 255 }),
 
-    // Addresses (snapshot)
-    billingAddress: jsonb("billing_address").notNull().$type<AddressSnapshot>(),
-    shippingAddress: jsonb("shipping_address").$type<AddressSnapshot>(),
-
-    // Status
+    /** Status & workflow */
     status: varchar("status", { length: 20 })
       .notNull()
       .default("draft")
       .$type<QuoteStatus>(),
-    validUntil: timestamp("valid_until", { withTimezone: true }).notNull(),
 
-    // Pricing
-    priceListId: uuid("price_list_id"),
-    currency: varchar("currency", { length: 3 }).notNull(),
+    /** Financial */
+    currency: varchar("currency", { length: 3 }).notNull().default("USD"),
+    subtotal: numeric("subtotal", { precision: 19, scale: 4 }).notNull(),
+    taxTotal: numeric("tax_total", { precision: 19, scale: 4 }).notNull().default("0"),
+    totalAmount: numeric("total_amount", { precision: 19, scale: 4 }).notNull(),
 
-    // Lines (embedded JSON for simplicity; can be normalized later)
-    lines: jsonb("lines").notNull().$type<SalesQuoteLine[]>(),
+    /** Line items (JSONB array) */
+    lineItems: jsonb("line_items").notNull().$type<QuoteLineItem[]>(),
 
-    // Totals (decimal as numeric for precision)
-    subtotal: numeric("subtotal", { precision: 18, scale: 4 }).notNull(),
-    discountTotal: numeric("discount_total", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    taxTotal: numeric("tax_total", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    grandTotal: numeric("grand_total", { precision: 18, scale: 4 }).notNull(),
-
-    // Terms
-    paymentTermId: uuid("payment_term_id"),
+    /** Metadata */
     notes: text("notes"),
-    termsAndConditions: text("terms_and_conditions"),
+    termsConditions: text("terms_conditions"),
+    metadata: jsonb("metadata").$type<Record<string, unknown>>().default({}),
 
-    // Conversion tracking
-    convertedToOrderIds: jsonb("converted_to_order_ids").$type<string[]>(),
+    /** Conversion tracking */
+    convertedToOrderId: uuid("converted_to_order_id"),
+    convertedAt: timestamp("converted_at", { withTimezone: true }),
 
-    // Audit
-    createdBy: uuid("created_by").notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
+    /** Audit */
+    createdBy: uuid("created_by")
       .notNull()
-      .defaultNow(),
-    updatedBy: uuid("updated_by"),
-    updatedAt: timestamp("updated_at", { withTimezone: true }),
-
-    // Version for optimistic locking
-    version: integer("version").notNull().default(1),
+      .references(() => users.id),
+    modifiedBy: uuid("modified_by")
+      .notNull()
+      .references(() => users.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
     index("idx_sales_quotes_tenant").on(table.tenantId),
     index("idx_sales_quotes_customer").on(table.tenantId, table.customerId),
     index("idx_sales_quotes_status").on(table.tenantId, table.status),
-    index("idx_sales_quotes_doc_number").on(
-      table.tenantId,
-      table.documentNumber
-    ),
+    uniqueIndex("sales_quotes_tenant_number_idx").on(table.tenantId, table.quoteNumber),
   ]
 );
 
+/**
+ * Sales Quotes relations.
+ */
 export const salesQuotesRelations = relations(salesQuotes, ({ one }) => ({
   tenant: one(tenants, {
     fields: [salesQuotes.tenantId],
     references: [tenants.id],
   }),
+  creator: one(users, {
+    fields: [salesQuotes.createdBy],
+    references: [users.id],
+    relationName: "quote_creator",
+  }),
+  modifier: one(users, {
+    fields: [salesQuotes.modifiedBy],
+    references: [users.id],
+    relationName: "quote_modifier",
+  }),
 }));
 
-export type SalesQuoteRow = typeof salesQuotes.$inferSelect;
-export type NewSalesQuoteRow = typeof salesQuotes.$inferInsert;
+/**
+ * TypeScript types inferred from schema.
+ */
+export type SalesQuote = typeof salesQuotes.$inferSelect;
+export type NewSalesQuote = typeof salesQuotes.$inferInsert;

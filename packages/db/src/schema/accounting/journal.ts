@@ -15,8 +15,10 @@ import {
   boolean,
   text,
   index,
+  check,
+  pgPolicy,
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { tenants } from "../tenant";
 import {
   type JournalType,
@@ -102,6 +104,25 @@ export const journalEntries = pgTable(
     version: integer("version").notNull().default(1),
   },
   (table) => [
+    // F01 LAW F01-05 — CHECK Constraints for business rules
+    check(
+      "journal_entries_balanced",
+      sql`${table.totalDebit} = ${table.totalCredit}`
+    ),
+    check(
+      "journal_entries_amounts_positive",
+      sql`${table.totalDebit} >= 0 AND ${table.totalCredit} >= 0`
+    ),
+
+    // F01 LAW F01-06 — Row-Level Security (RLS) for tenant isolation
+    pgPolicy("journal_entries_tenant_isolation", {
+      as: "permissive",
+      for: "all",
+      to: "public",
+      using: sql`${table.tenantId} = current_setting('app.tenant_id', true)::uuid`,
+    }),
+
+    // Indexes
     index("idx_journal_entries_tenant").on(table.tenantId),
     index("idx_journal_entries_type").on(table.tenantId, table.journalType),
     index("idx_journal_entries_status").on(table.tenantId, table.status),

@@ -1,123 +1,163 @@
-/**
- * Sales Order Table (B04)
- *
- * Binding commitment driving delivery and invoicing.
- */
-
 import {
   pgTable,
   timestamp,
   uuid,
   varchar,
-  jsonb,
-  integer,
   numeric,
+  jsonb,
   text,
   index,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { tenants } from "../tenant";
-import {
-  type OrderStatus,
-  type AddressSnapshot,
-  type SalesOrderLine,
-} from "@axis/registry/schemas";
+import { users } from "../user";
+import { customers } from "../customer";
+import { salesQuotes } from "./quote";
 
+/**
+ * Order status values.
+ */
+export const ORDER_STATUS = [
+  "pending",
+  "confirmed",
+  "in_progress",
+  "delivered",
+  "invoiced",
+  "cancelled",
+] as const;
+export type OrderStatus = (typeof ORDER_STATUS)[number];
+
+/**
+ * Sales order line item structure.
+ */
+export interface SalesOrderLineItem {
+  description: string;
+  quantity: number;
+  unit_price: string; // String for decimal precision
+  tax_rate?: string;
+  amount: string;
+  product_id?: string;
+}
+
+/** @deprecated Use SalesOrderLineItem instead */
+export type OrderLineItem = SalesOrderLineItem;
+
+/**
+ * Sales delivery address structure.
+ */
+export interface SalesDeliveryAddress {
+  line1: string;
+  line2?: string;
+  city: string;
+  state?: string;
+  postal_code: string;
+  country: string;
+}
+
+/** @deprecated Use SalesDeliveryAddress instead */
+export type DeliveryAddress = SalesDeliveryAddress;
+
+/**
+ * Sales Orders table.
+ * 
+ * Second step in sales cycle: Quote → Order → Invoice
+ */
 export const salesOrders = pgTable(
   "sales_orders",
   {
     id: uuid("id").primaryKey().defaultRandom(),
+
+    /** Tenant isolation */
     tenantId: uuid("tenant_id")
       .notNull()
       .references(() => tenants.id, { onDelete: "cascade" }),
 
-    // Identity
-    documentNumber: varchar("document_number", { length: 50 }).notNull(),
-
-    // Source
-    sourceQuoteId: uuid("source_quote_id"),
-
-    // Customer (reference by UUID, not FK per B02)
-    customerId: uuid("customer_id").notNull(),
-    customerName: varchar("customer_name", { length: 255 }).notNull(),
-    customerPO: varchar("customer_po", { length: 100 }),
-
-    // Addresses (snapshot)
-    billingAddress: jsonb("billing_address").notNull().$type<AddressSnapshot>(),
-    shippingAddress: jsonb("shipping_address")
-      .notNull()
-      .$type<AddressSnapshot>(),
-
-    // Status
-    status: varchar("status", { length: 30 })
-      .notNull()
-      .default("draft")
-      .$type<OrderStatus>(),
+    /** Order details */
+    orderNumber: varchar("order_number", { length: 50 }).notNull(),
     orderDate: timestamp("order_date", { withTimezone: true }).notNull(),
-    requestedDeliveryDate: timestamp("requested_delivery_date", {
-      withTimezone: true,
-    }),
-    promisedDeliveryDate: timestamp("promised_delivery_date", {
-      withTimezone: true,
-    }),
+    expectedDeliveryDate: timestamp("expected_delivery_date", { withTimezone: true }),
 
-    // Pricing
-    priceListId: uuid("price_list_id"),
-    currency: varchar("currency", { length: 3 }).notNull(),
+    /** Customer reference */
+    customerId: uuid("customer_id").references(() => customers.id, { onDelete: "restrict" }),
+    customerName: varchar("customer_name", { length: 255 }).notNull(),
+    customerEmail: varchar("customer_email", { length: 255 }),
 
-    // Lines
-    lines: jsonb("lines").notNull().$type<SalesOrderLine[]>(),
+    /** Source tracking */
+    quoteId: uuid("quote_id").references(() => salesQuotes.id),
 
-    // Totals
-    subtotal: numeric("subtotal", { precision: 18, scale: 4 }).notNull(),
-    discountTotal: numeric("discount_total", { precision: 18, scale: 4 })
+    /** Status & workflow */
+    status: varchar("status", { length: 20 })
       .notNull()
-      .default("0"),
-    taxTotal: numeric("tax_total", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    grandTotal: numeric("grand_total", { precision: 18, scale: 4 }).notNull(),
+      .default("pending")
+      .$type<OrderStatus>(),
 
-    // Terms
-    paymentTermId: uuid("payment_term_id"),
-    shippingMethod: varchar("shipping_method", { length: 100 }),
+    /** Financial */
+    currency: varchar("currency", { length: 3 }).notNull().default("USD"),
+    subtotal: numeric("subtotal", { precision: 19, scale: 4 }).notNull(),
+    taxTotal: numeric("tax_total", { precision: 19, scale: 4 }).notNull().default("0"),
+    totalAmount: numeric("total_amount", { precision: 19, scale: 4 }).notNull(),
+
+    /** Line items (JSONB array) */
+    lineItems: jsonb("line_items").notNull().$type<SalesOrderLineItem[]>(),
+
+    /** Delivery tracking */
+    deliveryAddress: jsonb("delivery_address").$type<SalesDeliveryAddress>(),
+    deliveredAt: timestamp("delivered_at", { withTimezone: true }),
+
+    /** Invoice tracking */
+    invoicedAt: timestamp("invoiced_at", { withTimezone: true }),
+    invoiceId: uuid("invoice_id"),
+
+    /** Metadata */
     notes: text("notes"),
+    metadata: jsonb("metadata").$type<Record<string, unknown>>().default({}),
 
-    // Fulfillment tracking
-    deliveryIds: jsonb("delivery_ids").$type<string[]>(),
-    invoiceIds: jsonb("invoice_ids").$type<string[]>(),
-
-    // Audit
-    createdBy: uuid("created_by").notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
+    /** Audit */
+    createdBy: uuid("created_by")
       .notNull()
-      .defaultNow(),
-    updatedBy: uuid("updated_by"),
-    updatedAt: timestamp("updated_at", { withTimezone: true }),
-    confirmedBy: uuid("confirmed_by"),
-    confirmedAt: timestamp("confirmed_at", { withTimezone: true }),
-
-    // Version
-    version: integer("version").notNull().default(1),
+      .references(() => users.id),
+    modifiedBy: uuid("modified_by")
+      .notNull()
+      .references(() => users.id),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
     index("idx_sales_orders_tenant").on(table.tenantId),
     index("idx_sales_orders_customer").on(table.tenantId, table.customerId),
     index("idx_sales_orders_status").on(table.tenantId, table.status),
-    index("idx_sales_orders_doc_number").on(
-      table.tenantId,
-      table.documentNumber
-    ),
-    index("idx_sales_orders_order_date").on(table.tenantId, table.orderDate),
+    index("idx_sales_orders_quote").on(table.quoteId),
+    uniqueIndex("sales_orders_tenant_number_idx").on(table.tenantId, table.orderNumber),
   ]
 );
 
+/**
+ * Sales Orders relations.
+ */
 export const salesOrdersRelations = relations(salesOrders, ({ one }) => ({
   tenant: one(tenants, {
     fields: [salesOrders.tenantId],
     references: [tenants.id],
   }),
+  quote: one(salesQuotes, {
+    fields: [salesOrders.quoteId],
+    references: [salesQuotes.id],
+  }),
+  creator: one(users, {
+    fields: [salesOrders.createdBy],
+    references: [users.id],
+    relationName: "order_creator",
+  }),
+  modifier: one(users, {
+    fields: [salesOrders.modifiedBy],
+    references: [users.id],
+    relationName: "order_modifier",
+  }),
 }));
 
-export type SalesOrderRow = typeof salesOrders.$inferSelect;
-export type NewSalesOrderRow = typeof salesOrders.$inferInsert;
+/**
+ * TypeScript types inferred from schema.
+ */
+export type SalesOrder = typeof salesOrders.$inferSelect;
+export type NewSalesOrder = typeof salesOrders.$inferInsert;

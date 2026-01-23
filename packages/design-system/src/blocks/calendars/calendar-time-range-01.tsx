@@ -1,11 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { Calendar } from "@/components/calendar"
-import { Card, CardContent, CardFooter } from "@/components/card"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
-import { cn } from "@/lib/utils"
+import { Calendar } from "../../components/calendar"
+import { Card, CardContent, CardFooter } from "../../components/card"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
+import { cn } from "../../lib/utils"
 
 export interface CalendarTimeRange01Props {
   value?: Date

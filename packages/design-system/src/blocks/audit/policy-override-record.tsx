@@ -29,19 +29,19 @@
  */
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/card"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
-import { Label } from "@/components/label"
-import { Textarea } from "@/components/textarea"
+import { cn } from "../../lib/utils"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../../components/card"
+import { Badge } from "../../components/badge"
+import { Button } from "../../components/button"
+import { Label } from "../../components/label"
+import { Textarea } from "../../components/textarea"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/select"
+} from "../../components/select"
 import {
   AlertTriangle,
   FileText,

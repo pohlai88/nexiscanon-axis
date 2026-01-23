@@ -15,12 +15,12 @@ import {
 // ============================================================================
 
 export const mappingChangeSchema = z.object({
-  mappingId: z.string().uuid(),
+  mappingId: z.uuid(),
   mappingType: z.enum(["column", "coa", "alias", "tax"]),
   field: z.string(),
   oldValue: z.unknown(),
   newValue: z.unknown(),
-  changedBy: z.string().uuid(),
+  changedBy: z.uuid(),
   changedAt: z.string().datetime(),
 });
 
@@ -31,9 +31,9 @@ export type MappingChange = z.infer<typeof mappingChangeSchema>;
 // ============================================================================
 
 export const studioMappingVersionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Version number
   version: z.number().int(),
@@ -59,7 +59,7 @@ export const studioMappingVersionSchema = z.object({
   changes: z.array(mappingChangeSchema).default([]),
 
   // Trial import (if run)
-  trialImportId: z.string().uuid().optional(),
+  trialImportId: z.uuid().optional(),
   trialImportStatus: trialImportStatusSchema.optional(),
   trialImportResult: z
     .object({
@@ -71,7 +71,7 @@ export const studioMappingVersionSchema = z.object({
     .optional(),
 
   createdAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type StudioMappingVersion = z.infer<typeof studioMappingVersionSchema>;
@@ -81,10 +81,10 @@ export type StudioMappingVersion = z.infer<typeof studioMappingVersionSchema>;
 // ============================================================================
 
 export const trialImportSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
-  mappingVersionId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
+  mappingVersionId: z.uuid(),
 
   // Status
   status: trialImportStatusSchema,
@@ -120,7 +120,7 @@ export const trialImportSchema = z.object({
   cleanedUpAt: z.string().datetime().optional(),
 
   createdAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type TrialImport = z.infer<typeof trialImportSchema>;

@@ -47,8 +47,8 @@ export type TransformChain = z.infer<typeof transformChainSchema>;
 // ============================================================================
 
 export const columnTransformRuleSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Source reference
   sourceTable: z.string(),
@@ -72,7 +72,7 @@ export const columnTransformRuleSchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type ColumnTransformRule = z.infer<typeof columnTransformRuleSchema>;
@@ -96,7 +96,7 @@ export type TransformResult = z.infer<typeof transformResultSchema>;
 // ============================================================================
 
 export const batchTransformResultSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
   sourceTable: z.string(),
 
   // Counts
@@ -130,14 +130,14 @@ export type BatchTransformResult = z.infer<typeof batchTransformResultSchema>;
 // ============================================================================
 
 export const canonicalRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Source reference
   sourceTable: z.string(),
   sourceRowId: z.string(),
-  rawRecordId: z.string().uuid(),
+  rawRecordId: z.uuid(),
 
   // Target entity
   targetEntity: z.string(), // "party", "item", "account", etc.
@@ -152,7 +152,7 @@ export const canonicalRecordSchema = z.object({
   // Import status
   isImported: z.boolean().default(false),
   importedAt: z.string().datetime().optional(),
-  importedRecordId: z.string().uuid().optional(), // ID in AXIS system
+  importedRecordId: z.uuid().optional(), // ID in AXIS system
 
   createdAt: z.string().datetime(),
 });

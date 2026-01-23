@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { Bell, Menu, Search, Settings, User } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar"
-import { Button } from "@/components/button"
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/avatar"
+import { Button } from "../../components/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,9 +11,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/dropdown-menu"
-import { Input } from "@/components/input"
-import { cn } from "@/lib/utils"
+} from "../../components/dropdown-menu"
+import { Input } from "../../components/input"
+import { cn } from "../../lib/utils"
 
 export interface DashboardHeaderUser {
   name: string

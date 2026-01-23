@@ -16,7 +16,7 @@ export const purchaseRequestLineSchema = z.object({
   lineNumber: z.number().int().positive(),
 
   // Item (can be free text for new items)
-  itemId: z.string().uuid().optional(),
+  itemId: z.uuid().optional(),
   itemSku: z.string().max(50).optional(),
   itemName: z.string().min(1).max(255),
   itemDescription: z.string().max(500).optional(),
@@ -24,7 +24,7 @@ export const purchaseRequestLineSchema = z.object({
   // Quantity
   quantityRequested: z.number().positive(),
   quantityOrdered: z.number().min(0).default(0),
-  uomId: z.string().uuid().optional(),
+  uomId: z.uuid().optional(),
   uomSymbol: z.string().max(20).optional(),
 
   // Estimated pricing
@@ -32,7 +32,7 @@ export const purchaseRequestLineSchema = z.object({
   estimatedTotal: z.string().optional(),
 
   // Delivery
-  deliverToLocationId: z.string().uuid().optional(),
+  deliverToLocationId: z.uuid().optional(),
   deliverToLocationName: z.string().max(255).optional(),
 
   notes: z.string().max(500).optional(),
@@ -46,14 +46,14 @@ export type PurchaseRequestLine = z.infer<typeof purchaseRequestLineSchema>;
 
 export const purchaseRequestSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Requester
-  requesterId: z.string().uuid(),
+  requesterId: z.uuid(),
   requesterName: z.string().max(255),
-  departmentId: z.string().uuid().optional(),
+  departmentId: z.uuid().optional(),
   departmentName: z.string().max(255).optional(),
 
   // PR specifics
@@ -62,7 +62,7 @@ export const purchaseRequestSchema = z.object({
   requiredByDate: z.string().datetime().optional(),
 
   // Suggested supplier (optional)
-  suggestedSupplierId: z.string().uuid().optional(),
+  suggestedSupplierId: z.uuid().optional(),
   suggestedSupplierName: z.string().max(255).optional(),
 
   // Lines
@@ -74,8 +74,8 @@ export const purchaseRequestSchema = z.object({
 
   // Budget reference
   budgetCode: z.string().max(50).optional(),
-  costCenterId: z.string().uuid().optional(),
-  projectId: z.string().uuid().optional(),
+  costCenterId: z.uuid().optional(),
+  projectId: z.uuid().optional(),
 
   // Justification
   justification: z.string().max(2000).optional(),
@@ -84,12 +84,12 @@ export const purchaseRequestSchema = z.object({
   approvalChain: z.array(approvalEntrySchema).optional(),
 
   // PO tracking
-  poIds: z.array(z.string().uuid()).optional(),
+  poIds: z.array(z.uuid()).optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
   submittedAt: z.string().datetime().optional(),
   approvedAt: z.string().datetime().optional(),

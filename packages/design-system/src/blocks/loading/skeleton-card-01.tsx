@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Skeleton } from "@/components/skeleton"
-import { cn } from "@/lib/utils"
+import { Skeleton } from "../../components/skeleton"
+import { cn } from "../../lib/utils"
 
 export interface SkeletonCard01Props {
   imageHeight?: number

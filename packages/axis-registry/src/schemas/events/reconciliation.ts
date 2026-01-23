@@ -21,13 +21,13 @@ import {
 export const reconciliationJobStartedEventSchema = createEventSchema(
   "reconciliation.started",
   z.object({
-    jobId: z.string().uuid(),
+    jobId: z.uuid(),
     jobNumber: z.string(),
     reconciliationType: z.enum(RECONCILIATION_TYPE),
     asOfDate: z.string().datetime(),
     sourceType: z.string(),
     targetType: z.string(),
-    startedBy: z.string().uuid(),
+    startedBy: z.uuid(),
   })
 );
 
@@ -36,7 +36,7 @@ export type ReconciliationJobStartedEvent = z.infer<typeof reconciliationJobStar
 export const reconciliationJobCompletedEventSchema = createEventSchema(
   "reconciliation.completed",
   z.object({
-    jobId: z.string().uuid(),
+    jobId: z.uuid(),
     jobNumber: z.string(),
     status: z.enum(RECONCILIATION_STATUS),
     matchedRecords: z.number().int(),
@@ -52,9 +52,9 @@ export type ReconciliationJobCompletedEvent = z.infer<typeof reconciliationJobCo
 export const reconciliationJobCancelledEventSchema = createEventSchema(
   "reconciliation.cancelled",
   z.object({
-    jobId: z.string().uuid(),
+    jobId: z.uuid(),
     jobNumber: z.string(),
-    cancelledBy: z.string().uuid(),
+    cancelledBy: z.uuid(),
     cancellationReason: z.string().optional(),
   })
 );
@@ -68,12 +68,12 @@ export type ReconciliationJobCancelledEvent = z.infer<typeof reconciliationJobCa
 export const matchCreatedEventSchema = createEventSchema(
   "match.created",
   z.object({
-    matchId: z.string().uuid(),
-    jobId: z.string().uuid(),
+    matchId: z.uuid(),
+    jobId: z.uuid(),
     matchStatus: z.string(),
     sourceType: z.string(),
-    sourceId: z.string().uuid(),
-    targetId: z.string().uuid().optional(),
+    sourceId: z.uuid(),
+    targetId: z.uuid().optional(),
     matchScore: z.number().optional(),
   })
 );
@@ -83,11 +83,11 @@ export type MatchCreatedEvent = z.infer<typeof matchCreatedEventSchema>;
 export const manualMatchPerformedEventSchema = createEventSchema(
   "match.manual_performed",
   z.object({
-    matchId: z.string().uuid(),
-    jobId: z.string().uuid(),
-    sourceId: z.string().uuid(),
-    targetId: z.string().uuid(),
-    matchedBy: z.string().uuid(),
+    matchId: z.uuid(),
+    jobId: z.uuid(),
+    sourceId: z.uuid(),
+    targetId: z.uuid(),
+    matchedBy: z.uuid(),
     matchNotes: z.string().optional(),
   })
 );
@@ -101,8 +101,8 @@ export type ManualMatchPerformedEvent = z.infer<typeof manualMatchPerformedEvent
 export const exceptionCreatedEventSchema = createEventSchema(
   "exception.created",
   z.object({
-    exceptionId: z.string().uuid(),
-    jobId: z.string().uuid(),
+    exceptionId: z.uuid(),
+    jobId: z.uuid(),
     exceptionType: z.enum(EXCEPTION_TYPE),
     severity: z.enum(EXCEPTION_SEVERITY),
     varianceAmount: z.string().optional(),
@@ -115,10 +115,10 @@ export type ExceptionCreatedEvent = z.infer<typeof exceptionCreatedEventSchema>;
 export const exceptionAssignedEventSchema = createEventSchema(
   "exception.assigned",
   z.object({
-    exceptionId: z.string().uuid(),
-    jobId: z.string().uuid(),
-    assignedTo: z.string().uuid(),
-    assignedBy: z.string().uuid(),
+    exceptionId: z.uuid(),
+    jobId: z.uuid(),
+    assignedTo: z.uuid(),
+    assignedBy: z.uuid(),
   })
 );
 
@@ -127,9 +127,9 @@ export type ExceptionAssignedEvent = z.infer<typeof exceptionAssignedEventSchema
 export const exceptionEscalatedEventSchema = createEventSchema(
   "exception.escalated",
   z.object({
-    exceptionId: z.string().uuid(),
-    jobId: z.string().uuid(),
-    escalatedTo: z.string().uuid().optional(),
+    exceptionId: z.uuid(),
+    jobId: z.uuid(),
+    escalatedTo: z.uuid().optional(),
     escalationReason: z.string(),
     ageInDays: z.number().int(),
   })
@@ -140,11 +140,11 @@ export type ExceptionEscalatedEvent = z.infer<typeof exceptionEscalatedEventSche
 export const exceptionResolvedEventSchema = createEventSchema(
   "exception.resolved",
   z.object({
-    exceptionId: z.string().uuid(),
-    jobId: z.string().uuid(),
+    exceptionId: z.uuid(),
+    jobId: z.uuid(),
     resolutionType: z.enum(RESOLUTION_TYPE),
-    resolvedBy: z.string().uuid(),
-    adjustmentJournalId: z.string().uuid().optional(),
+    resolvedBy: z.uuid(),
+    adjustmentJournalId: z.uuid().optional(),
     resolutionNotes: z.string().optional(),
   })
 );
@@ -154,11 +154,11 @@ export type ExceptionResolvedEvent = z.infer<typeof exceptionResolvedEventSchema
 export const exceptionWriteOffApprovedEventSchema = createEventSchema(
   "exception.writeoff_approved",
   z.object({
-    exceptionId: z.string().uuid(),
-    jobId: z.string().uuid(),
+    exceptionId: z.uuid(),
+    jobId: z.uuid(),
     writeOffAmount: z.string(),
-    approvedBy: z.string().uuid(),
-    journalId: z.string().uuid(),
+    approvedBy: z.uuid(),
+    journalId: z.uuid(),
   })
 );
 
@@ -171,15 +171,15 @@ export type ExceptionWriteOffApprovedEvent = z.infer<typeof exceptionWriteOffApp
 export const bankStatementImportedEventSchema = createEventSchema(
   "bankstatement.imported",
   z.object({
-    statementId: z.string().uuid(),
-    bankAccountId: z.string().uuid(),
+    statementId: z.uuid(),
+    bankAccountId: z.uuid(),
     statementNumber: z.string(),
     periodStart: z.string().datetime(),
     periodEnd: z.string().datetime(),
     lineCount: z.number().int(),
     openingBalance: z.string(),
     closingBalance: z.string(),
-    importedBy: z.string().uuid(),
+    importedBy: z.uuid(),
   })
 );
 
@@ -188,9 +188,9 @@ export type BankStatementImportedEvent = z.infer<typeof bankStatementImportedEve
 export const bankStatementReconciledEventSchema = createEventSchema(
   "bankstatement.reconciled",
   z.object({
-    statementId: z.string().uuid(),
-    jobId: z.string().uuid(),
-    reconciledBy: z.string().uuid(),
+    statementId: z.uuid(),
+    jobId: z.uuid(),
+    reconciledBy: z.uuid(),
     finalVariance: z.string(),
   })
 );

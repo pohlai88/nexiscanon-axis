@@ -12,20 +12,20 @@ import { DANGER_ZONE_TYPE, DANGER_ZONE_STATUS } from "./constants";
 // ============================================================================
 
 export const dangerZoneRequestSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Type
   dangerZoneType: z.enum(DANGER_ZONE_TYPE),
 
   // Request
-  requestedBy: z.string().uuid(),
+  requestedBy: z.uuid(),
   requestedAt: z.string().datetime(),
   reason: z.string().min(10).max(1000),
 
   // Context
   targetDocumentType: z.string().min(1).max(50),
-  targetDocumentId: z.string().uuid(),
+  targetDocumentId: z.uuid(),
   targetDocumentNumber: z.string().max(50).optional(),
 
   // Action details
@@ -35,12 +35,12 @@ export const dangerZoneRequestSchema = z.object({
   status: z.enum(DANGER_ZONE_STATUS).default("pending"),
 
   // Approval
-  approvedBy: z.string().uuid().optional(),
+  approvedBy: z.uuid().optional(),
   approvedAt: z.string().datetime().optional(),
   approvalNotes: z.string().max(1000).optional(),
 
   // Rejection
-  rejectedBy: z.string().uuid().optional(),
+  rejectedBy: z.uuid().optional(),
   rejectedAt: z.string().datetime().optional(),
   rejectionReason: z.string().max(1000).optional(),
 

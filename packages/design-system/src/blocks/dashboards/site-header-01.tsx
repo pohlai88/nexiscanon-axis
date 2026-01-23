@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { SidebarTrigger } from "@/components/sidebar"
-import { Separator } from "@/components/separator"
+import { SidebarTrigger } from "../../components/sidebar"
+import { Separator } from "../../components/separator"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,8 +10,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/breadcrumb"
-import { cn } from "@/lib/utils"
+} from "../../components/breadcrumb"
+import { cn } from "../../lib/utils"
 
 export interface SiteHeaderBreadcrumbItem {
   label: string

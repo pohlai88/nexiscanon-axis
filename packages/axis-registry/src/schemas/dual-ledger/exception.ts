@@ -20,7 +20,7 @@ export const exceptionResolutionSchema = z.object({
   action: resolutionActionSchema,
   note: z.string().max(2000),
   adjustmentDetails: z.record(z.string(), z.unknown()).optional(),
-  resolvedBy: z.string().uuid(),
+  resolvedBy: z.uuid(),
   resolvedAt: z.string().datetime(),
 });
 
@@ -31,10 +31,10 @@ export type ExceptionResolution = z.infer<typeof exceptionResolutionSchema>;
 // ============================================================================
 
 export const migrationExceptionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
-  reconId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
+  reconId: z.uuid(),
 
   // Exception details
   exceptionType: dualLedgerExceptionTypeSchema,
@@ -64,7 +64,7 @@ export const migrationExceptionSchema = z.object({
   resolution: exceptionResolutionSchema.optional(),
 
   // Assignment
-  assignedTo: z.string().uuid().optional(),
+  assignedTo: z.uuid().optional(),
   assignedAt: z.string().datetime().optional(),
 
   // Priority
@@ -74,7 +74,7 @@ export const migrationExceptionSchema = z.object({
   notes: z.array(
     z.object({
       content: z.string().max(2000),
-      createdBy: z.string().uuid(),
+      createdBy: z.uuid(),
       createdAt: z.string().datetime(),
     })
   ).default([]),
@@ -90,7 +90,7 @@ export type MigrationException = z.infer<typeof migrationExceptionSchema>;
 // ============================================================================
 
 export const exceptionSummarySchema = z.object({
-  migrationStateId: z.string().uuid(),
+  migrationStateId: z.uuid(),
 
   // Counts by status
   openCount: z.number().int(),

@@ -17,14 +17,14 @@ export const purchaseLineBaseSchema = z.object({
   lineNumber: z.number().int().positive(),
 
   // Item reference
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
   itemDescription: z.string().max(500).optional(),
 
   // Quantity
   quantity: z.number().positive(),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
 
   // Pricing
@@ -33,7 +33,7 @@ export const purchaseLineBaseSchema = z.object({
   discountAmount: z.string().default("0"),
 
   // Tax
-  taxCodeId: z.string().uuid().optional(),
+  taxCodeId: z.uuid().optional(),
   taxRate: z.number().min(0).max(100).default(0),
   taxAmount: z.string().default("0"),
 
@@ -51,7 +51,7 @@ export type PurchaseLineBase = z.infer<typeof purchaseLineBaseSchema>;
 // ============================================================================
 
 export const approvalEntrySchema = z.object({
-  approverId: z.string().uuid(),
+  approverId: z.uuid(),
   approverName: z.string().max(255),
   status: z.enum(["pending", "approved", "rejected"]),
   approvedAt: z.string().datetime().optional(),

@@ -104,7 +104,7 @@ export type IntelligenceFeatures = z.infer<typeof intelligenceFeaturesSchema>;
 // ============================================================================
 
 export const intelligenceConfigSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
 
   // Feature toggles
   features: intelligenceFeaturesSchema,
@@ -117,7 +117,7 @@ export const intelligenceConfigSchema = z.object({
   assistant: assistantConfigSchema,
 
   updatedAt: z.string().datetime(),
-  updatedBy: z.string().uuid(),
+  updatedBy: z.uuid(),
 });
 
 export type IntelligenceConfig = z.infer<typeof intelligenceConfigSchema>;

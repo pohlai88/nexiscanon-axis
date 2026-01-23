@@ -46,9 +46,9 @@ export type ApprovalRequirement = z.infer<typeof approvalRequirementSchema>;
 // ============================================================================
 
 export const lynxAccessPolicySchema = z.object({
-  id: z.string().uuid(),
-  agentId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  agentId: z.uuid(),
+  tenantId: z.uuid(),
 
   // Domain access
   allowedDomains: z.array(z.string()),

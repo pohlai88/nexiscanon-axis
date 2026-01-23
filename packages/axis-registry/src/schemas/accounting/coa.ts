@@ -12,8 +12,8 @@ import { GL_ACCOUNT_TYPE, ACCOUNT_STATUS, SUBLEDGER_TYPE } from "./constants";
 // ============================================================================
 
 export const accountSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   code: z.string().min(1).max(20),
@@ -25,7 +25,7 @@ export const accountSchema = z.object({
   normalBalance: z.enum(["debit", "credit"]),
 
   // Hierarchy
-  parentAccountId: z.string().uuid().optional(),
+  parentAccountId: z.uuid().optional(),
   level: z.number().int().min(0).default(0),
   path: z.string().max(500).optional(),
 
@@ -43,7 +43,7 @@ export const accountSchema = z.object({
   currencyCode: z.string().length(3).optional(),
 
   // Tax
-  defaultTaxCodeId: z.string().uuid().optional(),
+  defaultTaxCodeId: z.uuid().optional(),
 
   // Status
   status: z.enum(ACCOUNT_STATUS).default("active"),

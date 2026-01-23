@@ -7,11 +7,11 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/sidebar"
+} from "../../components/sidebar"
 import { NavMain, type NavMainItem } from "./nav-main"
 import { NavUser, type NavUserProps } from "./nav-user"
 import { TeamSwitcher, type Team } from "./team-switcher"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 
 export interface CollapsibleSidebar01Props {
   teams?: Team[]

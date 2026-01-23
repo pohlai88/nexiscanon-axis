@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Check, Eye, EyeOff } from "lucide-react"
-import { Button } from "@/components/button"
+import { Button } from "../../components/button"
 import {
   Card,
   CardContent,
@@ -10,10 +10,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/field"
-import { Input } from "@/components/input"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "../../components/field"
+import { Input } from "../../components/input"
+import { cn } from "../../lib/utils"
 
 export interface ResetPasswordForm01Props {
   onSubmit?: (password: string) => void | Promise<void>

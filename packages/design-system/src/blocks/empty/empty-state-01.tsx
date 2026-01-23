@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/button"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/button"
+import { cn } from "../../lib/utils"
 
 export interface EmptyState01Props {
   icon?: React.ComponentType<{ className?: string }>

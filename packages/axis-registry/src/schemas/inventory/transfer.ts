@@ -15,19 +15,19 @@ export const transferLineSchema = z.object({
   lineNumber: z.number().int().positive(),
 
   // Item
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
 
   // Quantity
   quantity: z.number().positive(),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
 
   // Locations
-  fromLocationId: z.string().uuid(),
+  fromLocationId: z.uuid(),
   fromLocationName: z.string().max(255),
-  toLocationId: z.string().uuid(),
+  toLocationId: z.uuid(),
   toLocationName: z.string().max(255),
 
   // Lot/Serial
@@ -49,14 +49,14 @@ export type TransferLine = z.infer<typeof transferLineSchema>;
 
 export const stockTransferSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Locations (reference by UUID, not FK per B02)
-  fromWarehouseId: z.string().uuid(),
+  fromWarehouseId: z.uuid(),
   fromWarehouseName: z.string().max(255),
-  toWarehouseId: z.string().uuid(),
+  toWarehouseId: z.uuid(),
   toWarehouseName: z.string().max(255),
 
   // Status
@@ -69,7 +69,7 @@ export const stockTransferSchema = z.object({
 
   // Transit
   isInTransit: z.boolean().default(false),
-  transitLocationId: z.string().uuid().optional(),
+  transitLocationId: z.uuid().optional(),
 
   // Lines
   lines: z.array(transferLineSchema).min(1),
@@ -81,15 +81,15 @@ export const stockTransferSchema = z.object({
   notes: z.string().max(2000).optional(),
 
   // Posting reference (B01)
-  postingBatchId: z.string().uuid().optional(),
+  postingBatchId: z.uuid().optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  shippedBy: z.string().uuid().optional(),
-  receivedBy: z.string().uuid().optional(),
+  shippedBy: z.uuid().optional(),
+  receivedBy: z.uuid().optional(),
 });
 
 export type StockTransfer = z.infer<typeof stockTransferSchema>;

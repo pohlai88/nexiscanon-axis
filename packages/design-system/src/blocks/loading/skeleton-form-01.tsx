@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Skeleton } from "@/components/skeleton"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/card"
-import { cn } from "@/lib/utils"
+import { Skeleton } from "../../components/skeleton"
+import { Card, CardContent, CardFooter, CardHeader } from "../../components/card"
+import { cn } from "../../lib/utils"
 
 export interface SkeletonForm01Props {
   fields?: number

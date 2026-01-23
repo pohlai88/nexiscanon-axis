@@ -12,7 +12,7 @@ import { PERMISSION_DOMAIN, PERMISSION_ACTION, PERMISSION_SCOPE } from "./consta
 // ============================================================================
 
 export const permissionSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
 
   // Identity
   code: z.string().min(1).max(100),

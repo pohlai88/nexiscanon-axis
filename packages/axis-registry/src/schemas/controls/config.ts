@@ -11,7 +11,7 @@ import { z } from "zod";
 // ============================================================================
 
 export const controlsConfigSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
 
   // Session settings
   sessionTimeoutMinutes: z.number().int().min(5).default(60),
@@ -48,7 +48,7 @@ export const controlsConfigSchema = z.object({
   lockoutDurationMinutes: z.number().int().min(5).default(30),
 
   updatedAt: z.string().datetime(),
-  updatedBy: z.string().uuid(),
+  updatedBy: z.uuid(),
 });
 
 export type ControlsConfig = z.infer<typeof controlsConfigSchema>;

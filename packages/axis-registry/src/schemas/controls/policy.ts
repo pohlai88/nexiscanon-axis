@@ -20,8 +20,8 @@ import {
 // ============================================================================
 
 export const policySchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid().optional(), // Null = global
+  id: z.uuid(),
+  tenantId: z.uuid().optional(), // Null = global
 
   // Identity
   code: z.string().min(1).max(100),
@@ -49,7 +49,7 @@ export const policySchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type Policy = z.infer<typeof policySchema>;
@@ -59,8 +59,8 @@ export type Policy = z.infer<typeof policySchema>;
 // ============================================================================
 
 export const policyRuleSchema = z.object({
-  id: z.string().uuid(),
-  policyId: z.string().uuid(),
+  id: z.uuid(),
+  policyId: z.uuid(),
 
   // Rule definition
   ruleNumber: z.number().int().positive(),

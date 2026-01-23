@@ -17,7 +17,7 @@ export const checklistItemSchema = z.object({
   item: z.string(),
   required: z.boolean().default(true),
   completed: z.boolean().default(false),
-  completedBy: z.string().uuid().optional(),
+  completedBy: z.uuid().optional(),
   completedAt: z.string().datetime().optional(),
   notes: z.string().max(1000).optional(),
 });
@@ -29,10 +29,10 @@ export type ChecklistItem = z.infer<typeof checklistItemSchema>;
 // ============================================================================
 
 export const cutoverChecklistSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
-  cutoverExecutionId: z.string().uuid().optional(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
+  cutoverExecutionId: z.uuid().optional(),
 
   // Items
   items: z.array(checklistItemSchema),

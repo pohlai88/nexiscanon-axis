@@ -12,9 +12,9 @@ import { studioMappingStatusSchema, taxTypeSchema } from "./constants";
 // ============================================================================
 
 export const taxCodeMappingSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Source tax code
   sourceCode: z.string(),
@@ -44,7 +44,7 @@ export const taxCodeMappingSchema = z.object({
   confirmedJurisdiction: z.string().optional(),
 
   // Target AXIS tax code (if mapped to existing)
-  targetTaxCodeId: z.string().uuid().optional(),
+  targetTaxCodeId: z.uuid().optional(),
 
   // Status
   status: studioMappingStatusSchema,
@@ -54,7 +54,7 @@ export const taxCodeMappingSchema = z.object({
   rateDiscrepancy: z.number().optional(),
 
   // Review trail
-  reviewedBy: z.string().uuid().optional(),
+  reviewedBy: z.uuid().optional(),
   reviewedAt: z.string().datetime().optional(),
   reviewNote: z.string().max(500).optional(),
 

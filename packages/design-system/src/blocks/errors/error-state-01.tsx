@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/button"
-import { Card, CardContent } from "@/components/card"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/button"
+import { Card, CardContent } from "../../components/card"
+import { cn } from "../../lib/utils"
 import { AlertCircle, ServerCrash, ShieldAlert, FileQuestion } from "lucide-react"
 
 export type ErrorType = "404" | "500" | "403" | "generic"

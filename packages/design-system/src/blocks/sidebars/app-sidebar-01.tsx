@@ -9,8 +9,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/sidebar"
-import { cn } from "@/lib/utils"
+} from "../../components/sidebar"
+import { cn } from "../../lib/utils"
 
 export interface AppSidebar01Props {
   navigation: Array<{

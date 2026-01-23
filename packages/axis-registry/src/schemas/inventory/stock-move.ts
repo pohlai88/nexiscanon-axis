@@ -15,21 +15,21 @@ export const stockMoveLineSchema = z.object({
   lineNumber: z.number().int().positive(),
 
   // Item
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
 
   // Quantity
   quantity: z.number().positive(),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
   baseQuantity: z.number().positive(),
-  baseUomId: z.string().uuid(),
+  baseUomId: z.uuid(),
 
   // Locations
-  fromLocationId: z.string().uuid().optional(),
+  fromLocationId: z.uuid().optional(),
   fromLocationName: z.string().max(255).optional(),
-  toLocationId: z.string().uuid().optional(),
+  toLocationId: z.uuid().optional(),
   toLocationName: z.string().max(255).optional(),
 
   // Lot/Serial tracking
@@ -43,11 +43,11 @@ export const stockMoveLineSchema = z.object({
   costingMethod: z.enum(COSTING_METHOD),
 
   // FIFO layer reference
-  costLayerId: z.string().uuid().optional(),
+  costLayerId: z.uuid().optional(),
 
   // Accounts (reference by UUID, not FK per B02)
-  inventoryAccountId: z.string().uuid(),
-  contraAccountId: z.string().uuid(),
+  inventoryAccountId: z.uuid(),
+  contraAccountId: z.uuid(),
 
   notes: z.string().max(500).optional(),
 });
@@ -60,8 +60,8 @@ export type StockMoveLine = z.infer<typeof stockMoveLineSchema>;
 
 export const stockMoveSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Move details
@@ -70,7 +70,7 @@ export const stockMoveSchema = z.object({
 
   // Source document
   sourceDocumentType: z.string().min(1).max(50),
-  sourceDocumentId: z.string().uuid(),
+  sourceDocumentId: z.uuid(),
   sourceDocumentNumber: z.string().max(50),
 
   // Dates
@@ -88,15 +88,15 @@ export const stockMoveSchema = z.object({
   notes: z.string().max(2000).optional(),
 
   // References (B01, B07)
-  valuationBatchId: z.string().uuid().optional(),
-  postingBatchId: z.string().uuid().optional(),
+  valuationBatchId: z.uuid().optional(),
+  postingBatchId: z.uuid().optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  postedBy: z.string().uuid().optional(),
+  postedBy: z.uuid().optional(),
   postedAt: z.string().datetime().optional(),
 });
 

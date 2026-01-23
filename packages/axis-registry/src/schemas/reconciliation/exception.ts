@@ -17,10 +17,10 @@ import {
 // ============================================================================
 
 export const reconciliationExceptionSchema = z.object({
-  id: z.string().uuid(),
-  jobId: z.string().uuid(),
-  matchRecordId: z.string().uuid().optional(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  jobId: z.uuid(),
+  matchRecordId: z.uuid().optional(),
+  tenantId: z.uuid(),
 
   // Classification
   exceptionType: z.enum(EXCEPTION_TYPE),
@@ -31,12 +31,12 @@ export const reconciliationExceptionSchema = z.object({
 
   // Details
   sourceType: z.string().max(50).optional(),
-  sourceId: z.string().uuid().optional(),
+  sourceId: z.uuid().optional(),
   sourceReference: z.string().max(100).optional(),
   sourceAmount: z.string().optional(),
 
   targetType: z.string().max(50).optional(),
-  targetId: z.string().uuid().optional(),
+  targetId: z.uuid().optional(),
   targetReference: z.string().max(100).optional(),
   targetAmount: z.string().optional(),
 
@@ -49,21 +49,21 @@ export const reconciliationExceptionSchema = z.object({
   suggestedAction: z.string().max(500).optional(),
 
   // Investigation
-  assignedTo: z.string().uuid().optional(),
+  assignedTo: z.uuid().optional(),
   investigationNotes: z.string().max(2000).optional(),
 
   // Resolution
   resolutionType: z.enum(RESOLUTION_TYPE).optional(),
   resolutionNotes: z.string().max(1000).optional(),
-  resolvedBy: z.string().uuid().optional(),
+  resolvedBy: z.uuid().optional(),
   resolvedAt: z.string().datetime().optional(),
 
   // For adjustments
-  adjustmentJournalId: z.string().uuid().optional(),
+  adjustmentJournalId: z.uuid().optional(),
 
   // Approval (for write-offs)
   approvalRequired: z.boolean().default(false),
-  approvedBy: z.string().uuid().optional(),
+  approvedBy: z.uuid().optional(),
   approvedAt: z.string().datetime().optional(),
 
   createdAt: z.string().datetime(),

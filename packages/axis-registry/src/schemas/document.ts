@@ -44,14 +44,14 @@ export const documentRegistrySchema = metadataFullSchema
     documentDate: z.string().datetime(),
 
     // Optional entity reference (customer, vendor, etc.)
-    entityId: z.string().uuid().optional(),
+    entityId: z.uuid().optional(),
 
     // Business data (line items, totals, etc.)
     data: z.record(z.string(), z.unknown()),
 
     // Posting metadata
     postedAt: z.string().datetime().optional(),
-    postedBy: z.string().uuid().optional(),
+    postedBy: z.uuid().optional(),
   });
 
 /**
@@ -77,7 +77,7 @@ export const documentUpdateSchema = documentRegistrySchema
  * Document State Transition Schema - For state machine
  */
 export const documentStateTransitionSchema = z.object({
-  documentId: z.string().uuid(),
+  documentId: z.uuid(),
   fromState: z.enum(DOCUMENT_STATE),
   toState: z.enum(DOCUMENT_STATE),
   context6w1h: z.lazy(() =>

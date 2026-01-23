@@ -1,16 +1,16 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/button"
+import { Button } from "../../components/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { SidebarInput } from "@/components/sidebar"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { SidebarInput } from "../../components/sidebar"
+import { cn } from "../../lib/utils"
 
 export interface SidebarOptInFormProps {
   title?: string

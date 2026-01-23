@@ -17,7 +17,7 @@
       "validate": "tsx src/codegen/validate.ts"
     },
     "dependencies": {
-      "zod": "^4.3.5"
+      "zod": "catalog:"
     },
     "devDependencies": {
       "tsx": "catalog:",

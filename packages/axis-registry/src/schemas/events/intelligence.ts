@@ -22,10 +22,10 @@ import { ANOMALY_SEVERITY } from "../lynx/constants";
 export const intelAnomalyDetectedEventSchema = createEventSchema(
   "intelligence.anomaly.detected",
   z.object({
-    anomalyId: z.string().uuid(),
+    anomalyId: z.uuid(),
     domain: z.string(),
     entityType: z.string(),
-    entityId: z.string().uuid().optional(),
+    entityId: z.uuid().optional(),
     anomalyType: z.enum(ANOMALY_TYPE),
     severity: z.enum(ANOMALY_SEVERITY),
     title: z.string(),
@@ -38,8 +38,8 @@ export type IntelAnomalyDetectedEvent = z.infer<typeof intelAnomalyDetectedEvent
 export const intelAnomalyAcknowledgedEventSchema = createEventSchema(
   "intelligence.anomaly.acknowledged",
   z.object({
-    anomalyId: z.string().uuid(),
-    acknowledgedBy: z.string().uuid(),
+    anomalyId: z.uuid(),
+    acknowledgedBy: z.uuid(),
   })
 );
 
@@ -48,8 +48,8 @@ export type IntelAnomalyAcknowledgedEvent = z.infer<typeof intelAnomalyAcknowled
 export const intelAnomalyResolvedEventSchema = createEventSchema(
   "intelligence.anomaly.resolved",
   z.object({
-    anomalyId: z.string().uuid(),
-    resolvedBy: z.string().uuid(),
+    anomalyId: z.uuid(),
+    resolvedBy: z.uuid(),
     resolution: z.string(),
     wasFalsePositive: z.boolean(),
   })
@@ -64,9 +64,9 @@ export type IntelAnomalyResolvedEvent = z.infer<typeof intelAnomalyResolvedEvent
 export const intelForecastGeneratedEventSchema = createEventSchema(
   "intelligence.forecast.generated",
   z.object({
-    forecastId: z.string().uuid(),
+    forecastId: z.uuid(),
     forecastType: z.enum(FORECAST_TYPE),
-    targetEntityId: z.string().uuid().optional(),
+    targetEntityId: z.uuid().optional(),
     horizon: z.number().int(),
     confidenceScore: z.number().min(0).max(1),
   })
@@ -78,7 +78,7 @@ export const intelForecastFailedEventSchema = createEventSchema(
   "intelligence.forecast.failed",
   z.object({
     forecastType: z.enum(FORECAST_TYPE),
-    targetEntityId: z.string().uuid().optional(),
+    targetEntityId: z.uuid().optional(),
     error: z.string(),
   })
 );
@@ -92,7 +92,7 @@ export type IntelForecastFailedEvent = z.infer<typeof intelForecastFailedEventSc
 export const intelDocumentClassifiedEventSchema = createEventSchema(
   "intelligence.document.classified",
   z.object({
-    classificationId: z.string().uuid(),
+    classificationId: z.uuid(),
     fileName: z.string(),
     documentType: z.enum(INTEL_DOCUMENT_TYPE),
     confidence: z.number().min(0).max(1),
@@ -104,11 +104,11 @@ export type IntelDocumentClassifiedEvent = z.infer<typeof intelDocumentClassifie
 export const intelDocumentExtractedEventSchema = createEventSchema(
   "intelligence.document.extracted",
   z.object({
-    extractionId: z.string().uuid(),
-    classificationId: z.string().uuid(),
+    extractionId: z.uuid(),
+    classificationId: z.uuid(),
     documentType: z.enum(INTEL_DOCUMENT_TYPE),
     fieldsExtracted: z.number().int(),
-    matchedEntityId: z.string().uuid().optional(),
+    matchedEntityId: z.uuid().optional(),
   })
 );
 
@@ -121,10 +121,10 @@ export type IntelDocumentExtractedEvent = z.infer<typeof intelDocumentExtractedE
 export const intelRecommendationCreatedEventSchema = createEventSchema(
   "intelligence.recommendation.created",
   z.object({
-    recommendationId: z.string().uuid(),
+    recommendationId: z.uuid(),
     recommendationType: z.enum(RECOMMENDATION_TYPE),
     targetDomain: z.string(),
-    targetEntityId: z.string().uuid().optional(),
+    targetEntityId: z.uuid().optional(),
     confidence: z.number().min(0).max(1),
     automatable: z.boolean(),
   })
@@ -135,8 +135,8 @@ export type IntelRecommendationCreatedEvent = z.infer<typeof intelRecommendation
 export const intelRecommendationAcceptedEventSchema = createEventSchema(
   "intelligence.recommendation.accepted",
   z.object({
-    recommendationId: z.string().uuid(),
-    acceptedBy: z.string().uuid(),
+    recommendationId: z.uuid(),
+    acceptedBy: z.uuid(),
   })
 );
 
@@ -145,8 +145,8 @@ export type IntelRecommendationAcceptedEvent = z.infer<typeof intelRecommendatio
 export const intelRecommendationRejectedEventSchema = createEventSchema(
   "intelligence.recommendation.rejected",
   z.object({
-    recommendationId: z.string().uuid(),
-    rejectedBy: z.string().uuid(),
+    recommendationId: z.uuid(),
+    rejectedBy: z.uuid(),
     reason: z.string().optional(),
   })
 );
@@ -156,8 +156,8 @@ export type IntelRecommendationRejectedEvent = z.infer<typeof intelRecommendatio
 export const intelRecommendationImplementedEventSchema = createEventSchema(
   "intelligence.recommendation.implemented",
   z.object({
-    recommendationId: z.string().uuid(),
-    implementedBy: z.string().uuid(),
+    recommendationId: z.uuid(),
+    implementedBy: z.uuid(),
     outcome: z.enum(["successful", "partially_successful", "unsuccessful"]),
     actualImpact: z.number().optional(),
   })
@@ -172,8 +172,8 @@ export type IntelRecommendationImplementedEvent = z.infer<typeof intelRecommenda
 export const intelAssistantQueryEventSchema = createEventSchema(
   "intelligence.assistant.query",
   z.object({
-    queryId: z.string().uuid(),
-    conversationId: z.string().uuid().optional(),
+    queryId: z.uuid(),
+    conversationId: z.uuid().optional(),
     queryHash: z.string(),
     intent: z.enum(QUERY_INTENT).optional(),
     responseTimeMs: z.number().int(),

@@ -14,15 +14,15 @@ import { createEventSchema } from "./base";
 // ============================================================================
 
 export const partyCreatedPayloadSchema = z.object({
-  partyId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  partyId: z.uuid(),
+  tenantId: z.uuid(),
   code: z.string().min(1),
   name: z.string().min(1),
   type: z.enum(["customer", "supplier", "both"]),
   taxId: z.string().optional(),
-  email: z.string().email().optional(),
+  email: z.email().optional(),
   phone: z.string().optional(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export const partyCreatedEventSchema = createEventSchema(
@@ -33,10 +33,10 @@ export const partyCreatedEventSchema = createEventSchema(
 export type PartyCreatedEvent = z.infer<typeof partyCreatedEventSchema>;
 
 export const partyUpdatedPayloadSchema = z.object({
-  partyId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  partyId: z.uuid(),
+  tenantId: z.uuid(),
   changes: z.record(z.string(), z.unknown()),
-  updatedBy: z.string().uuid(),
+  updatedBy: z.uuid(),
 });
 
 export const partyUpdatedEventSchema = createEventSchema(
@@ -51,15 +51,15 @@ export type PartyUpdatedEvent = z.infer<typeof partyUpdatedEventSchema>;
 // ============================================================================
 
 export const itemCreatedPayloadSchema = z.object({
-  itemId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  itemId: z.uuid(),
+  tenantId: z.uuid(),
   sku: z.string().min(1),
   name: z.string().min(1),
   description: z.string().optional(),
   category: z.string().optional(),
   unitOfMeasure: z.string().min(1),
   isActive: z.boolean().default(true),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export const itemCreatedEventSchema = createEventSchema(
@@ -70,10 +70,10 @@ export const itemCreatedEventSchema = createEventSchema(
 export type ItemCreatedEvent = z.infer<typeof itemCreatedEventSchema>;
 
 export const itemUpdatedPayloadSchema = z.object({
-  itemId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  itemId: z.uuid(),
+  tenantId: z.uuid(),
   changes: z.record(z.string(), z.unknown()),
-  updatedBy: z.string().uuid(),
+  updatedBy: z.uuid(),
 });
 
 export const itemUpdatedEventSchema = createEventSchema(

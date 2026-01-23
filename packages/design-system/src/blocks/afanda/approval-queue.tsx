@@ -27,13 +27,13 @@
  */
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/card"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
-import { Checkbox } from "@/components/checkbox"
-import { Textarea } from "@/components/textarea"
-import { Avatar } from "@/components/avatar"
+import { cn } from "../../lib/utils"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/card"
+import { Badge } from "../../components/badge"
+import { Button } from "../../components/button"
+import { Checkbox } from "../../components/checkbox"
+import { Textarea } from "../../components/textarea"
+import { Avatar } from "../../components/avatar"
 import {
   Dialog,
   DialogContent,
@@ -41,20 +41,20 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/dialog"
+} from "../../components/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/dropdown-menu"
+} from "../../components/dropdown-menu"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/tooltip"
+} from "../../components/tooltip"
 import {
   CheckCircle,
   XCircle,

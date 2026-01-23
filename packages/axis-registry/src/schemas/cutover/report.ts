@@ -56,10 +56,10 @@ export type QualityMetrics = z.infer<typeof qualityMetricsSchema>;
 // ============================================================================
 
 export const postCutoverReportSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
-  cutoverExecutionId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
+  cutoverExecutionId: z.uuid(),
 
   // Timeline
   timeline: migrationTimelineSchema,
@@ -73,15 +73,15 @@ export const postCutoverReportSchema = z.object({
   // Sign-offs
   signOffs: z.object({
     financial: z.object({
-      signedBy: z.string().uuid(),
+      signedBy: z.uuid(),
       signedAt: z.string().datetime(),
     }),
     operational: z.object({
-      signedBy: z.string().uuid(),
+      signedBy: z.uuid(),
       signedAt: z.string().datetime(),
     }),
     final: z.object({
-      signedBy: z.string().uuid(),
+      signedBy: z.uuid(),
       signedAt: z.string().datetime(),
     }),
   }),
@@ -89,7 +89,7 @@ export const postCutoverReportSchema = z.object({
   // Key participants
   participants: z.array(
     z.object({
-      userId: z.string().uuid(),
+      userId: z.uuid(),
       role: z.string(),
       contribution: z.string().optional(),
     })

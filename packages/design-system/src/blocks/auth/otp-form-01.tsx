@@ -1,21 +1,21 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/button"
+import { Button } from "../../components/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/field"
+} from "../../components/card"
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "../../components/field"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/components/input-otp"
-import { cn } from "@/lib/utils"
+} from "../../components/input-otp"
+import { cn } from "../../lib/utils"
 
 export interface OTPForm01Props {
   onSubmit?: (otp: string) => void

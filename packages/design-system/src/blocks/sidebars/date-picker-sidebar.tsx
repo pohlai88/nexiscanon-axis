@@ -1,12 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { Calendar } from "@/components/calendar"
+import { Calendar } from "../../components/calendar"
 import {
   SidebarGroup,
   SidebarGroupContent,
-} from "@/components/sidebar"
-import { cn } from "@/lib/utils"
+} from "../../components/sidebar"
+import { cn } from "../../lib/utils"
 
 export interface DatePickerSidebarProps {
   value?: Date

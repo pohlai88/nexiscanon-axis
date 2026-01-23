@@ -10,8 +10,8 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from "@/components/command"
-import { cn } from "@/lib/utils"
+} from "../../components/command"
+import { cn } from "../../lib/utils"
 
 export interface CommandAction {
   id: string

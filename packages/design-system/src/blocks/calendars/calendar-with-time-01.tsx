@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import { Clock2Icon } from "lucide-react"
-import { Calendar } from "@/components/calendar"
-import { Card, CardContent, CardFooter } from "@/components/card"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
-import { cn } from "@/lib/utils"
+import { Calendar } from "../../components/calendar"
+import { Card, CardContent, CardFooter } from "../../components/card"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
+import { cn } from "../../lib/utils"
 
 export interface CalendarWithTime01Props {
   value?: Date
@@ -70,7 +70,7 @@ export function CalendarWithTime01({
           className="bg-transparent p-0"
         />
       </CardContent>
-      <CardFooter className="flex flex-col gap-6 border-t px-4 !pt-4">
+      <CardFooter className="flex flex-col gap-6 border-t px-4 pt-4!">
         <div className="flex w-full flex-col gap-3">
           <Label htmlFor="time-from">{startTimeLabel}</Label>
           <div className="relative flex w-full items-center gap-2">

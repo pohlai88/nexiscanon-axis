@@ -21,6 +21,7 @@
  * ```
  */
 
+import type { Database } from "../client/neon";
 import { domainOutbox } from "../schema";
 
 export interface OutboxEvent {
@@ -34,6 +35,9 @@ export interface OutboxEvent {
   payload: Record<string, unknown>;
 }
 
+/** Transaction type - same interface as Database for insert operations */
+type TransactionLike = Pick<Database, "insert">;
+
 /**
  * Write event to outbox (within same transaction as domain write).
  *
@@ -41,8 +45,7 @@ export interface OutboxEvent {
  * the event will eventually be processed.
  */
 export async function writeToOutbox(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  tx: any, // Accept Database or Transaction
+  tx: TransactionLike,
   tenantId: string,
   event: OutboxEvent
 ): Promise<void> {
@@ -65,8 +68,7 @@ export async function writeToOutbox(
  * Write multiple events to outbox atomically.
  */
 export async function writeMultipleToOutbox(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  tx: any, // Accept Database or Transaction
+  tx: TransactionLike,
   tenantId: string,
   events: OutboxEvent[]
 ): Promise<void> {

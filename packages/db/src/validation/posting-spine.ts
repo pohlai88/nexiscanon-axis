@@ -142,7 +142,7 @@ export const selectLedgerPostingSchema = createSelectSchema(ledgerPostings);
  * Document state transition schema.
  */
 export const documentStateTransitionSchema = z.object({
-  documentId: z.string().uuid(),
+  documentId: z.uuid(),
   newState: z.enum(DOCUMENT_STATE),
 });
 
@@ -152,7 +152,7 @@ export const documentStateTransitionSchema = z.object({
 export const submitDocumentFormSchema = z.object({
   documentType: z.enum(DOCUMENT_TYPE),
   documentDate: z.coerce.date(),
-  entityId: z.string().uuid().optional(),
+  entityId: z.uuid().optional(),
   data: z.record(z.string(), z.unknown()),
   reason: z.string().min(1).max(500),
 });
@@ -161,7 +161,7 @@ export const submitDocumentFormSchema = z.object({
  * Approve document form schema.
  */
 export const approveDocumentFormSchema = z.object({
-  documentId: z.string().uuid(),
+  documentId: z.uuid(),
   reason: z.string().min(1).max(500),
   overrideReason: z.string().optional(),
 });
@@ -170,7 +170,7 @@ export const approveDocumentFormSchema = z.object({
  * Post document form schema.
  */
 export const postDocumentFormSchema = z.object({
-  documentId: z.string().uuid(),
+  documentId: z.uuid(),
   postingDate: z.coerce.date(),
   reason: z.string().min(1).max(500),
 });
@@ -179,7 +179,7 @@ export const postDocumentFormSchema = z.object({
  * Reverse document form schema.
  */
 export const reverseDocumentFormSchema = z.object({
-  documentId: z.string().uuid(),
+  documentId: z.uuid(),
   reversalDate: z.coerce.date(),
   reason: z.string().min(1).max(500),
 });
@@ -188,7 +188,7 @@ export const reverseDocumentFormSchema = z.object({
  * Single posting entry schema (for form input).
  */
 export const postingEntrySchema = z.object({
-  accountId: z.string().uuid(),
+  accountId: z.uuid(),
   direction: z.enum(POSTING_DIRECTION),
   amount: z.string().regex(/^\d+(\.\d{1,4})?$/),
   description: z.string().min(1).max(500),

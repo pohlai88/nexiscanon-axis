@@ -1,13 +1,9 @@
 /**
- * Inventory Domain Tables (B06)
- *
- * Stock Moves, Valuation & Physical Truth
+ * Inventory Module Schemas (Phase 6)
+ * 
+ * Product catalog, inventory movements, and stock levels.
  */
 
-export * from "./stock-move";
+export * from "./product";
+export * from "./movement";
 export * from "./stock-level";
-export * from "./valuation";
-export * from "./reservation";
-export * from "./adjustment";
-export * from "./transfer";
-export * from "./physical-count";

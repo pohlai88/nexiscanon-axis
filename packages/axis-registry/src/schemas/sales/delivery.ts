@@ -20,17 +20,17 @@ export const salesDeliveryLineSchema = z.object({
   orderLineNumber: z.number().int().positive(),
 
   // Item
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
 
   // Quantity
   quantityShipped: z.number().positive(),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
 
   // Location
-  fromLocationId: z.string().uuid(),
+  fromLocationId: z.uuid(),
   fromLocationName: z.string().max(255),
 
   // Lot/Serial (if tracked)
@@ -52,16 +52,16 @@ export type SalesDeliveryLine = z.infer<typeof salesDeliveryLineSchema>;
 
 export const salesDeliverySchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Source
-  sourceOrderId: z.string().uuid(),
+  sourceOrderId: z.uuid(),
   sourceOrderNumber: z.string().max(50),
 
   // Customer
-  customerId: z.string().uuid(),
+  customerId: z.uuid(),
   customerName: z.string().max(255),
 
   // Shipping
@@ -77,7 +77,7 @@ export const salesDeliverySchema = z.object({
   deliveredDate: z.string().datetime().optional(),
 
   // Warehouse
-  warehouseId: z.string().uuid(),
+  warehouseId: z.uuid(),
   warehouseName: z.string().max(255),
 
   // Lines
@@ -92,17 +92,17 @@ export const salesDeliverySchema = z.object({
   notes: z.string().max(2000).optional(),
 
   // Invoice tracking
-  invoiceId: z.string().uuid().optional(),
+  invoiceId: z.uuid().optional(),
 
   // Posting reference (B01)
-  postingBatchId: z.string().uuid().optional(),
+  postingBatchId: z.uuid().optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  shippedBy: z.string().uuid().optional(),
+  shippedBy: z.uuid().optional(),
 });
 
 export type SalesDelivery = z.infer<typeof salesDeliverySchema>;

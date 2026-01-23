@@ -41,15 +41,15 @@
  */
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/button"
-import { Progress } from "@/components/progress"
+import { cn } from "../../lib/utils"
+import { Button } from "../../components/button"
+import { Progress } from "../../components/progress"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/tooltip"
+} from "../../components/tooltip"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -59,7 +59,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/alert-dialog"
+} from "../../components/alert-dialog"
 import {
   Check,
   Loader2,
@@ -67,7 +67,7 @@ import {
   XCircle,
   Zap,
 } from "lucide-react"
-import { Confetti, type ConfettiRef } from "@/effects/confetti"
+import { Confetti, type ConfettiRef } from "../../effects/confetti"
 
 // Button props type
 type ButtonProps = React.ComponentPropsWithoutRef<typeof Button>

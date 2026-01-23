@@ -1,11 +1,11 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/button"
-import { Card, CardContent } from "@/components/card"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/button"
+import { Card, CardContent } from "../../components/card"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
+import { cn } from "../../lib/utils"
 
 export interface LoginWithImage01Props {
   onLogin?: (email: string, password: string) => void | Promise<void>

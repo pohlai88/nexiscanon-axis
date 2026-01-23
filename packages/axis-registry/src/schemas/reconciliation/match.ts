@@ -12,16 +12,16 @@ import { RECON_MATCH_STATUS } from "./constants";
 // ============================================================================
 
 export const matchRecordSchema = z.object({
-  id: z.string().uuid(),
-  jobId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  jobId: z.uuid(),
+  tenantId: z.uuid(),
 
   // Match status
   matchStatus: z.enum(RECON_MATCH_STATUS),
 
   // Source record
   sourceType: z.string().max(50),
-  sourceId: z.string().uuid(),
+  sourceId: z.uuid(),
   sourceReference: z.string().max(100).optional(),
   sourceDate: z.string().datetime(),
   sourceAmount: z.string(),
@@ -29,7 +29,7 @@ export const matchRecordSchema = z.object({
 
   // Target record (if matched)
   targetType: z.string().max(50).optional(),
-  targetId: z.string().uuid().optional(),
+  targetId: z.uuid().optional(),
   targetReference: z.string().max(100).optional(),
   targetDate: z.string().datetime().optional(),
   targetAmount: z.string().optional(),
@@ -44,7 +44,7 @@ export const matchRecordSchema = z.object({
   matchReason: z.string().max(500).optional(),
 
   // Manual match
-  matchedBy: z.string().uuid().optional(),
+  matchedBy: z.uuid().optional(),
   matchedAt: z.string().datetime().optional(),
   matchNotes: z.string().max(1000).optional(),
 

@@ -14,8 +14,8 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/sidebar"
-import { cn } from "@/lib/utils"
+} from "../../components/sidebar"
+import { cn } from "../../lib/utils"
 
 export interface FloatingNavSubItem {
   title: string

@@ -24,11 +24,11 @@ export const selectAuditLogSchema = createSelectSchema(auditLogs);
  * Audit log entry input (for logAuditEvent function).
  */
 export const auditLogEntrySchema = z.object({
-  tenantId: z.string().uuid().optional(),
-  userId: z.string().uuid().optional(),
+  tenantId: z.uuid().optional(),
+  userId: z.uuid().optional(),
   action: z.string().min(1).max(100),
   resourceType: z.string().max(100).optional(),
-  resourceId: z.string().uuid().optional(),
+  resourceId: z.uuid().optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 });
 

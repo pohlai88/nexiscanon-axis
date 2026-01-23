@@ -76,7 +76,7 @@ export type LynxProviderSettings = z.infer<typeof lynxProviderSettingsSchema>;
 // ============================================================================
 
 export const lynxConfigSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
 
   // Provider settings
   providers: lynxProviderSettingsSchema,
@@ -94,7 +94,7 @@ export const lynxConfigSchema = z.object({
   cost: lynxCostSettingsSchema,
 
   updatedAt: z.string().datetime(),
-  updatedBy: z.string().uuid(),
+  updatedBy: z.uuid(),
 });
 
 export type LynxConfig = z.infer<typeof lynxConfigSchema>;

@@ -17,8 +17,8 @@ import {
 // ============================================================================
 
 export const alertRuleSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   name: z.string().min(1).max(255),
@@ -28,7 +28,7 @@ export const alertRuleSchema = z.object({
   conditionType: z.enum(ALERT_CONDITION_TYPE),
 
   // For KPI threshold
-  kpiId: z.string().uuid().optional(),
+  kpiId: z.uuid().optional(),
   thresholdOperator: z
     .enum(["gt", "gte", "lt", "lte", "eq", "between"])
     .optional(),
@@ -47,7 +47,7 @@ export const alertRuleSchema = z.object({
 
   // Notification
   notifyRoles: z.array(z.string()).optional(),
-  notifyUsers: z.array(z.string().uuid()).optional(),
+  notifyUsers: z.array(z.uuid()).optional(),
   notifyChannels: z.array(z.enum(AFANDA_NOTIFICATION_CHANNEL)).default(["in_app"]),
 
   // Escalation
@@ -71,9 +71,9 @@ export type AlertRule = z.infer<typeof alertRuleSchema>;
 // ============================================================================
 
 export const alertInstanceSchema = z.object({
-  id: z.string().uuid(),
-  ruleId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  ruleId: z.uuid(),
+  tenantId: z.uuid(),
 
   // Alert details
   title: z.string().max(255),
@@ -84,18 +84,18 @@ export const alertInstanceSchema = z.object({
   triggeredValue: z.number().optional(),
   thresholdValue: z.number().optional(),
   sourceType: z.string().max(50).optional(),
-  sourceId: z.string().uuid().optional(),
+  sourceId: z.uuid().optional(),
 
   // Status
   status: z.enum(ALERT_STATUS).default("active"),
 
   // Acknowledgment
-  acknowledgedBy: z.string().uuid().optional(),
+  acknowledgedBy: z.uuid().optional(),
   acknowledgedAt: z.string().datetime().optional(),
   acknowledgmentNote: z.string().max(500).optional(),
 
   // Resolution
-  resolvedBy: z.string().uuid().optional(),
+  resolvedBy: z.uuid().optional(),
   resolvedAt: z.string().datetime().optional(),
   resolutionNote: z.string().max(500).optional(),
 

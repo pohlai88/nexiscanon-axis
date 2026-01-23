@@ -21,7 +21,7 @@ import {
 export const adapterIntrospectionStartedEventSchema = createEventSchema(
   "adapter.introspection.started",
   z.object({
-    sourceSchemaId: z.string().uuid(),
+    sourceSchemaId: z.uuid(),
     sourceType: z.enum(SOURCE_CONNECTOR_TYPE),
     estimatedTables: z.number().int().optional(),
   })
@@ -30,7 +30,7 @@ export const adapterIntrospectionStartedEventSchema = createEventSchema(
 export const adapterIntrospectionCompletedEventSchema = createEventSchema(
   "adapter.introspection.completed",
   z.object({
-    sourceSchemaId: z.string().uuid(),
+    sourceSchemaId: z.uuid(),
     sourceType: z.enum(SOURCE_CONNECTOR_TYPE),
     status: z.enum(INTROSPECTION_STATUS),
     tablesFound: z.number().int(),
@@ -44,7 +44,7 @@ export const adapterIntrospectionCompletedEventSchema = createEventSchema(
 export const adapterTableDetectedEventSchema = createEventSchema(
   "adapter.table.detected",
   z.object({
-    sourceSchemaId: z.string().uuid(),
+    sourceSchemaId: z.uuid(),
     tableName: z.string(),
     columnCount: z.number().int(),
     rowCount: z.number().int().optional(),
@@ -60,8 +60,8 @@ export const adapterTableDetectedEventSchema = createEventSchema(
 export const adapterAnalysisStartedEventSchema = createEventSchema(
   "adapter.analysis.started",
   z.object({
-    analysisJobId: z.string().uuid(),
-    sourceSchemaId: z.string().uuid(),
+    analysisJobId: z.uuid(),
+    sourceSchemaId: z.uuid(),
     totalTables: z.number().int(),
     totalColumns: z.number().int(),
   })
@@ -70,8 +70,8 @@ export const adapterAnalysisStartedEventSchema = createEventSchema(
 export const adapterAnalysisCompletedEventSchema = createEventSchema(
   "adapter.analysis.completed",
   z.object({
-    analysisJobId: z.string().uuid(),
-    sourceSchemaId: z.string().uuid(),
+    analysisJobId: z.uuid(),
+    sourceSchemaId: z.uuid(),
     status: z.enum(ANALYSIS_STATUS),
     analyzedColumns: z.number().int(),
     highConfidenceCount: z.number().int(),
@@ -85,7 +85,7 @@ export const adapterAnalysisCompletedEventSchema = createEventSchema(
 export const adapterColumnClassifiedEventSchema = createEventSchema(
   "adapter.column.classified",
   z.object({
-    sourceSchemaId: z.string().uuid(),
+    sourceSchemaId: z.uuid(),
     sourceTable: z.string(),
     sourceColumn: z.string(),
     semanticCategory: z.enum(SEMANTIC_CATEGORY),
@@ -99,13 +99,13 @@ export const adapterColumnClassifiedEventSchema = createEventSchema(
 export const adapterColumnConfirmedEventSchema = createEventSchema(
   "adapter.column.confirmed",
   z.object({
-    columnSemanticId: z.string().uuid(),
+    columnSemanticId: z.uuid(),
     sourceTable: z.string(),
     sourceColumn: z.string(),
     originalCategory: z.enum(SEMANTIC_CATEGORY),
     confirmedCategory: z.enum(SEMANTIC_CATEGORY),
     wasChanged: z.boolean(),
-    confirmedBy: z.string().uuid(),
+    confirmedBy: z.uuid(),
   })
 );
 
@@ -116,7 +116,7 @@ export const adapterColumnConfirmedEventSchema = createEventSchema(
 export const adapterTransformStartedEventSchema = createEventSchema(
   "adapter.transform.started",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     sourceTable: z.string(),
     targetEntity: z.string(),
     estimatedRecords: z.number().int(),
@@ -126,7 +126,7 @@ export const adapterTransformStartedEventSchema = createEventSchema(
 export const adapterTransformCompletedEventSchema = createEventSchema(
   "adapter.transform.completed",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     sourceTable: z.string(),
     targetEntity: z.string(),
     totalRecords: z.number().int(),
@@ -140,7 +140,7 @@ export const adapterTransformCompletedEventSchema = createEventSchema(
 export const adapterTransformErrorEventSchema = createEventSchema(
   "adapter.transform.error",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     sourceTable: z.string(),
     sourceRowId: z.string(),
     column: z.string(),
@@ -156,7 +156,7 @@ export const adapterTransformErrorEventSchema = createEventSchema(
 export const adapterRecordCanonicalizedEventSchema = createEventSchema(
   "adapter.record.canonicalized",
   z.object({
-    canonicalRecordId: z.string().uuid(),
+    canonicalRecordId: z.uuid(),
     sourceTable: z.string(),
     sourceRowId: z.string(),
     targetEntity: z.string(),
@@ -168,11 +168,11 @@ export const adapterRecordCanonicalizedEventSchema = createEventSchema(
 export const adapterRecordImportedEventSchema = createEventSchema(
   "adapter.record.imported",
   z.object({
-    canonicalRecordId: z.string().uuid(),
+    canonicalRecordId: z.uuid(),
     sourceTable: z.string(),
     sourceRowId: z.string(),
     targetEntity: z.string(),
-    importedRecordId: z.string().uuid(),
+    importedRecordId: z.uuid(),
   })
 );
 
@@ -183,10 +183,10 @@ export const adapterRecordImportedEventSchema = createEventSchema(
 export const adapterPatternMatchedEventSchema = createEventSchema(
   "adapter.pattern.matched",
   z.object({
-    sourceSchemaId: z.string().uuid(),
+    sourceSchemaId: z.uuid(),
     sourceTable: z.string(),
     sourceColumn: z.string(),
-    patternId: z.string().uuid(),
+    patternId: z.uuid(),
     category: z.enum(SEMANTIC_CATEGORY),
     confidence: z.number().min(0).max(1),
   })

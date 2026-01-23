@@ -12,9 +12,9 @@ import { RAW_ENTITY_TYPE, IMPORT_STATUS } from "./constants";
 // ============================================================================
 
 export const rawRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  importBatchId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  importBatchId: z.uuid(),
 
   // Source reference
   sourceTableName: z.string().max(255),
@@ -29,7 +29,7 @@ export const rawRecordSchema = z.object({
   // Processing status
   isProcessed: z.boolean().default(false),
   processedAt: z.string().datetime().optional(),
-  normalizedRecordId: z.string().uuid().optional(),
+  normalizedRecordId: z.uuid().optional(),
 
   // Errors
   hasError: z.boolean().default(false),
@@ -45,9 +45,9 @@ export type RawRecord = z.infer<typeof rawRecordSchema>;
 // ============================================================================
 
 export const importBatchSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Batch metadata
   batchNumber: z.number().int().positive(),
@@ -55,7 +55,7 @@ export const importBatchSchema = z.object({
 
   // Source
   sourceTableName: z.string().max(255),
-  mappingVersionId: z.string().uuid().optional(),
+  mappingVersionId: z.uuid().optional(),
 
   // Status
   status: z.enum(IMPORT_STATUS).default("pending"),
@@ -74,7 +74,7 @@ export const importBatchSchema = z.object({
 
   // Error summary
   errors: z.array(z.object({
-    recordId: z.string().uuid().optional(),
+    recordId: z.uuid().optional(),
     errorType: z.string(),
     message: z.string(),
     count: z.number().int().default(1),
@@ -82,7 +82,7 @@ export const importBatchSchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type ImportBatch = z.infer<typeof importBatchSchema>;
@@ -92,8 +92,8 @@ export type ImportBatch = z.infer<typeof importBatchSchema>;
 // ============================================================================
 
 export const importSummarySchema = z.object({
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
   asOfDate: z.string().datetime(),
 
   // By entity type
@@ -111,7 +111,7 @@ export const importSummarySchema = z.object({
   totalErrors: z.number().int(),
 
   // Latest batch
-  latestBatchId: z.string().uuid().optional(),
+  latestBatchId: z.uuid().optional(),
   latestBatchAt: z.string().datetime().optional(),
 });
 

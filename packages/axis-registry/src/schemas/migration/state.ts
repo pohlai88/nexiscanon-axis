@@ -30,8 +30,8 @@ export type ReconStatusBlock = z.infer<typeof reconStatusBlockSchema>;
 // ============================================================================
 
 export const migrationStateSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   
   // Current mode
   currentMode: z.enum(MIGRATION_MODE).default("setup"),
@@ -39,7 +39,7 @@ export const migrationStateSchema = z.object({
   // Source system
   sourceSystem: z.enum(SOURCE_SYSTEM_TYPE),
   sourceVersion: z.string().max(50).optional(),
-  sourceConnectionId: z.string().uuid().optional(),
+  sourceConnectionId: z.uuid().optional(),
 
   // Sync configuration
   lastSyncAt: z.string().datetime().optional(),
@@ -67,7 +67,7 @@ export const migrationStateSchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type MigrationState = z.infer<typeof migrationStateSchema>;

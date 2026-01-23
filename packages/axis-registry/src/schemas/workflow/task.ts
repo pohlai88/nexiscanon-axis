@@ -12,29 +12,29 @@ import { TASK_STATUS, TASK_PRIORITY, TASK_HISTORY_ACTION } from "./constants";
 // ============================================================================
 
 export const approvalTaskSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Workflow reference
-  workflowInstanceId: z.string().uuid(),
-  workflowStepId: z.string().uuid(),
+  workflowInstanceId: z.uuid(),
+  workflowStepId: z.uuid(),
   stepNumber: z.number().int(),
 
   // Assignment
   assignedToType: z.enum(["user", "role"]),
-  assignedToId: z.string().uuid(),
+  assignedToId: z.uuid(),
   assignedToName: z.string().max(255),
 
   // Original assignee (before delegation)
-  originalAssigneeId: z.string().uuid().optional(),
-  delegatedFrom: z.string().uuid().optional(),
+  originalAssigneeId: z.uuid().optional(),
+  delegatedFrom: z.uuid().optional(),
 
   // Status
   status: z.enum(TASK_STATUS).default("pending"),
 
   // Decision
   decision: z.enum(["approved", "rejected"]).optional(),
-  decidedBy: z.string().uuid().optional(),
+  decidedBy: z.uuid().optional(),
   decidedAt: z.string().datetime().optional(),
   comments: z.string().max(2000).optional(),
 
@@ -57,14 +57,14 @@ export type ApprovalTask = z.infer<typeof approvalTaskSchema>;
 // ============================================================================
 
 export const taskHistorySchema = z.object({
-  id: z.string().uuid(),
-  taskId: z.string().uuid(),
+  id: z.uuid(),
+  taskId: z.uuid(),
 
   // Action
   action: z.enum(TASK_HISTORY_ACTION),
 
   // Actor
-  performedBy: z.string().uuid(),
+  performedBy: z.uuid(),
   performedAt: z.string().datetime(),
 
   // Details

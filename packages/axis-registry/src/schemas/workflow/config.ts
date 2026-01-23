@@ -11,7 +11,7 @@ import { z } from "zod";
 // ============================================================================
 
 export const workflowConfigSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
 
   // Default timeouts
   defaultTaskTimeoutHours: z.number().int().min(0).default(48),
@@ -41,7 +41,7 @@ export const workflowConfigSchema = z.object({
   excludeHolidays: z.boolean().default(false),
 
   updatedAt: z.string().datetime(),
-  updatedBy: z.string().uuid(),
+  updatedBy: z.uuid(),
 });
 
 export type WorkflowConfig = z.infer<typeof workflowConfigSchema>;

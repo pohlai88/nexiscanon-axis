@@ -1,134 +1,120 @@
 /**
- * Purchase Order Table (B05)
- *
- * Binding commitment to supplier.
+ * Purchase Order Schema (F01 Compliant)
+ * 
+ * Confirmed purchase orders sent to vendors.
  */
 
-import {
-  pgTable,
-  timestamp,
-  uuid,
-  varchar,
-  jsonb,
-  integer,
-  numeric,
-  text,
-  index,
-} from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { pgTable, uuid, text, timestamp, decimal, jsonb, index, unique } from "drizzle-orm/pg-core";
 import { tenants } from "../tenant";
-import {
-  type PoStatus,
-  type AddressSnapshot,
-  type PurchaseOrderLine,
-} from "@axis/registry/schemas";
+import { users } from "../user";
+import { vendors } from "../vendor";
+import { purchaseRequests } from "./request";
 
+/**
+ * Purchase order line item structure.
+ */
+export interface PurchaseOrderLineItem {
+  description: string;
+  quantity: number;
+  unit_price: string; // Decimal as string
+  amount: string; // Decimal as string
+  tax_rate?: string; // Decimal as string
+  notes?: string;
+}
+
+/**
+ * Purchase delivery address structure.
+ */
+export interface PurchaseDeliveryAddress {
+  line1: string;
+  line2?: string;
+  city: string;
+  state?: string;
+  postal_code: string;
+  country: string;
+}
+
+/**
+ * Purchase Orders table.
+ */
 export const purchaseOrders = pgTable(
   "purchase_orders",
   {
+    // Identity
     id: uuid("id").primaryKey().defaultRandom(),
     tenantId: uuid("tenant_id")
       .notNull()
       .references(() => tenants.id, { onDelete: "cascade" }),
 
-    // Identity
-    documentNumber: varchar("document_number", { length: 50 }).notNull(),
-
-    // Source
-    sourcePrIds: jsonb("source_pr_ids").$type<string[]>(),
-
-    // Supplier (reference by UUID, not FK per B02)
-    supplierId: uuid("supplier_id").notNull(),
-    supplierName: varchar("supplier_name", { length: 255 }).notNull(),
-    supplierContactName: varchar("supplier_contact_name", { length: 255 }),
-    supplierContactEmail: varchar("supplier_contact_email", { length: 255 }),
-
-    // Addresses
-    supplierAddress: jsonb("supplier_address")
-      .notNull()
-      .$type<AddressSnapshot>(),
-    deliveryAddress: jsonb("delivery_address")
-      .notNull()
-      .$type<AddressSnapshot>(),
-
-    // Status
-    status: varchar("status", { length: 30 })
-      .notNull()
-      .default("draft")
-      .$type<PoStatus>(),
-    orderDate: timestamp("order_date", { withTimezone: true }).notNull(),
-    expectedDeliveryDate: timestamp("expected_delivery_date", {
-      withTimezone: true,
-    }),
-
-    // Pricing
-    priceListId: uuid("price_list_id"),
-    currency: varchar("currency", { length: 3 }).notNull(),
-    exchangeRate: numeric("exchange_rate", { precision: 12, scale: 6 })
-      .notNull()
-      .default("1"),
-
-    // Lines
-    lines: jsonb("lines").notNull().$type<PurchaseOrderLine[]>(),
-
-    // Totals
-    subtotal: numeric("subtotal", { precision: 18, scale: 4 }).notNull(),
-    discountTotal: numeric("discount_total", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    taxTotal: numeric("tax_total", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    grandTotal: numeric("grand_total", { precision: 18, scale: 4 }).notNull(),
-
-    // Terms
-    paymentTermId: uuid("payment_term_id"),
-    paymentTermDays: integer("payment_term_days"),
-    incoterm: varchar("incoterm", { length: 20 }),
-    shippingMethod: varchar("shipping_method", { length: 100 }),
-
-    // Notes
+    // PO details
+    poNumber: text("po_number").notNull(),
+    poDate: timestamp("po_date", { mode: "date" }).notNull(),
+    expectedDeliveryDate: timestamp("expected_delivery_date", { mode: "date" }),
+    
+    // Status workflow
+    status: text("status").notNull().default("pending"),
+    // Possible values: pending | sent | acknowledged | received | invoiced | cancelled
+    
+    // Vendor
+    vendorId: uuid("vendor_id").references(() => vendors.id, { onDelete: "restrict" }),
+    vendorName: text("vendor_name").notNull(),
+    vendorEmail: text("vendor_email"),
+    
+    // Link to purchase request
+    requestId: uuid("request_id").references(() => purchaseRequests.id, { onDelete: "set null" }),
+    
+    // Financial details
+    currency: text("currency").notNull().default("USD"),
+    subtotal: decimal("subtotal", { precision: 15, scale: 4 }).notNull(),
+    taxTotal: decimal("tax_total", { precision: 15, scale: 4 }).notNull(),
+    totalAmount: decimal("total_amount", { precision: 15, scale: 4 }).notNull(),
+    
+    // Line items (JSONB)
+    lineItems: jsonb("line_items").$type<PurchaseOrderLineItem[]>().notNull(),
+    
+    // Delivery details
+    deliveryAddress: jsonb("delivery_address").$type<PurchaseDeliveryAddress>(),
+    
+    // Additional details
+    paymentTerms: text("payment_terms"),
     notes: text("notes"),
-    supplierNotes: text("supplier_notes"),
-
-    // Receipt/Bill tracking
-    receiptIds: jsonb("receipt_ids").$type<string[]>(),
-    billIds: jsonb("bill_ids").$type<string[]>(),
-
-    // Audit
-    createdBy: uuid("created_by").notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
+    
+    // Conversion tracking
+    billId: uuid("bill_id"), // FK to purchase_bills
+    receivedAt: timestamp("received_at", { mode: "date" }),
+    invoicedAt: timestamp("invoiced_at", { mode: "date" }),
+    
+    // Metadata
+    metadata: jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+    
+    // Audit fields (F01 LAW F01-02)
+    createdBy: uuid("created_by")
       .notNull()
-      .defaultNow(),
-    updatedBy: uuid("updated_by"),
-    updatedAt: timestamp("updated_at", { withTimezone: true }),
-    confirmedBy: uuid("confirmed_by"),
-    confirmedAt: timestamp("confirmed_at", { withTimezone: true }),
-
-    // Version
-    version: integer("version").notNull().default(1),
+      .references(() => users.id, { onDelete: "set null" }),
+    modifiedBy: uuid("modified_by")
+      .notNull()
+      .references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
   },
-  (table) => [
-    index("idx_purchase_orders_tenant").on(table.tenantId),
-    index("idx_purchase_orders_supplier").on(table.tenantId, table.supplierId),
-    index("idx_purchase_orders_status").on(table.tenantId, table.status),
-    index("idx_purchase_orders_doc_number").on(
+  (table) => ({
+    // Indexes (F01 LAW F01-04)
+    tenantIdIdx: index("idx_purchase_orders_tenant_id").on(table.tenantId),
+    statusIdx: index("idx_purchase_orders_status").on(table.status),
+    vendorIdIdx: index("idx_purchase_orders_vendor_id").on(table.vendorId),
+    requestIdIdx: index("idx_purchase_orders_request_id").on(table.requestId),
+    poDateIdx: index("idx_purchase_orders_po_date").on(table.poDate),
+    
+    // Unique constraint: po_number per tenant
+    tenantNumberUniq: unique("uq_purchase_orders_tenant_number").on(
       table.tenantId,
-      table.documentNumber
+      table.poNumber
     ),
-    index("idx_purchase_orders_order_date").on(table.tenantId, table.orderDate),
-  ]
-);
-
-export const purchaseOrdersRelations = relations(
-  purchaseOrders,
-  ({ one }) => ({
-    tenant: one(tenants, {
-      fields: [purchaseOrders.tenantId],
-      references: [tenants.id],
-    }),
   })
 );
 
-export type PurchaseOrderRow = typeof purchaseOrders.$inferSelect;
-export type NewPurchaseOrderRow = typeof purchaseOrders.$inferInsert;
+/**
+ * Type inference for purchase orders.
+ */
+export type PurchaseOrder = typeof purchaseOrders.$inferSelect;
+export type NewPurchaseOrder = typeof purchaseOrders.$inferInsert;

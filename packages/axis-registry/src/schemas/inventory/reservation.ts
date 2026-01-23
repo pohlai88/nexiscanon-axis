@@ -12,7 +12,7 @@ import { RESERVATION_STATUS } from "./constants";
 // ============================================================================
 
 export const fulfillmentEntrySchema = z.object({
-  deliveryId: z.string().uuid(),
+  deliveryId: z.uuid(),
   deliveryNumber: z.string().max(50),
   quantityFulfilled: z.number().positive(),
   fulfilledAt: z.string().datetime(),
@@ -25,23 +25,23 @@ export type FulfillmentEntry = z.infer<typeof fulfillmentEntrySchema>;
 // ============================================================================
 
 export const reservationSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // What is reserved
-  itemId: z.string().uuid(),
-  locationId: z.string().uuid(),
+  itemId: z.uuid(),
+  locationId: z.uuid(),
   lotNumber: z.string().max(100).optional(),
 
   // How much
   quantityReserved: z.number().positive(),
   quantityFulfilled: z.number().min(0).default(0),
   quantityRemaining: z.number().min(0),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
 
   // For what (cross-domain reference by UUID, not FK per B02)
   sourceDocumentType: z.literal("sales.order"),
-  sourceDocumentId: z.string().uuid(),
+  sourceDocumentId: z.uuid(),
   sourceDocumentNumber: z.string().max(50),
   sourceLineNumber: z.number().int().positive(),
 

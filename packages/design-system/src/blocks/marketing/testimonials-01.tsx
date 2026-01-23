@@ -2,9 +2,9 @@
 
 import * as React from "react"
 import { Quote, Star } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar"
-import { Card, CardContent } from "@/components/card"
-import { cn } from "@/lib/utils"
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/avatar"
+import { Card, CardContent } from "../../components/card"
+import { cn } from "../../lib/utils"
 
 export interface Testimonial {
   id: string

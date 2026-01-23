@@ -68,15 +68,15 @@ export type ForecastInsight = z.infer<typeof forecastInsightSchema>;
 // ============================================================================
 
 export const forecastSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Type
   forecastType: z.enum(FORECAST_TYPE),
 
   // Target
   targetEntity: z.string().max(100).optional(),
-  targetEntityId: z.string().uuid().optional(),
+  targetEntityId: z.uuid().optional(),
 
   // Time parameters
   startDate: z.string().datetime(),
@@ -106,7 +106,7 @@ export const forecastSchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type Forecast = z.infer<typeof forecastSchema>;

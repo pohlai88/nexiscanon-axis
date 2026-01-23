@@ -12,15 +12,15 @@ import { DELEGATION_TYPE } from "./constants";
 // ============================================================================
 
 export const delegationSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Delegator (who is delegating)
-  delegatorId: z.string().uuid(),
+  delegatorId: z.uuid(),
   delegatorName: z.string().max(255),
 
   // Delegate (who receives the authority)
-  delegateId: z.string().uuid(),
+  delegateId: z.uuid(),
   delegateName: z.string().max(255),
 
   // Type
@@ -45,9 +45,9 @@ export const delegationSchema = z.object({
 
   // Audit
   createdAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   revokedAt: z.string().datetime().optional(),
-  revokedBy: z.string().uuid().optional(),
+  revokedBy: z.uuid().optional(),
 });
 
 export type Delegation = z.infer<typeof delegationSchema>;

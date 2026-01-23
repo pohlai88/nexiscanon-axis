@@ -19,8 +19,8 @@ import {
 // ============================================================================
 
 export const workflowDefinitionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   code: z.string().min(1).max(50),
@@ -50,7 +50,7 @@ export const workflowDefinitionSchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type WorkflowDefinition = z.infer<typeof workflowDefinitionSchema>;
@@ -60,8 +60,8 @@ export type WorkflowDefinition = z.infer<typeof workflowDefinitionSchema>;
 // ============================================================================
 
 export const workflowStepSchema = z.object({
-  id: z.string().uuid(),
-  workflowId: z.string().uuid(),
+  id: z.uuid(),
+  workflowId: z.uuid(),
 
   // Ordering
   stepNumber: z.number().int().positive(),
@@ -95,7 +95,7 @@ export const workflowStepSchema = z.object({
   onRejectNextStep: z.number().int().optional(),
 
   // Parallel
-  parallelGroupId: z.string().uuid().optional(),
+  parallelGroupId: z.uuid().optional(),
 
   createdAt: z.string().datetime(),
 });

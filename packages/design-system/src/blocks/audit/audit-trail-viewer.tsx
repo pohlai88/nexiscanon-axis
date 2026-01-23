@@ -26,30 +26,30 @@
  */
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/card"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
-import { Input } from "@/components/input"
+import { cn } from "../../lib/utils"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/card"
+import { Badge } from "../../components/badge"
+import { Button } from "../../components/button"
+import { Input } from "../../components/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/select"
+} from "../../components/select"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/dropdown-menu"
+} from "../../components/dropdown-menu"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/collapsible"
-import { ScrollArea } from "@/components/scroll-area"
+} from "../../components/collapsible"
+import { ScrollArea } from "../../components/scroll-area"
 import {
   History,
   Search,

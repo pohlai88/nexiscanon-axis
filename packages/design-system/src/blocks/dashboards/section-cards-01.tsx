@@ -8,9 +8,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Badge } from "@/components/badge"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { Badge } from "../../components/badge"
+import { cn } from "../../lib/utils"
 
 export interface SectionStatCard {
   title: string

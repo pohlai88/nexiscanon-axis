@@ -8,12 +8,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Input } from "@/components/input"
-import { Textarea } from "@/components/textarea"
-import { Label } from "@/components/label"
-import { Button } from "@/components/button"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { Input } from "../../components/input"
+import { Textarea } from "../../components/textarea"
+import { Label } from "../../components/label"
+import { Button } from "../../components/button"
+import { cn } from "../../lib/utils"
 
 export interface CrudFormField {
   name: string

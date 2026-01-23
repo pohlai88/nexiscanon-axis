@@ -6,9 +6,9 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/collapsible"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
+} from "../../components/collapsible"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
 import {
   Sidebar,
   SidebarContent,
@@ -20,8 +20,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/sidebar"
-import { cn } from "@/lib/utils"
+} from "../../components/sidebar"
+import { cn } from "../../lib/utils"
 
 export interface DocsSidebarItem {
   title: string

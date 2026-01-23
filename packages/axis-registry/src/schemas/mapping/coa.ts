@@ -29,9 +29,9 @@ export type BalanceValidation = z.infer<typeof balanceValidationSchema>;
 // ============================================================================
 
 export const coaMappingSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Source account
   sourceCode: z.string(),
@@ -64,7 +64,7 @@ export const coaMappingSchema = z.object({
   confirmedControlType: controlAccountTypeSchema.optional(),
 
   // Target AXIS account (if mapped to existing)
-  targetAccountId: z.string().uuid().optional(),
+  targetAccountId: z.uuid().optional(),
   targetAccountCode: z.string().optional(),
 
   // Status
@@ -74,7 +74,7 @@ export const coaMappingSchema = z.object({
   balanceValidation: balanceValidationSchema.optional(),
 
   // Review trail
-  reviewedBy: z.string().uuid().optional(),
+  reviewedBy: z.uuid().optional(),
   reviewedAt: z.string().datetime().optional(),
   reviewNote: z.string().max(500).optional(),
 
@@ -89,7 +89,7 @@ export type COAMapping = z.infer<typeof coaMappingSchema>;
 // ============================================================================
 
 export const coaValidationSummarySchema = z.object({
-  migrationStateId: z.string().uuid(),
+  migrationStateId: z.uuid(),
 
   // Control account checks
   hasARControl: z.boolean(),

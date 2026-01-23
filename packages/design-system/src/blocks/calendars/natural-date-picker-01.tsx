@@ -3,16 +3,16 @@
 import * as React from "react"
 import { parseDate } from "chrono-node"
 import { CalendarIcon } from "lucide-react"
-import { Button } from "@/components/button"
-import { Calendar } from "@/components/calendar"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
+import { Button } from "../../components/button"
+import { Calendar } from "../../components/calendar"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/popover"
-import { cn } from "@/lib/utils"
+} from "../../components/popover"
+import { cn } from "../../lib/utils"
 
 function formatDate(date: Date | undefined) {
   if (!date) return ""

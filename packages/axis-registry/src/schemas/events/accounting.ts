@@ -14,21 +14,21 @@ import { createEventSchema, auditedEventEnvelopeSchema } from "./base";
 // ============================================================================
 
 export const journalPostedPayloadSchema = z.object({
-  journalId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  journalId: z.uuid(),
+  tenantId: z.uuid(),
   journalNumber: z.string().min(1),
   postingDate: z.string().datetime(),
   fiscalPeriod: z.string(),
   description: z.string(),
   sourceDocument: z.object({
     type: z.string(),
-    id: z.string().uuid(),
+    id: z.uuid(),
     number: z.string(),
   }),
   entries: z.array(
     z.object({
-      lineId: z.string().uuid(),
-      accountId: z.string().uuid(),
+      lineId: z.uuid(),
+      accountId: z.uuid(),
       accountCode: z.string(),
       accountName: z.string(),
       debit: z.string(),
@@ -38,7 +38,7 @@ export const journalPostedPayloadSchema = z.object({
   ),
   totalDebits: z.string(),
   totalCredits: z.string(),
-  postedBy: z.string().uuid(),
+  postedBy: z.uuid(),
 });
 
 export const journalPostedEventSchema = auditedEventEnvelopeSchema.extend({
@@ -53,11 +53,11 @@ export type JournalPostedEvent = z.infer<typeof journalPostedEventSchema>;
 // ============================================================================
 
 export const periodSoftClosedPayloadSchema = z.object({
-  periodId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  periodId: z.uuid(),
+  tenantId: z.uuid(),
   fiscalPeriod: z.string(), // e.g., "2026-01"
   fiscalYear: z.number().int(),
-  closedBy: z.string().uuid(),
+  closedBy: z.uuid(),
   closedAt: z.string().datetime(),
   // Only approved adjustments allowed after soft close
 });
@@ -70,16 +70,16 @@ export const periodSoftClosedEventSchema = createEventSchema(
 export type PeriodSoftClosedEvent = z.infer<typeof periodSoftClosedEventSchema>;
 
 export const periodHardClosedPayloadSchema = z.object({
-  periodId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  periodId: z.uuid(),
+  tenantId: z.uuid(),
   fiscalPeriod: z.string(),
   fiscalYear: z.number().int(),
-  closedBy: z.string().uuid(),
+  closedBy: z.uuid(),
   closedAt: z.string().datetime(),
   // No posts allowed after hard close (audit override only)
   retainedEarningsEntry: z
     .object({
-      journalId: z.string().uuid(),
+      journalId: z.uuid(),
       amount: z.string(),
     })
     .optional(),

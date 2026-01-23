@@ -2,9 +2,9 @@
 
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
-import { Button } from "@/components/button"
-import { Badge } from "@/components/badge"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/button"
+import { Badge } from "../../components/badge"
+import { cn } from "../../lib/utils"
 
 export interface HeroSection01Props {
   badge?: string

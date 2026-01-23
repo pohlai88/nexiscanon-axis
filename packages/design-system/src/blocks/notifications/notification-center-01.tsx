@@ -5,12 +5,12 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/popover"
-import { Button } from "@/components/button"
-import { Badge } from "@/components/badge"
-import { ScrollArea } from "@/components/scroll-area"
-import { Separator } from "@/components/separator"
-import { cn } from "@/lib/utils"
+} from "../../components/popover"
+import { Button } from "../../components/button"
+import { Badge } from "../../components/badge"
+import { ScrollArea } from "../../components/scroll-area"
+import { Separator } from "../../components/separator"
+import { cn } from "../../lib/utils"
 import { Bell, Check, X } from "lucide-react"
 
 export interface Notification {

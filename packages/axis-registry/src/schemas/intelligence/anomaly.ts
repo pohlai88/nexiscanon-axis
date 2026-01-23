@@ -59,8 +59,8 @@ export type SuggestedAction = z.infer<typeof suggestedActionSchema>;
 // ============================================================================
 
 export const anomalySchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Classification
   anomalyType: z.enum(ANOMALY_TYPE),
@@ -69,7 +69,7 @@ export const anomalySchema = z.object({
   // Context
   domain: z.string().max(50),
   entityType: z.string().max(100),
-  entityId: z.string().uuid().optional(),
+  entityId: z.uuid().optional(),
 
   // Detection
   detectedAt: z.string().datetime(),
@@ -96,9 +96,9 @@ export const anomalySchema = z.object({
   status: z.enum(INTEL_ANOMALY_STATUS).default("detected"),
 
   // Resolution
-  acknowledgedBy: z.string().uuid().optional(),
+  acknowledgedBy: z.uuid().optional(),
   acknowledgedAt: z.string().datetime().optional(),
-  resolvedBy: z.string().uuid().optional(),
+  resolvedBy: z.uuid().optional(),
   resolvedAt: z.string().datetime().optional(),
   resolutionNote: z.string().max(1000).optional(),
 

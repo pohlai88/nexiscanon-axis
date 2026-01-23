@@ -29,9 +29,9 @@ export type OnboardingStep = z.infer<typeof onboardingStepSchema>;
 // ============================================================================
 
 export const onboardingProgressSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid().optional(), // null for tenant-level
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  userId: z.uuid().optional(), // null for tenant-level
 
   // Progress tracking
   steps: z.array(onboardingStepSchema).default([]),

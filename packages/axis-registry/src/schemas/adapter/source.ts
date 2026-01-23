@@ -22,7 +22,7 @@ export const databaseConnectionSchema = z.object({
   database: z.string().optional(),
   schema: z.string().default("public"),
   // Credentials stored in secret manager, referenced by ID
-  credentialRef: z.string().uuid().optional(),
+  credentialRef: z.uuid().optional(),
   // SSL configuration
   ssl: z
     .object({
@@ -47,9 +47,9 @@ export const fileSourceSchema = z.object({
 export type FileSource = z.infer<typeof fileSourceSchema>;
 
 export const apiSourceSchema = z.object({
-  baseUrl: z.string().url(),
+  baseUrl: z.url(),
   authType: z.enum(["none", "basic", "bearer", "api_key", "oauth2"]),
-  credentialRef: z.string().uuid().optional(),
+  credentialRef: z.uuid().optional(),
   headers: z.record(z.string(), z.string()).optional(),
 });
 
@@ -124,9 +124,9 @@ export type SourceRelationship = z.infer<typeof sourceRelationshipSchema>;
 // ============================================================================
 
 export const sourceSchemaSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Source type
   sourceType: sourceConnectorTypeSchema,
@@ -159,8 +159,8 @@ export type SourceSchema = z.infer<typeof sourceSchemaSchema>;
 // ============================================================================
 
 export const introspectionRequestSchema = z.object({
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
   sourceType: sourceConnectorTypeSchema,
 
   // Connection details

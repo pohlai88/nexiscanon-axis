@@ -20,14 +20,14 @@ export const salesInvoiceLineSchema = z.object({
   deliveryLineNumber: z.number().int().optional(),
 
   // Item
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
   itemDescription: z.string().max(500).optional(),
 
   // Quantity
   quantity: z.number().positive(),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
 
   // Pricing
@@ -36,13 +36,13 @@ export const salesInvoiceLineSchema = z.object({
   discountAmount: z.string().default("0"),
 
   // Tax
-  taxCodeId: z.string().uuid().optional(),
+  taxCodeId: z.uuid().optional(),
   taxCode: z.string().max(20).optional(),
   taxRate: z.number().min(0).max(100).default(0),
   taxAmount: z.string().default("0"),
 
   // Revenue account (can vary by item/category)
-  revenueAccountId: z.string().uuid(),
+  revenueAccountId: z.uuid(),
 
   // Line total
   lineTotal: z.string(),
@@ -58,17 +58,17 @@ export type SalesInvoiceLine = z.infer<typeof salesInvoiceLineSchema>;
 
 export const salesInvoiceSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Source
-  sourceOrderId: z.string().uuid().optional(),
+  sourceOrderId: z.uuid().optional(),
   sourceOrderNumber: z.string().max(50).optional(),
-  sourceDeliveryIds: z.array(z.string().uuid()).optional(),
+  sourceDeliveryIds: z.array(z.uuid()).optional(),
 
   // Customer
-  customerId: z.string().uuid(),
+  customerId: z.uuid(),
   customerName: z.string().max(255),
   customerTaxId: z.string().max(50).optional(),
 
@@ -99,28 +99,28 @@ export const salesInvoiceSchema = z.object({
   amountDue: z.string(),
 
   // Terms
-  paymentTermId: z.string().uuid().optional(),
+  paymentTermId: z.uuid().optional(),
   paymentTermDays: z.number().int().min(0).optional(),
 
   // Notes
   notes: z.string().max(2000).optional(),
 
   // Accounting references
-  arAccountId: z.string().uuid(),
-  revenueAccountId: z.string().uuid(),
+  arAccountId: z.uuid(),
+  revenueAccountId: z.uuid(),
 
   // Payment records
-  paymentIds: z.array(z.string().uuid()).optional(),
+  paymentIds: z.array(z.uuid()).optional(),
 
   // Posting reference (B01)
-  postingBatchId: z.string().uuid().optional(),
+  postingBatchId: z.uuid().optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  postedBy: z.string().uuid().optional(),
+  postedBy: z.uuid().optional(),
   postedAt: z.string().datetime().optional(),
 });
 

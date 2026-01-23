@@ -12,12 +12,12 @@ import { messageSchema } from "./text-generation";
 // ============================================================================
 
 export const conversationSessionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  userId: z.uuid(),
 
   // Context
-  agentId: z.string().uuid().optional(),
+  agentId: z.uuid().optional(),
   title: z.string().max(255).optional(),
 
   // Messages
@@ -41,12 +41,12 @@ export type ConversationSession = z.infer<typeof conversationSessionSchema>;
 // ============================================================================
 
 export const interactionRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  userId: z.uuid(),
 
   // Interaction
-  sessionId: z.string().uuid(),
+  sessionId: z.uuid(),
   query: z.string(),
   response: z.string(),
 
@@ -56,7 +56,7 @@ export const interactionRecordSchema = z.object({
   // Context
   domain: z.string().max(50).optional(),
   entityType: z.string().max(100).optional(),
-  entityId: z.string().uuid().optional(),
+  entityId: z.uuid().optional(),
 
   // Feedback
   wasHelpful: z.boolean().optional(),
@@ -72,8 +72,8 @@ export type InteractionRecord = z.infer<typeof interactionRecordSchema>;
 // ============================================================================
 
 export const knowledgeDocumentSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   collection: z.string().max(100),
@@ -86,14 +86,14 @@ export const knowledgeDocumentSchema = z.object({
   // Chunks
   chunkIndex: z.number().int().nonnegative().optional(),
   totalChunks: z.number().int().positive().optional(),
-  parentDocumentId: z.string().uuid().optional(),
+  parentDocumentId: z.uuid().optional(),
 
   // Embedding
   embedding: z.array(z.number()).optional(),
 
   // Metadata
   source: z.string().max(255).optional(),
-  sourceUrl: z.string().url().optional(),
+  sourceUrl: z.url().optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 
   createdAt: z.string().datetime(),

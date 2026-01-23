@@ -4,15 +4,15 @@ import * as React from "react"
 import { ChevronDown } from "lucide-react"
 import type { DateRange } from "react-day-picker"
 import { format } from "date-fns"
-import { Button } from "@/components/button"
-import { Calendar } from "@/components/calendar"
-import { Label } from "@/components/label"
+import { Button } from "../../components/button"
+import { Calendar } from "../../components/calendar"
+import { Label } from "../../components/label"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/popover"
-import { cn } from "@/lib/utils"
+} from "../../components/popover"
+import { cn } from "../../lib/utils"
 
 export interface DateRangePicker01Props {
   value?: DateRange

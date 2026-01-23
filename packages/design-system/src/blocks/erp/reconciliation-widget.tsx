@@ -27,12 +27,12 @@
  */
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/card"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
-import { Progress } from "@/components/progress"
-import { Checkbox } from "@/components/checkbox"
+import { cn } from "../../lib/utils"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/card"
+import { Badge } from "../../components/badge"
+import { Button } from "../../components/button"
+import { Progress } from "../../components/progress"
+import { Checkbox } from "../../components/checkbox"
 import {
   Table,
   TableBody,
@@ -40,7 +40,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/table"
+} from "../../components/table"
 import {
   CheckCircle,
   ArrowLeftRight,

@@ -8,14 +8,14 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
+} from "../../components/card"
 import {
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   type ChartConfig,
-} from "@/components/chart"
-import { cn } from "@/lib/utils"
+} from "../../components/chart"
+import { cn } from "../../lib/utils"
 
 export interface PieLegendDataPoint {
   name: string

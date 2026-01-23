@@ -73,7 +73,7 @@ export type ValidationPhase = z.infer<typeof validationPhaseSchema>;
 // ============================================================================
 
 export const cutoverParticipantSchema = z.object({
-  userId: z.string().uuid(),
+  userId: z.uuid(),
   role: z.string(),
   confirmedAt: z.string().datetime().optional(),
   presentAtCutover: z.boolean().default(false),
@@ -86,7 +86,7 @@ export type CutoverParticipant = z.infer<typeof cutoverParticipantSchema>;
 // ============================================================================
 
 export const finalSignoffSchema = z.object({
-  signedBy: z.string().uuid(),
+  signedBy: z.uuid(),
   signedAt: z.string().datetime(),
   notes: z.string().max(2000).optional(),
 });
@@ -98,9 +98,9 @@ export type FinalSignoff = z.infer<typeof finalSignoffSchema>;
 // ============================================================================
 
 export const cutoverExecutionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Scheduling
   scheduledAt: z.string().datetime(),
@@ -124,7 +124,7 @@ export const cutoverExecutionSchema = z.object({
   overallStatus: cutoverStatusSchema,
 
   // Participants
-  cutoverLead: z.string().uuid(),
+  cutoverLead: z.uuid(),
   participants: z.array(cutoverParticipantSchema).default([]),
 
   // Final sign-off

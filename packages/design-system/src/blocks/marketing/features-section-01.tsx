@@ -7,8 +7,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { cn } from "../../lib/utils"
 
 export interface Feature {
   id: string

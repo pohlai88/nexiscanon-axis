@@ -9,7 +9,7 @@ import {
   LogOut,
   Sparkles,
 } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,13 +18,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/dropdown-menu"
+} from "../../components/dropdown-menu"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/sidebar"
+} from "../../components/sidebar"
 
 export interface NavUserProps {
   user: {

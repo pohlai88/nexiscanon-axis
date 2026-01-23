@@ -1,149 +1,117 @@
 /**
- * Purchase Bill Table (B05)
- *
- * Records supplier's invoice, creates AP entry.
+ * Purchase Bill Schema (F01 + B01 Compliant)
+ * 
+ * Vendor bills with AP posting integration to posting spine.
  */
 
-import {
-  pgTable,
-  timestamp,
-  uuid,
-  varchar,
-  jsonb,
-  integer,
-  numeric,
-  text,
-  index,
-} from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { pgTable, uuid, text, timestamp, decimal, jsonb, index, unique } from "drizzle-orm/pg-core";
 import { tenants } from "../tenant";
-import {
-  type BillStatus,
-  type MatchStatus,
-  type AddressSnapshot,
-  type PurchaseBillLine,
-  type MatchException,
-} from "@axis/registry/schemas";
+import { users } from "../user";
+import { vendors } from "../vendor";
+import { documents } from "../document";
+import { purchaseOrders } from "./order";
 
+/**
+ * Purchase bill line item structure.
+ * 
+ * CRITICAL: Includes account_code for GL posting integration.
+ */
+export interface BillLineItem {
+  description: string;
+  quantity: number;
+  unit_price: string; // Decimal as string
+  amount: string; // Decimal as string
+  tax_rate?: string; // Decimal as string
+  account_code: string; // For GL posting (e.g., "5100" for expense)
+  notes?: string;
+}
+
+/**
+ * Purchase Bills table.
+ * 
+ * B01 Integration: Links to documents table via document_id.
+ */
 export const purchaseBills = pgTable(
   "purchase_bills",
   {
+    // Identity
     id: uuid("id").primaryKey().defaultRandom(),
     tenantId: uuid("tenant_id")
       .notNull()
       .references(() => tenants.id, { onDelete: "cascade" }),
 
-    // Identity
-    documentNumber: varchar("document_number", { length: 50 }).notNull(),
-    supplierInvoiceNumber: varchar("supplier_invoice_number", {
-      length: 100,
-    }).notNull(),
-
-    // Source
-    sourcePoIds: jsonb("source_po_ids").$type<string[]>(),
-    sourceReceiptIds: jsonb("source_receipt_ids").$type<string[]>(),
-
-    // Supplier (reference by UUID, not FK per B02)
-    supplierId: uuid("supplier_id").notNull(),
-    supplierName: varchar("supplier_name", { length: 255 }).notNull(),
-    supplierTaxId: varchar("supplier_tax_id", { length: 50 }),
-
-    // Addresses
-    supplierAddress: jsonb("supplier_address")
-      .notNull()
-      .$type<AddressSnapshot>(),
-
-    // Status
-    status: varchar("status", { length: 20 })
-      .notNull()
-      .default("draft")
-      .$type<BillStatus>(),
-    billDate: timestamp("bill_date", { withTimezone: true }).notNull(),
-    receivedDate: timestamp("received_date", { withTimezone: true }).notNull(),
-    dueDate: timestamp("due_date", { withTimezone: true }).notNull(),
-
-    // Pricing
-    currency: varchar("currency", { length: 3 }).notNull(),
-    exchangeRate: numeric("exchange_rate", { precision: 12, scale: 6 })
-      .notNull()
-      .default("1"),
-
-    // Lines
-    lines: jsonb("lines").notNull().$type<PurchaseBillLine[]>(),
-
-    // Totals
-    subtotal: numeric("subtotal", { precision: 18, scale: 4 }).notNull(),
-    discountTotal: numeric("discount_total", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    taxableAmount: numeric("taxable_amount", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    taxTotal: numeric("tax_total", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    grandTotal: numeric("grand_total", { precision: 18, scale: 4 }).notNull(),
-
-    // Payment tracking
-    amountPaid: numeric("amount_paid", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    amountDue: numeric("amount_due", { precision: 18, scale: 4 }).notNull(),
-
-    // Terms
-    paymentTermId: uuid("payment_term_id"),
-
-    // Matching status
-    matchStatus: varchar("match_status", { length: 20 })
-      .notNull()
-      .default("unmatched")
-      .$type<MatchStatus>(),
-    matchExceptions: jsonb("match_exceptions").$type<MatchException[]>(),
-
-    // Notes
+    // Bill details
+    billNumber: text("bill_number").notNull(),
+    billDate: timestamp("bill_date", { mode: "date" }).notNull(),
+    dueDate: timestamp("due_date", { mode: "date" }).notNull(),
+    
+    // Status workflow
+    status: text("status").notNull().default("draft"),
+    // Possible values: draft | received | approved | posted | paid | cancelled
+    
+    // Vendor
+    vendorId: uuid("vendor_id").references(() => vendors.id, { onDelete: "restrict" }),
+    vendorName: text("vendor_name").notNull(),
+    vendorEmail: text("vendor_email"),
+    
+    // Link to purchase order
+    poId: uuid("po_id").references(() => purchaseOrders.id, { onDelete: "set null" }),
+    
+    // Financial details
+    currency: text("currency").notNull().default("USD"),
+    subtotal: decimal("subtotal", { precision: 15, scale: 4 }).notNull(),
+    taxTotal: decimal("tax_total", { precision: 15, scale: 4 }).notNull(),
+    totalAmount: decimal("total_amount", { precision: 15, scale: 4 }).notNull(),
+    amountPaid: decimal("amount_paid", { precision: 15, scale: 4 }).notNull().default("0"),
+    amountDue: decimal("amount_due", { precision: 15, scale: 4 }).notNull(),
+    
+    // Line items (JSONB) with account_code for posting
+    lineItems: jsonb("line_items").$type<BillLineItem[]>().notNull(),
+    
+    // Additional details
+    paymentTerms: text("payment_terms"),
     notes: text("notes"),
-
-    // Accounting references (UUID, not FK per B02)
-    apAccountId: uuid("ap_account_id").notNull(),
-
-    // Payment records
-    paymentIds: jsonb("payment_ids").$type<string[]>(),
-
-    // Posting reference (B01)
-    postingBatchId: uuid("posting_batch_id"),
-
-    // Audit
-    createdBy: uuid("created_by").notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
+    
+    // B01 POSTING SPINE INTEGRATION
+    documentId: uuid("document_id").references(() => documents.id, { onDelete: "set null" }),
+    postedAt: timestamp("posted_at", { mode: "date" }),
+    
+    // Payment tracking
+    lastPaymentDate: timestamp("last_payment_date", { mode: "date" }),
+    
+    // Metadata
+    metadata: jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+    
+    // Audit fields (F01 LAW F01-02)
+    createdBy: uuid("created_by")
       .notNull()
-      .defaultNow(),
-    updatedBy: uuid("updated_by"),
-    updatedAt: timestamp("updated_at", { withTimezone: true }),
-    postedBy: uuid("posted_by"),
-    postedAt: timestamp("posted_at", { withTimezone: true }),
-
-    // Version
-    version: integer("version").notNull().default(1),
+      .references(() => users.id, { onDelete: "set null" }),
+    modifiedBy: uuid("modified_by")
+      .notNull()
+      .references(() => users.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
   },
-  (table) => [
-    index("idx_purchase_bills_tenant").on(table.tenantId),
-    index("idx_purchase_bills_supplier").on(table.tenantId, table.supplierId),
-    index("idx_purchase_bills_status").on(table.tenantId, table.status),
-    index("idx_purchase_bills_doc_number").on(
+  (table) => ({
+    // Indexes (F01 LAW F01-04)
+    tenantIdIdx: index("idx_purchase_bills_tenant_id").on(table.tenantId),
+    statusIdx: index("idx_purchase_bills_status").on(table.status),
+    vendorIdIdx: index("idx_purchase_bills_vendor_id").on(table.vendorId),
+    poIdIdx: index("idx_purchase_bills_po_id").on(table.poId),
+    documentIdIdx: index("idx_purchase_bills_document_id").on(table.documentId), // B01 integration
+    billDateIdx: index("idx_purchase_bills_bill_date").on(table.billDate),
+    dueDateIdx: index("idx_purchase_bills_due_date").on(table.dueDate),
+    
+    // Unique constraint: bill_number per tenant
+    tenantNumberUniq: unique("uq_purchase_bills_tenant_number").on(
       table.tenantId,
-      table.documentNumber
+      table.billNumber
     ),
-    index("idx_purchase_bills_due_date").on(table.tenantId, table.dueDate),
-    index("idx_purchase_bills_bill_date").on(table.tenantId, table.billDate),
-  ]
+  })
 );
 
-export const purchaseBillsRelations = relations(purchaseBills, ({ one }) => ({
-  tenant: one(tenants, {
-    fields: [purchaseBills.tenantId],
-    references: [tenants.id],
-  }),
-}));
-
-export type PurchaseBillRow = typeof purchaseBills.$inferSelect;
-export type NewPurchaseBillRow = typeof purchaseBills.$inferInsert;
+/**
+ * Type inference for purchase bills.
+ */
+export type PurchaseBill = typeof purchaseBills.$inferSelect;
+export type NewPurchaseBill = typeof purchaseBills.$inferInsert;

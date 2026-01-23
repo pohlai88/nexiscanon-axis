@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Check, CreditCard, Truck } from "lucide-react"
-import { Button } from "@/components/button"
+import { Button } from "../../components/button"
 import {
   Card,
   CardContent,
@@ -10,11 +10,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
-import { Separator } from "@/components/separator"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
+import { Separator } from "../../components/separator"
+import { cn } from "../../lib/utils"
 
 export interface CheckoutItem {
   id: string

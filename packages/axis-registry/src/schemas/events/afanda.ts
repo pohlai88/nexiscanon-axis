@@ -15,10 +15,10 @@ import { ALERT_SEVERITY, EXPORT_FORMAT } from "../afanda/constants";
 export const dashboardCreatedEventSchema = createEventSchema(
   "dashboard.created",
   z.object({
-    dashboardId: z.string().uuid(),
+    dashboardId: z.uuid(),
     name: z.string(),
     dashboardType: z.string(),
-    createdBy: z.string().uuid(),
+    createdBy: z.uuid(),
   })
 );
 
@@ -27,8 +27,8 @@ export type DashboardCreatedEvent = z.infer<typeof dashboardCreatedEventSchema>;
 export const dashboardViewedEventSchema = createEventSchema(
   "dashboard.viewed",
   z.object({
-    dashboardId: z.string().uuid(),
-    viewedBy: z.string().uuid(),
+    dashboardId: z.uuid(),
+    viewedBy: z.uuid(),
     duration: z.number().int().optional(),
   })
 );
@@ -38,8 +38,8 @@ export type DashboardViewedEvent = z.infer<typeof dashboardViewedEventSchema>;
 export const dashboardPublishedEventSchema = createEventSchema(
   "dashboard.published",
   z.object({
-    dashboardId: z.string().uuid(),
-    publishedBy: z.string().uuid(),
+    dashboardId: z.uuid(),
+    publishedBy: z.uuid(),
     visibility: z.string(),
   })
 );
@@ -53,8 +53,8 @@ export type DashboardPublishedEvent = z.infer<typeof dashboardPublishedEventSche
 export const alertFiredEventSchema = createEventSchema(
   "alert.fired",
   z.object({
-    alertId: z.string().uuid(),
-    ruleId: z.string().uuid(),
+    alertId: z.uuid(),
+    ruleId: z.uuid(),
     severity: z.enum(ALERT_SEVERITY),
     title: z.string(),
     triggeredValue: z.number().optional(),
@@ -67,8 +67,8 @@ export type AlertFiredEvent = z.infer<typeof alertFiredEventSchema>;
 export const alertAcknowledgedEventSchema = createEventSchema(
   "alert.acknowledged",
   z.object({
-    alertId: z.string().uuid(),
-    acknowledgedBy: z.string().uuid(),
+    alertId: z.uuid(),
+    acknowledgedBy: z.uuid(),
     note: z.string().optional(),
   })
 );
@@ -78,8 +78,8 @@ export type AlertAcknowledgedEvent = z.infer<typeof alertAcknowledgedEventSchema
 export const alertResolvedEventSchema = createEventSchema(
   "alert.resolved",
   z.object({
-    alertId: z.string().uuid(),
-    resolvedBy: z.string().uuid(),
+    alertId: z.uuid(),
+    resolvedBy: z.uuid(),
     resolutionNote: z.string().optional(),
   })
 );
@@ -89,8 +89,8 @@ export type AlertResolvedEvent = z.infer<typeof alertResolvedEventSchema>;
 export const alertSnoozedEventSchema = createEventSchema(
   "alert.snoozed",
   z.object({
-    alertId: z.string().uuid(),
-    snoozedBy: z.string().uuid(),
+    alertId: z.uuid(),
+    snoozedBy: z.uuid(),
     snoozedUntil: z.string().datetime(),
   })
 );
@@ -100,7 +100,7 @@ export type AlertSnoozedEvent = z.infer<typeof alertSnoozedEventSchema>;
 export const alertEscalatedEventSchema = createEventSchema(
   "alert.escalated",
   z.object({
-    alertId: z.string().uuid(),
+    alertId: z.uuid(),
     escalatedTo: z.array(z.string()),
     reason: z.string(),
   })
@@ -145,10 +145,10 @@ export type KpiCalculatedEvent = z.infer<typeof kpiCalculatedEventSchema>;
 export const reportGeneratedEventSchema = createEventSchema(
   "report.generated",
   z.object({
-    reportId: z.string().uuid(),
+    reportId: z.uuid(),
     reportName: z.string(),
     format: z.enum(EXPORT_FORMAT),
-    generatedBy: z.string().uuid(),
+    generatedBy: z.uuid(),
     recordCount: z.number().int(),
   })
 );
@@ -158,10 +158,10 @@ export type ReportGeneratedEvent = z.infer<typeof reportGeneratedEventSchema>;
 export const reportScheduledEventSchema = createEventSchema(
   "report.scheduled",
   z.object({
-    reportId: z.string().uuid(),
+    reportId: z.uuid(),
     cronExpression: z.string(),
-    recipients: z.array(z.string().email()),
-    scheduledBy: z.string().uuid(),
+    recipients: z.array(z.email()),
+    scheduledBy: z.uuid(),
   })
 );
 
@@ -170,8 +170,8 @@ export type ReportScheduledEvent = z.infer<typeof reportScheduledEventSchema>;
 export const reportDeliveredEventSchema = createEventSchema(
   "report.delivered",
   z.object({
-    reportId: z.string().uuid(),
-    recipients: z.array(z.string().email()),
+    reportId: z.uuid(),
+    recipients: z.array(z.email()),
     format: z.enum(EXPORT_FORMAT),
   })
 );

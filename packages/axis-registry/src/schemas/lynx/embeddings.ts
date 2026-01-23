@@ -17,7 +17,7 @@ export const embeddingRequestSchema = z.object({
   dimensions: z.number().int().positive().optional(),
 
   // Context
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
   purpose: z.enum(EMBEDDING_PURPOSE),
 });
 
@@ -43,8 +43,8 @@ export type EmbeddingResponse = z.infer<typeof embeddingResponseSchema>;
 // ============================================================================
 
 export const vectorRecordSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   collection: z.string().max(100),
   vector: z.array(z.number()),
   metadata: z.record(z.string(), z.unknown()),
@@ -59,7 +59,7 @@ export type VectorRecord = z.infer<typeof vectorRecordSchema>;
 // ============================================================================
 
 export const vectorMatchSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   score: z.number(),
   metadata: z.record(z.string(), z.unknown()),
   content: z.string().optional(),

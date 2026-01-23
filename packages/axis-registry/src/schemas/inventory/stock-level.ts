@@ -11,12 +11,12 @@ import { z } from "zod";
 // ============================================================================
 
 export const stockLevelSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Dimensions
-  itemId: z.string().uuid(),
-  locationId: z.string().uuid(),
+  itemId: z.uuid(),
+  locationId: z.uuid(),
   lotNumber: z.string().max(100).optional(),
 
   // Quantities (in base UoM)
@@ -30,7 +30,7 @@ export const stockLevelSchema = z.object({
   projected: z.number().default(0), // Computed: onHand + incoming - outgoing
 
   // UoM
-  baseUomId: z.string().uuid(),
+  baseUomId: z.uuid(),
 
   // Valuation
   totalCost: z.string().default("0"),

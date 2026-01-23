@@ -18,8 +18,8 @@ import {
 // ============================================================================
 
 export const dashboardSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   name: z.string().min(1).max(255),
@@ -32,7 +32,7 @@ export const dashboardSchema = z.object({
   // Access control
   visibility: z.enum(DASHBOARD_VISIBILITY).default("private"),
   allowedRoles: z.array(z.string()).optional(),
-  ownerId: z.string().uuid(),
+  ownerId: z.uuid(),
 
   // Layout
   layout: z.enum(DASHBOARD_LAYOUT).default("grid"),
@@ -56,7 +56,7 @@ export const dashboardSchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type Dashboard = z.infer<typeof dashboardSchema>;
@@ -66,7 +66,7 @@ export type Dashboard = z.infer<typeof dashboardSchema>;
 // ============================================================================
 
 export const widgetPositionSchema = z.object({
-  widgetId: z.string().uuid(),
+  widgetId: z.uuid(),
   x: z.number().int().min(0),
   y: z.number().int().min(0),
   width: z.number().int().min(1),
@@ -80,7 +80,7 @@ export type WidgetPosition = z.infer<typeof widgetPositionSchema>;
 // ============================================================================
 
 export const dashboardLayoutSchema = z.object({
-  dashboardId: z.string().uuid(),
+  dashboardId: z.uuid(),
   widgets: z.array(widgetPositionSchema),
 });
 

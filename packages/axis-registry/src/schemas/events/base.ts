@@ -17,23 +17,23 @@ import { sixW1HContextSchema } from "../common";
  */
 export const eventEnvelopeSchema = z.object({
   // Event identity
-  eventId: z.string().uuid(),
+  eventId: z.uuid(),
   eventType: z.string().min(1),
 
   // Correlation (for distributed tracing)
-  correlationId: z.string().uuid(),
-  causationId: z.string().uuid().optional(),
+  correlationId: z.uuid(),
+  causationId: z.uuid().optional(),
 
   // Source identification
   sourceDomain: z.string().min(1),
   sourceAggregateType: z.string().min(1),
-  sourceAggregateId: z.string().uuid(),
+  sourceAggregateId: z.uuid(),
 
   // Temporal
   timestamp: z.string().datetime(),
 
   // Tenant isolation
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
 
   // Schema version for evolution
   schemaVersion: z.number().int().positive().default(1),

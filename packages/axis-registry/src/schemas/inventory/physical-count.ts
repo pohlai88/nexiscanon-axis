@@ -15,12 +15,12 @@ export const countLineSchema = z.object({
   lineNumber: z.number().int().positive(),
 
   // Item
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
 
   // Location
-  locationId: z.string().uuid(),
+  locationId: z.uuid(),
   locationName: z.string().max(255),
 
   // Lot/Serial
@@ -31,7 +31,7 @@ export const countLineSchema = z.object({
   countedQuantity: z.number().optional(),
   varianceQuantity: z.number().optional(),
 
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
 
   // Costing
@@ -41,13 +41,13 @@ export const countLineSchema = z.object({
   // Count details
   isCounted: z.boolean().default(false),
   countedAt: z.string().datetime().optional(),
-  countedBy: z.string().uuid().optional(),
+  countedBy: z.uuid().optional(),
 
   // Recount (if variance is large)
   requiresRecount: z.boolean().default(false),
   recountedQuantity: z.number().optional(),
   recountedAt: z.string().datetime().optional(),
-  recountedBy: z.string().uuid().optional(),
+  recountedBy: z.uuid().optional(),
 
   notes: z.string().max(500).optional(),
 });
@@ -60,15 +60,15 @@ export type CountLine = z.infer<typeof countLineSchema>;
 
 export const physicalCountSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Scope (reference by UUID, not FK per B02)
-  warehouseId: z.string().uuid(),
+  warehouseId: z.uuid(),
   warehouseName: z.string().max(255),
-  locationIds: z.array(z.string().uuid()).optional(),
-  categoryIds: z.array(z.string().uuid()).optional(),
+  locationIds: z.array(z.uuid()).optional(),
+  categoryIds: z.array(z.uuid()).optional(),
 
   // Type
   countType: z.enum(COUNT_TYPE),
@@ -80,8 +80,8 @@ export const physicalCountSchema = z.object({
   completedAt: z.string().datetime().optional(),
 
   // Counters
-  countedBy: z.array(z.string().uuid()).optional(),
-  verifiedBy: z.string().uuid().optional(),
+  countedBy: z.array(z.uuid()).optional(),
+  verifiedBy: z.uuid().optional(),
 
   // Freeze book values at count start
   bookValuesFrozenAt: z.string().datetime().optional(),
@@ -96,16 +96,16 @@ export const physicalCountSchema = z.object({
   totalVarianceValue: z.string().default("0"),
 
   // Adjustment reference
-  adjustmentId: z.string().uuid().optional(),
+  adjustmentId: z.uuid().optional(),
 
   notes: z.string().max(2000).optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  approvedBy: z.string().uuid().optional(),
+  approvedBy: z.uuid().optional(),
   approvedAt: z.string().datetime().optional(),
 });
 

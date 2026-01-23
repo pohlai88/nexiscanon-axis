@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Separator } from "@/components/separator"
+import { cn } from "../../lib/utils"
+import { Separator } from "../../components/separator"
 
 export interface FooterLink {
   label: string

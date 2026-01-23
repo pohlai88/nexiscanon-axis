@@ -30,7 +30,7 @@ export type WidgetFilter = z.infer<typeof widgetFilterSchema>;
 
 export const widgetDataSourceSchema = z.object({
   type: z.enum(DATA_SOURCE_TYPE),
-  kpiId: z.string().uuid().optional(),
+  kpiId: z.uuid().optional(),
   query: z.string().optional(),
   endpoint: z.string().optional(),
   staticData: z.unknown().optional(),
@@ -55,7 +55,7 @@ export type WidgetAggregation = z.infer<typeof widgetAggregationSchema>;
 // ============================================================================
 
 export const widgetDrillDownConfigSchema = z.object({
-  targetDashboard: z.string().uuid().optional(),
+  targetDashboard: z.uuid().optional(),
   targetUrl: z.string().optional(),
   passFilters: z.boolean().default(true),
 });
@@ -67,8 +67,8 @@ export type WidgetDrillDownConfig = z.infer<typeof widgetDrillDownConfigSchema>;
 // ============================================================================
 
 export const widgetSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   name: z.string().min(1).max(255),
@@ -104,7 +104,7 @@ export const widgetSchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type Widget = z.infer<typeof widgetSchema>;

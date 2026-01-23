@@ -27,9 +27,9 @@ export type DuplicateGroupMember = z.infer<typeof duplicateGroupMemberSchema>;
 // ============================================================================
 
 export const duplicateGroupSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Group type
   entityType: z.enum(["party", "item"]),
@@ -52,7 +52,7 @@ export const duplicateGroupSchema = z.object({
   confirmedCanonicalName: z.string().optional(),
 
   // Review trail
-  resolvedBy: z.string().uuid().optional(),
+  resolvedBy: z.uuid().optional(),
   resolvedAt: z.string().datetime().optional(),
   resolutionNote: z.string().max(500).optional(),
 
@@ -67,9 +67,9 @@ export type DuplicateGroup = z.infer<typeof duplicateGroupSchema>;
 // ============================================================================
 
 export const aliasMappingSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Entity type
   entityType: z.enum(["party", "item"]),
@@ -84,13 +84,13 @@ export const aliasMappingSchema = z.object({
   canonicalName: z.string(),
 
   // From duplicate group
-  duplicateGroupId: z.string().uuid().optional(),
+  duplicateGroupId: z.uuid().optional(),
 
   // Status
   isActive: z.boolean().default(true),
 
   createdAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type AliasMapping = z.infer<typeof aliasMappingSchema>;
@@ -100,7 +100,7 @@ export type AliasMapping = z.infer<typeof aliasMappingSchema>;
 // ============================================================================
 
 export const aliasResolutionSummarySchema = z.object({
-  migrationStateId: z.string().uuid(),
+  migrationStateId: z.uuid(),
 
   // Party duplicates
   partyDuplicateGroups: z.number().int(),

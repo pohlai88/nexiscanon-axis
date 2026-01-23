@@ -30,7 +30,7 @@ export const conversationCitationSchema = z.object({
 export type ConversationCitation = z.infer<typeof conversationCitationSchema>;
 
 export const conversationMessageSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   role: z.enum(["user", "assistant", "system"]),
   content: z.string(),
   timestamp: z.string().datetime(),
@@ -47,7 +47,7 @@ export type ConversationMessage = z.infer<typeof conversationMessageSchema>;
 export const conversationContextSchema = z.object({
   domain: z.string().max(50).optional(),
   entityType: z.string().max(100).optional(),
-  entityId: z.string().uuid().optional(),
+  entityId: z.uuid().optional(),
 });
 
 export type ConversationContext = z.infer<typeof conversationContextSchema>;
@@ -57,9 +57,9 @@ export type ConversationContext = z.infer<typeof conversationContextSchema>;
 // ============================================================================
 
 export const intelConversationSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  userId: z.uuid(),
 
   // Metadata
   title: z.string().max(255).optional(),
@@ -108,14 +108,14 @@ export type NlQueryResponse = z.infer<typeof nlQueryResponseSchema>;
 // ============================================================================
 
 export const naturalLanguageQuerySchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   query: z.string(),
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid(),
+  tenantId: z.uuid(),
+  userId: z.uuid(),
 
   // Context
   domain: z.string().max(50).optional(),
-  conversationId: z.string().uuid().optional(),
+  conversationId: z.uuid().optional(),
 
   // Intent classification
   intent: z.enum(QUERY_INTENT).optional(),

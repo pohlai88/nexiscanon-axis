@@ -81,8 +81,8 @@ export type RecommendationFeedback = z.infer<typeof recommendationFeedbackSchema
 // ============================================================================
 
 export const recommendationSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Type
   recommendationType: z.enum(RECOMMENDATION_TYPE),
@@ -90,7 +90,7 @@ export const recommendationSchema = z.object({
   // Target
   targetDomain: z.string().max(50),
   targetEntity: z.string().max(100).optional(),
-  targetEntityId: z.string().uuid().optional(),
+  targetEntityId: z.uuid().optional(),
 
   // Recommendation
   title: z.string().max(255),

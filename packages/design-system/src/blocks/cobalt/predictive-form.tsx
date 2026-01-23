@@ -27,27 +27,27 @@
  */
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/card"
-import { Button } from "@/components/button"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
-import { Textarea } from "@/components/textarea"
-import { Badge } from "@/components/badge"
+import { cn } from "../../lib/utils"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/card"
+import { Button } from "../../components/button"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
+import { Textarea } from "../../components/textarea"
+import { Badge } from "../../components/badge"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/select"
+} from "../../components/select"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/tooltip"
-import { Progress } from "@/components/progress"
+} from "../../components/tooltip"
+import { Progress } from "../../components/progress"
 import {
   Sparkles,
   Check,

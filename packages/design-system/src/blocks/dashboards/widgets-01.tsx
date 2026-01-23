@@ -8,15 +8,15 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Button } from "@/components/button"
+} from "../../components/card"
+import { Button } from "../../components/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/dropdown-menu"
-import { cn } from "@/lib/utils"
+} from "../../components/dropdown-menu"
+import { cn } from "../../lib/utils"
 
 // === Stat Widget ===
 export interface StatWidgetProps {

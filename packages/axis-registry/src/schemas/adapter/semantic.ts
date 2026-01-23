@@ -43,9 +43,9 @@ export type AlternativeClassification = z.infer<
 // ============================================================================
 
 export const columnSemanticSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  sourceSchemaId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  sourceSchemaId: z.uuid(),
 
   // Source reference
   sourceTable: z.string(),
@@ -74,7 +74,7 @@ export const columnSemanticSchema = z.object({
   // Status
   status: analysisStatusSchema.default("pending"),
   isConfirmed: z.boolean().default(false), // Human confirmed
-  confirmedBy: z.string().uuid().optional(),
+  confirmedBy: z.uuid().optional(),
   confirmedAt: z.string().datetime().optional(),
 
   analyzedAt: z.string().datetime(),
@@ -88,9 +88,9 @@ export type ColumnSemantic = z.infer<typeof columnSemanticSchema>;
 // ============================================================================
 
 export const tableContextSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  sourceSchemaId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  sourceSchemaId: z.uuid(),
 
   // Table reference
   tableName: z.string(),
@@ -112,7 +112,7 @@ export const tableContextSchema = z.object({
 
   // Status
   isConfirmed: z.boolean().default(false),
-  confirmedBy: z.string().uuid().optional(),
+  confirmedBy: z.uuid().optional(),
   confirmedAt: z.string().datetime().optional(),
 
   analyzedAt: z.string().datetime(),
@@ -125,9 +125,9 @@ export type TableContext = z.infer<typeof tableContextSchema>;
 // ============================================================================
 
 export const semanticAnalysisJobSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  sourceSchemaId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  sourceSchemaId: z.uuid(),
 
   // Job status
   status: analysisStatusSchema,
@@ -154,7 +154,7 @@ export const semanticAnalysisJobSchema = z.object({
   warnings: z.array(z.string()).default([]),
 
   createdAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type SemanticAnalysisJob = z.infer<typeof semanticAnalysisJobSchema>;
@@ -164,7 +164,7 @@ export type SemanticAnalysisJob = z.infer<typeof semanticAnalysisJobSchema>;
 // ============================================================================
 
 export const columnPatternSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   category: semanticCategorySchema,
   pattern: z.string(), // Regex pattern
   source: z.string().optional(), // e.g., "SAP", "QuickBooks", "Generic"

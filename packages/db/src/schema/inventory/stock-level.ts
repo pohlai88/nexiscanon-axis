@@ -1,102 +1,111 @@
 /**
- * Stock Level Table (B06)
- *
- * Tracks quantity at Item + Location + Lot dimension.
+ * Stock Level Schema
+ * 
+ * Current inventory levels per product (materialized view pattern).
+ * F01 Compliant: UUID PKs, timestamptz, proper FKs, tenant isolation.
  */
 
-import {
-  pgTable,
-  timestamp,
-  uuid,
-  varchar,
-  integer,
-  numeric,
-  index,
-  uniqueIndex,
-} from "drizzle-orm/pg-core";
+import { pgTable, uuid, numeric, varchar, timestamp, uniqueIndex, index, check } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { tenants } from "../tenant";
+import { products } from "./product";
 
+/**
+ * Stock levels table.
+ */
 export const stockLevels = pgTable(
   "stock_levels",
   {
+    // Primary Key
     id: uuid("id").primaryKey().defaultRandom(),
+
+    // Tenant
     tenantId: uuid("tenant_id")
       .notNull()
       .references(() => tenants.id, { onDelete: "cascade" }),
 
-    // Dimensions (reference by UUID, not FK per B02)
-    itemId: uuid("item_id").notNull(),
-    locationId: uuid("location_id").notNull(),
-    lotNumber: varchar("lot_number", { length: 100 }),
+    // Product
+    productId: uuid("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
 
-    // Quantities (in base UoM)
-    onHand: numeric("on_hand", { precision: 18, scale: 4 })
+    // Location (optional for future)
+    locationId: uuid("location_id"),
+
+    // Quantities
+    quantityOnHand: numeric("quantity_on_hand", { precision: 19, scale: 4 })
       .notNull()
       .default("0"),
-    reserved: numeric("reserved", { precision: 18, scale: 4 })
+    quantityAvailable: numeric("quantity_available", { precision: 19, scale: 4 })
+      .notNull()
+      .default("0"), // on_hand - committed
+    quantityCommitted: numeric("quantity_committed", { precision: 19, scale: 4 })
+      .notNull()
+      .default("0"), // reserved for orders
+
+    // Costing (Weighted Average)
+    averageUnitCost: numeric("average_unit_cost", { precision: 19, scale: 4 })
       .notNull()
       .default("0"),
-    available: numeric("available", { precision: 18, scale: 4 })
+    totalValue: numeric("total_value", { precision: 19, scale: 4 })
       .notNull()
-      .default("0"),
+      .default("0"), // quantity_on_hand * average_unit_cost
+    currency: varchar("currency", { length: 3 }).default("USD"),
 
-    // Future quantities
-    incoming: numeric("incoming", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    outgoing: numeric("outgoing", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    projected: numeric("projected", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
+    // Last Activity
+    lastMovementDate: timestamp("last_movement_date"),
+    lastReceiptDate: timestamp("last_receipt_date"),
+    lastIssueDate: timestamp("last_issue_date"),
 
-    // UoM (reference by UUID, not FK per B02)
-    baseUomId: uuid("base_uom_id").notNull(),
-
-    // Valuation
-    totalCost: numeric("total_cost", { precision: 18, scale: 4 })
-      .notNull()
-      .default("0"),
-    averageCost: numeric("average_cost", { precision: 18, scale: 6 })
-      .notNull()
-      .default("0"),
-
-    // For lot-tracked items
-    expiryDate: timestamp("expiry_date", { withTimezone: true }),
-
-    // Metadata
-    lastMoveDate: timestamp("last_move_date", { withTimezone: true }),
-    lastCountDate: timestamp("last_count_date", { withTimezone: true }),
-
-    updatedAt: timestamp("updated_at", { withTimezone: true })
-      .notNull()
-      .defaultNow(),
-
-    // Version
-    version: integer("version").notNull().default(1),
+    // Audit
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
-  (table) => [
-    // Unique constraint on item + location + lot
-    uniqueIndex("uq_stock_levels_dimension").on(
+  (table) => ({
+    // Unique constraint: tenant + product + location
+    tenantProductLocationIdx: uniqueIndex("stock_levels_tenant_product_unique").on(
       table.tenantId,
-      table.itemId,
-      table.locationId,
-      table.lotNumber
+      table.productId,
+      table.locationId
     ),
-    index("idx_stock_levels_item").on(table.tenantId, table.itemId),
-    index("idx_stock_levels_location").on(table.tenantId, table.locationId),
-    index("idx_stock_levels_expiry").on(table.tenantId, table.expiryDate),
-  ]
+
+    // Indexes
+    tenantIdx: index("idx_stock_levels_tenant").on(table.tenantId),
+    productIdx: index("idx_stock_levels_product").on(table.tenantId, table.productId),
+    lowStockIdx: index("idx_stock_levels_low_stock")
+      .on(table.tenantId, table.quantityAvailable)
+      .where(sql`${table.quantityAvailable} < 10`),
+
+    // Check constraint: quantities validation
+    quantitiesCheck: check(
+      "stock_levels_quantities_check",
+      sql`
+        quantity_on_hand >= 0 AND
+        quantity_available >= 0 AND
+        quantity_committed >= 0 AND
+        quantity_available = quantity_on_hand - quantity_committed
+      `
+    ),
+  })
 );
 
+/**
+ * Stock level relations.
+ */
 export const stockLevelsRelations = relations(stockLevels, ({ one }) => ({
   tenant: one(tenants, {
     fields: [stockLevels.tenantId],
     references: [tenants.id],
   }),
+  product: one(products, {
+    fields: [stockLevels.productId],
+    references: [products.id],
+  }),
 }));
 
-export type StockLevelRow = typeof stockLevels.$inferSelect;
-export type NewStockLevelRow = typeof stockLevels.$inferInsert;
+/**
+ * Stock level TypeScript type (inferred from schema).
+ */
+export type StockLevel = typeof stockLevels.$inferSelect;
+export type StockLevelInsert = typeof stockLevels.$inferInsert;

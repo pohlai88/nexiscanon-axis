@@ -29,7 +29,7 @@ export const providerConfigSchema = z.object({
   providerId: z.enum(PROVIDER_ID),
   apiKeyRef: z.string().max(255), // Reference to secret store
   defaultModel: z.string().max(100).optional(),
-  baseUrl: z.string().url().optional(), // For custom endpoints
+  baseUrl: z.url().optional(), // For custom endpoints
   options: z.record(z.string(), z.unknown()).optional(),
 });
 
@@ -40,7 +40,7 @@ export type ProviderConfig = z.infer<typeof providerConfigSchema>;
 // ============================================================================
 
 export const providerRegistrySchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
   primary: providerConfigSchema,
   secondary: providerConfigSchema.optional(),
   embedding: providerConfigSchema.optional(),

@@ -1,132 +1,59 @@
-﻿"use client";
+"use client";
 
 /**
- * Theme provider for dark/light mode.
- * 
- * Pattern: System preference detection with manual override.
+ * Light/Dark Mode Provider
+ *
+ * Uses next-themes for light/dark mode switching.
+ * Re-exports useTheme from next-themes for convenience.
+ *
+ * NOTE: This is separate from @workspace/design-system's ThemeProvider
+ * which handles color palette themes (stone, zinc, neutral, etc.).
+ *
+ * @see packages/design-system/src/components/theme-provider.tsx for palette themes
  */
 
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-  type ReactNode,
-} from "react";
+import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import type { ReactNode } from "react";
+import { cn } from "@workspace/design-system/lib/utils";
 
-type Theme = "light" | "dark" | "system";
+// Re-export useTheme for consumers
+export { useTheme };
 
-interface ThemeContextValue {
-  theme: Theme;
-  resolvedTheme: "light" | "dark";
-  setTheme: (theme: Theme) => void;
-}
-
-const ThemeContext = createContext<ThemeContextValue | null>(null);
-
-export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useTheme must be used within ThemeProvider");
-  }
-  return context;
-}
+export type ColorMode = "light" | "dark" | "system";
 
 interface ThemeProviderProps {
   children: ReactNode;
-  defaultTheme?: Theme;
+  defaultTheme?: ColorMode;
   storageKey?: string;
 }
 
+/**
+ * Light/Dark mode provider.
+ * Wraps next-themes with app-specific defaults.
+ */
 export function ThemeProvider({
   children,
   defaultTheme = "system",
-  storageKey = "axis-theme",
+  storageKey = "axis-color-mode",
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(defaultTheme);
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
-  const [mounted, setMounted] = useState(false);
-
-  // Get system preference
-  const getSystemTheme = useCallback((): "light" | "dark" => {
-    if (typeof window === "undefined") return "light";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  }, []);
-
-  // Resolve theme (system -> actual theme)
-  const resolveTheme = useCallback(
-    (t: Theme): "light" | "dark" => {
-      return t === "system" ? getSystemTheme() : t;
-    },
-    [getSystemTheme]
-  );
-
-  // Apply theme to document
-  const applyTheme = useCallback((resolved: "light" | "dark") => {
-    const root = document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(resolved);
-    root.style.colorScheme = resolved;
-  }, []);
-
-  // Set theme
-  const setTheme = useCallback(
-    (newTheme: Theme) => {
-      setThemeState(newTheme);
-      localStorage.setItem(storageKey, newTheme);
-      const resolved = resolveTheme(newTheme);
-      setResolvedTheme(resolved);
-      applyTheme(resolved);
-    },
-    [storageKey, resolveTheme, applyTheme]
-  );
-
-  // Initialize from storage
-  useEffect(() => {
-    const stored = localStorage.getItem(storageKey) as Theme | null;
-    const initial = stored ?? defaultTheme;
-    setThemeState(initial);
-    const resolved = resolveTheme(initial);
-    setResolvedTheme(resolved);
-    applyTheme(resolved);
-    setMounted(true);
-  }, [storageKey, defaultTheme, resolveTheme, applyTheme]);
-
-  // Listen for system theme changes
-  useEffect(() => {
-    if (theme !== "system") return;
-
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const handleChange = () => {
-      const resolved = getSystemTheme();
-      setResolvedTheme(resolved);
-      applyTheme(resolved);
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, [theme, getSystemTheme, applyTheme]);
-
-  // Prevent flash of wrong theme
-  if (!mounted) {
-    return null;
-  }
-
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme={defaultTheme}
+      enableSystem
+      disableTransitionOnChange={false}
+      storageKey={storageKey}
+    >
       {children}
-    </ThemeContext.Provider>
+    </NextThemesProvider>
   );
 }
 
 /**
  * Theme toggle button component.
+ * Cycles through: light → dark → system
  */
-export function ThemeToggle({ className = "" }: { className?: string }) {
+export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
 
   const cycleTheme = () => {
@@ -138,7 +65,10 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   return (
     <button
       onClick={cycleTheme}
-      className={`p-2 rounded-lg hover:bg-muted transition-colors duration-200 ${className}`}
+      className={cn(
+        "p-2 rounded-lg hover:bg-muted transition-colors duration-200",
+        className
+      )}
       aria-label={`Current theme: ${theme}. Click to change.`}
       title={`Theme: ${theme}`}
     >

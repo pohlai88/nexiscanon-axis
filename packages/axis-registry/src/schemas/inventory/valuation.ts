@@ -12,21 +12,21 @@ import { COSTING_METHOD } from "./constants";
 // ============================================================================
 
 export const valuationEntrySchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Reference
-  stockMoveId: z.string().uuid(),
+  stockMoveId: z.uuid(),
   stockMoveLineNumber: z.number().int(),
 
   // Item
-  itemId: z.string().uuid(),
-  locationId: z.string().uuid(),
+  itemId: z.uuid(),
+  locationId: z.uuid(),
   lotNumber: z.string().max(100).optional(),
 
   // Quantity (positive for IN, negative for OUT)
   quantity: z.number(),
-  baseUomId: z.string().uuid(),
+  baseUomId: z.uuid(),
 
   // Costing
   costingMethod: z.enum(COSTING_METHOD),
@@ -34,7 +34,7 @@ export const valuationEntrySchema = z.object({
   totalCost: z.string(),
 
   // For FIFO
-  costLayerId: z.string().uuid().optional(),
+  costLayerId: z.uuid().optional(),
 
   // For Standard
   standardCost: z.string().optional(),
@@ -57,15 +57,15 @@ export type ValuationEntry = z.infer<typeof valuationEntrySchema>;
 // ============================================================================
 
 export const costLayerSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
-  itemId: z.string().uuid(),
-  locationId: z.string().uuid(),
+  itemId: z.uuid(),
+  locationId: z.uuid(),
   lotNumber: z.string().max(100).optional(),
 
   // Original receipt
-  receiptMoveId: z.string().uuid(),
+  receiptMoveId: z.uuid(),
   receiptDate: z.string().datetime(),
 
   // Quantities

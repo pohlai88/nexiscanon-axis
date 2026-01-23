@@ -12,9 +12,9 @@ import { THEME_MODE, FORM_DENSITY } from "./constants";
 // ============================================================================
 
 export const userPreferenceSchema = z.object({
-  id: z.string().uuid(),
-  userId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  userId: z.uuid(),
+  tenantId: z.uuid(),
 
   // Theme
   themeMode: z.enum(THEME_MODE).default("system"),
@@ -44,7 +44,7 @@ export const userPreferenceSchema = z.object({
   // Favorites (stored as JSON array of item references)
   favorites: z.array(z.object({
     type: z.string().max(50),
-    id: z.string().uuid(),
+    id: z.uuid(),
     label: z.string().max(255),
     href: z.string().max(500),
   })).default([]),

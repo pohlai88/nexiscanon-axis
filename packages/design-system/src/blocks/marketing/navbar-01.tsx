@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { Menu, X } from "lucide-react"
-import { Button } from "@/components/button"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/button"
+import { cn } from "../../lib/utils"
 
 export interface NavLink {
   label: string

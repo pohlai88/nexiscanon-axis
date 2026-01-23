@@ -12,8 +12,8 @@ import { TOOL_RISK_LEVEL } from "./constants";
 // ============================================================================
 
 export const toolDefinitionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   name: z.string().min(1).max(100),
@@ -49,11 +49,11 @@ export type ToolDefinition = z.infer<typeof toolDefinitionSchema>;
 // ============================================================================
 
 export const toolExecutionLogSchema = z.object({
-  id: z.string().uuid(),
-  toolId: z.string().uuid(),
-  executionId: z.string().uuid(), // Agent execution ID
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid(),
+  id: z.uuid(),
+  toolId: z.uuid(),
+  executionId: z.uuid(), // Agent execution ID
+  tenantId: z.uuid(),
+  userId: z.uuid(),
 
   // Execution
   input: z.record(z.string(), z.unknown()),

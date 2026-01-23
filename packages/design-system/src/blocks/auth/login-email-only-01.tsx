@@ -3,10 +3,10 @@
 import * as React from "react"
 import { GalleryVerticalEnd } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
-import { Button } from "@/components/button"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/button"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
+import { cn } from "../../lib/utils"
 
 export interface LoginEmailOnly01Props {
   onLogin?: (email: string) => void | Promise<void>

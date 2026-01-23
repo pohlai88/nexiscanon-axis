@@ -1,17 +1,17 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/button"
+import { Button } from "../../components/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
+import { cn } from "../../lib/utils"
 
 export interface LoginSocial01Props {
   onLogin?: (email: string, password: string) => void | Promise<void>

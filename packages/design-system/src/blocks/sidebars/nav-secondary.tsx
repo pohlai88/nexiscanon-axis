@@ -8,8 +8,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/sidebar"
-import { cn } from "@/lib/utils"
+} from "../../components/sidebar"
+import { cn } from "../../lib/utils"
 
 export interface NavSecondaryItem {
   title: string

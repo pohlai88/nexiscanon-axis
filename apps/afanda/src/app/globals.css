@@ -1,0 +1,453 @@
+/**
+ * AFANDA - The Unified Decision Board
+ * Tailwind CSS v4 Styles
+ *
+ * Analytics, Finance, Actions, Notifications, Data, Alerts
+ *
+ * @see .cursor/ERP/B11-AFANDA.md for architecture
+ * @see .cursor/ERP/A01-CANONICAL.md §8 for philosophy
+ */
+
+/* =================================================================
+   Core Design System Imports
+   ================================================================= */
+
+/* Base globals with all 9 theme variants */
+@import "@workspace/design-system/styles/globals.css";
+
+/* =================================================================
+   Tailwind Source Scanning
+   ================================================================= */
+@source "../../../node_modules/@workspace/design-system/src";
+
+/* =================================================================
+   AFANDA Theme Configuration
+   
+   Default: midnight theme (Electric ink - professional dashboard feel)
+   Available: neutral, gray, stone, slate, zinc, midnight, opulence, heirloom, zenith
+   
+   Style: mia (balanced density)
+   Available: vega, nova, mia, lyra, mira
+   
+   Glass effects: Available via CSS classes from design-system
+   - glass, glass-solid, glass-subtle, glass-ethereal
+   - glass-card, glass-modal, glass-sidebar, glass-header
+   - glass-grain, glass-tint-primary, etc.
+   ================================================================= */
+
+/* =================================================================
+   AFANDA Dashboard Grid System
+   ================================================================= */
+
+.afanda-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.afanda-grid-2 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.afanda-grid-3 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.afanda-grid-4 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 768px) {
+  .afanda-grid-2,
+  .afanda-grid-3,
+  .afanda-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .afanda-grid-3,
+  .afanda-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =================================================================
+   AFANDA Widget System (Glass-enhanced)
+   ================================================================= */
+
+/* Base widget - uses glass morphism */
+.afanda-widget {
+  @apply rounded-lg p-4 transition-all duration-300;
+}
+
+/* Widget variants - combine with glass classes in markup */
+.afanda-widget-solid {
+  /* Use with: class="afanda-widget glass glass-solid" */
+}
+
+.afanda-widget-subtle {
+  /* Use with: class="afanda-widget glass glass-subtle" */
+}
+
+/* Widget with primary tint (for highlighted metrics) */
+.afanda-widget-highlight {
+  /* Use with: class="afanda-widget glass glass-tint-primary" */
+}
+
+/* Widget header */
+.afanda-widget-header {
+  @apply mb-4 flex items-center justify-between;
+}
+
+.afanda-widget-title {
+  @apply text-sm font-medium text-muted-foreground;
+}
+
+.afanda-widget-action {
+  @apply text-muted-foreground transition-colors duration-200 hover:text-foreground;
+}
+
+/* =================================================================
+   AFANDA KPI Metric Cards
+   ================================================================= */
+
+.afanda-metric {
+  @apply relative z-10 flex flex-col gap-1;
+}
+
+.afanda-metric-value {
+  @apply text-3xl font-bold tracking-tight text-foreground;
+}
+
+.afanda-metric-label {
+  @apply text-sm text-muted-foreground;
+}
+
+.afanda-metric-trend {
+  @apply inline-flex items-center gap-1 text-xs font-medium;
+}
+
+.afanda-metric-trend[data-trend="up"] {
+  color: oklch(0.65 0.2 145);
+}
+
+.afanda-metric-trend[data-trend="down"] {
+  color: oklch(0.65 0.2 25);
+}
+
+.afanda-metric-trend[data-trend="neutral"] {
+  @apply text-muted-foreground;
+}
+
+/* Metric with sparkline */
+.afanda-metric-sparkline {
+  @apply mt-2 h-8;
+}
+
+/* Metric target indicator */
+.afanda-metric-target {
+  @apply mt-2 text-xs text-muted-foreground;
+}
+
+.afanda-metric-target-bar {
+  @apply mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted;
+}
+
+.afanda-metric-target-fill {
+  @apply h-full rounded-full bg-primary transition-all duration-500;
+}
+
+/* =================================================================
+   AFANDA Alert System
+   ================================================================= */
+
+.afanda-alert {
+  @apply rounded-lg border-l-4 p-4;
+}
+
+.afanda-alert-critical {
+  border-left-color: oklch(0.65 0.2 25);
+  --_glass-bg: color-mix(in oklch, oklch(0.65 0.2 25) 8%, var(--background) 92%);
+}
+
+.afanda-alert-warning {
+  border-left-color: oklch(0.75 0.15 85);
+  --_glass-bg: color-mix(in oklch, oklch(0.75 0.15 85) 8%, var(--background) 92%);
+}
+
+.afanda-alert-info {
+  border-left-color: oklch(0.65 0.15 255);
+  --_glass-bg: color-mix(in oklch, oklch(0.65 0.15 255) 8%, var(--background) 92%);
+}
+
+.afanda-alert-success {
+  border-left-color: oklch(0.65 0.2 145);
+  --_glass-bg: color-mix(in oklch, oklch(0.65 0.2 145) 8%, var(--background) 92%);
+}
+
+.afanda-alert-title {
+  @apply font-medium text-foreground;
+}
+
+.afanda-alert-description {
+  @apply mt-1 text-sm text-muted-foreground;
+}
+
+.afanda-alert-timestamp {
+  @apply mt-2 text-xs text-muted-foreground;
+}
+
+/* =================================================================
+   AFANDA Dashboard Header
+   ================================================================= */
+
+.afanda-header {
+  @apply sticky top-0 z-50 w-full;
+  /* Add glass-header class in markup for glass effect */
+}
+
+.afanda-header-content {
+  @apply flex h-16 items-center justify-between px-4;
+}
+
+.afanda-header-title {
+  @apply text-lg font-semibold text-foreground;
+}
+
+.afanda-header-actions {
+  @apply flex items-center gap-2;
+}
+
+/* =================================================================
+   AFANDA Sidebar
+   ================================================================= */
+
+.afanda-sidebar {
+  @apply fixed left-0 top-0 z-40 h-full w-64;
+  /* Add glass-sidebar class in markup for glass effect */
+}
+
+.afanda-sidebar-content {
+  @apply flex h-full flex-col p-4;
+}
+
+.afanda-sidebar-nav {
+  @apply flex flex-col gap-1;
+}
+
+.afanda-sidebar-item {
+  @apply flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors duration-200;
+}
+
+.afanda-sidebar-item:hover {
+  @apply text-foreground;
+}
+
+.afanda-sidebar-item[data-active="true"] {
+  @apply bg-accent text-accent-foreground;
+}
+
+/* =================================================================
+   AFANDA Chart Container
+   ================================================================= */
+
+.afanda-chart {
+  @apply rounded-lg p-4 transition-all duration-300;
+}
+
+.afanda-chart-header {
+  @apply mb-4 flex items-center justify-between;
+}
+
+.afanda-chart-title {
+  @apply text-sm font-medium text-foreground;
+}
+
+.afanda-chart-legend {
+  @apply flex items-center gap-4 text-xs text-muted-foreground;
+}
+
+.afanda-chart-legend-item {
+  @apply flex items-center gap-1.5;
+}
+
+.afanda-chart-legend-dot {
+  @apply h-2 w-2 rounded-full;
+}
+
+.afanda-chart-body {
+  @apply h-64;
+}
+
+/* =================================================================
+   AFANDA Data Table
+   ================================================================= */
+
+.afanda-table {
+  @apply overflow-hidden rounded-lg p-0;
+}
+
+.afanda-table-header {
+  @apply flex items-center justify-between border-b border-border p-4;
+}
+
+.afanda-table-title {
+  @apply text-sm font-medium text-foreground;
+}
+
+.afanda-table-content {
+  @apply overflow-x-auto;
+}
+
+/* =================================================================
+   AFANDA Status Indicators
+   ================================================================= */
+
+.afanda-status {
+  @apply inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium;
+}
+
+.afanda-status-active {
+  @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400;
+}
+
+.afanda-status-pending {
+  @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400;
+}
+
+.afanda-status-inactive {
+  @apply bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400;
+}
+
+.afanda-status-error {
+  @apply bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400;
+}
+
+/* Status dot */
+.afanda-status-dot {
+  @apply h-1.5 w-1.5 rounded-full;
+}
+
+.afanda-status-dot-active {
+  @apply bg-green-500;
+}
+
+.afanda-status-dot-pending {
+  @apply bg-yellow-500 animate-pulse;
+}
+
+.afanda-status-dot-inactive {
+  @apply bg-gray-400;
+}
+
+.afanda-status-dot-error {
+  @apply bg-red-500;
+}
+
+/* =================================================================
+   AFANDA Approval Queue (B11 specific)
+   ================================================================= */
+
+.afanda-approval-item {
+  @apply flex items-start gap-4 rounded-lg p-4;
+}
+
+.afanda-approval-avatar {
+  @apply h-10 w-10 shrink-0 rounded-full bg-muted;
+}
+
+.afanda-approval-content {
+  @apply flex-1;
+}
+
+.afanda-approval-title {
+  @apply font-medium text-foreground;
+}
+
+.afanda-approval-meta {
+  @apply mt-1 flex items-center gap-2 text-xs text-muted-foreground;
+}
+
+.afanda-approval-actions {
+  @apply flex gap-2;
+}
+
+/* SLA timer */
+.afanda-sla {
+  @apply inline-flex items-center gap-1 text-xs;
+}
+
+.afanda-sla[data-urgent="true"] {
+  @apply text-red-500;
+}
+
+.afanda-sla[data-warning="true"] {
+  @apply text-yellow-500;
+}
+
+/* =================================================================
+   AFANDA Report Builder
+   ================================================================= */
+
+.afanda-report-params {
+  @apply mb-4 rounded-lg p-4;
+}
+
+.afanda-report-params-grid {
+  @apply grid gap-4 md:grid-cols-2 lg:grid-cols-4;
+}
+
+.afanda-report-output {
+  @apply rounded-lg p-4;
+}
+
+/* =================================================================
+   AFANDA Loading States
+   ================================================================= */
+
+.afanda-skeleton {
+  @apply animate-pulse rounded bg-muted;
+}
+
+.afanda-skeleton-text {
+  @apply h-4 w-full;
+}
+
+.afanda-skeleton-title {
+  @apply h-6 w-3/4;
+}
+
+.afanda-skeleton-metric {
+  @apply h-10 w-1/2;
+}
+
+/* =================================================================
+   AFANDA Empty States
+   ================================================================= */
+
+.afanda-empty {
+  @apply flex flex-col items-center justify-center py-12 text-center;
+}
+
+.afanda-empty-icon {
+  @apply mb-4 h-12 w-12 text-muted-foreground;
+}
+
+.afanda-empty-title {
+  @apply text-lg font-medium text-foreground;
+}
+
+.afanda-empty-description {
+  @apply mt-1 text-sm text-muted-foreground;
+}
+
+.afanda-empty-action {
+  @apply mt-4;
+}

@@ -20,8 +20,8 @@ import {
 export const dualLedgerReconStartedEventSchema = createEventSchema(
   "dual_ledger.recon.started",
   z.object({
-    reconRunId: z.string().uuid(),
-    migrationStateId: z.string().uuid(),
+    reconRunId: z.uuid(),
+    migrationStateId: z.uuid(),
     reconTypes: z.array(z.enum(MIGRATION_RECON_TYPE)),
     triggeredBy: z.enum(["scheduled", "manual", "sync_complete"]),
   })
@@ -30,8 +30,8 @@ export const dualLedgerReconStartedEventSchema = createEventSchema(
 export const dualLedgerReconCompletedEventSchema = createEventSchema(
   "dual_ledger.recon.completed",
   z.object({
-    reconRunId: z.string().uuid(),
-    migrationStateId: z.string().uuid(),
+    reconRunId: z.uuid(),
+    migrationStateId: z.uuid(),
     reconType: z.enum(MIGRATION_RECON_TYPE),
     status: z.enum(DUAL_LEDGER_RECON_STATUS),
     legacyTotal: z.string(),
@@ -45,7 +45,7 @@ export const dualLedgerReconCompletedEventSchema = createEventSchema(
 export const dualLedgerReconMatchedEventSchema = createEventSchema(
   "dual_ledger.recon.matched",
   z.object({
-    reconId: z.string().uuid(),
+    reconId: z.uuid(),
     reconType: z.enum(MIGRATION_RECON_TYPE),
     variance: z.string(),
   })
@@ -54,7 +54,7 @@ export const dualLedgerReconMatchedEventSchema = createEventSchema(
 export const dualLedgerReconVarianceEventSchema = createEventSchema(
   "dual_ledger.recon.variance",
   z.object({
-    reconId: z.string().uuid(),
+    reconId: z.uuid(),
     reconType: z.enum(MIGRATION_RECON_TYPE),
     variance: z.string(),
     variancePercent: z.number(),
@@ -69,7 +69,7 @@ export const dualLedgerReconVarianceEventSchema = createEventSchema(
 export const dualLedgerGatesEvaluatedEventSchema = createEventSchema(
   "dual_ledger.gates.evaluated",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     allGatesGreen: z.boolean(),
     greenGateCount: z.number().int(),
     totalGateCount: z.number().int(),
@@ -80,7 +80,7 @@ export const dualLedgerGatesEvaluatedEventSchema = createEventSchema(
 export const dualLedgerGateGreenEventSchema = createEventSchema(
   "dual_ledger.gate.green",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     gateType: z.string(),
     consecutiveMatchDays: z.number().int(),
   })
@@ -89,7 +89,7 @@ export const dualLedgerGateGreenEventSchema = createEventSchema(
 export const dualLedgerGateRedEventSchema = createEventSchema(
   "dual_ledger.gate.red",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     gateType: z.string(),
     variance: z.string(),
     reason: z.string(),
@@ -99,7 +99,7 @@ export const dualLedgerGateRedEventSchema = createEventSchema(
 export const dualLedgerAllGatesGreenEventSchema = createEventSchema(
   "dual_ledger.all_gates.green",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     consecutiveDays: z.number().int(),
     readyForCutover: z.boolean(),
   })
@@ -112,8 +112,8 @@ export const dualLedgerAllGatesGreenEventSchema = createEventSchema(
 export const dualLedgerExceptionCreatedEventSchema = createEventSchema(
   "dual_ledger.exception.created",
   z.object({
-    exceptionId: z.string().uuid(),
-    reconId: z.string().uuid(),
+    exceptionId: z.uuid(),
+    reconId: z.uuid(),
     reconType: z.enum(MIGRATION_RECON_TYPE),
     exceptionType: z.enum(DUAL_LEDGER_EXCEPTION_TYPE),
     entityKey: z.string(),
@@ -125,9 +125,9 @@ export const dualLedgerExceptionCreatedEventSchema = createEventSchema(
 export const dualLedgerExceptionAssignedEventSchema = createEventSchema(
   "dual_ledger.exception.assigned",
   z.object({
-    exceptionId: z.string().uuid(),
-    assignedTo: z.string().uuid(),
-    assignedBy: z.string().uuid(),
+    exceptionId: z.uuid(),
+    assignedTo: z.uuid(),
+    assignedBy: z.uuid(),
     priority: z.enum(["critical", "high", "medium", "low"]),
   })
 );
@@ -135,9 +135,9 @@ export const dualLedgerExceptionAssignedEventSchema = createEventSchema(
 export const dualLedgerExceptionResolvedEventSchema = createEventSchema(
   "dual_ledger.exception.resolved",
   z.object({
-    exceptionId: z.string().uuid(),
+    exceptionId: z.uuid(),
     resolution: z.enum(RESOLUTION_ACTION),
-    resolvedBy: z.string().uuid(),
+    resolvedBy: z.uuid(),
     varianceResolved: z.string(),
   })
 );
@@ -145,8 +145,8 @@ export const dualLedgerExceptionResolvedEventSchema = createEventSchema(
 export const dualLedgerExceptionAcceptedEventSchema = createEventSchema(
   "dual_ledger.exception.accepted",
   z.object({
-    exceptionId: z.string().uuid(),
-    acceptedBy: z.string().uuid(),
+    exceptionId: z.uuid(),
+    acceptedBy: z.uuid(),
     reason: z.string(),
     varianceAccepted: z.string(),
   })
@@ -159,10 +159,10 @@ export const dualLedgerExceptionAcceptedEventSchema = createEventSchema(
 export const dualLedgerModeTransitionRequestedEventSchema = createEventSchema(
   "dual_ledger.mode.transition_requested",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     fromMode: z.enum(["mirror", "parallel", "cutover"]),
     toMode: z.enum(["mirror", "parallel", "cutover"]),
-    requestedBy: z.string().uuid(),
+    requestedBy: z.uuid(),
     allGatesGreen: z.boolean(),
   })
 );
@@ -170,10 +170,10 @@ export const dualLedgerModeTransitionRequestedEventSchema = createEventSchema(
 export const dualLedgerModeTransitionApprovedEventSchema = createEventSchema(
   "dual_ledger.mode.transition_approved",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     fromMode: z.enum(["mirror", "parallel", "cutover"]),
     toMode: z.enum(["mirror", "parallel", "cutover"]),
-    approvedBy: z.string().uuid(),
+    approvedBy: z.uuid(),
   })
 );
 

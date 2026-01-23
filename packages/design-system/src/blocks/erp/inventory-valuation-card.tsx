@@ -26,16 +26,16 @@
  */
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/card"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
+import { cn } from "../../lib/utils"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../../components/card"
+import { Badge } from "../../components/badge"
+import { Button } from "../../components/button"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/tooltip"
+} from "../../components/tooltip"
 import {
   Package,
   TrendingUp,

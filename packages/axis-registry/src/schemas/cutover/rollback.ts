@@ -12,9 +12,9 @@ import { rollbackTriggerSchema, cutoverStatusSchema } from "./constants";
 // ============================================================================
 
 export const deltaTransactionSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   entityType: z.string(),
-  entityId: z.string().uuid(),
+  entityId: z.uuid(),
   action: z.enum(["create", "update", "delete"]),
   data: z.record(z.string(), z.unknown()),
   createdAt: z.string().datetime(),
@@ -27,17 +27,17 @@ export type DeltaTransaction = z.infer<typeof deltaTransactionSchema>;
 // ============================================================================
 
 export const rollbackExecutionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
-  cutoverExecutionId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
+  cutoverExecutionId: z.uuid(),
 
   // Trigger
   trigger: rollbackTriggerSchema,
   triggerDetails: z.string().max(2000).optional(),
 
   // Authorization
-  authorizedBy: z.string().uuid(),
+  authorizedBy: z.uuid(),
   authorizedAt: z.string().datetime(),
   authorizationNote: z.string().max(2000).optional(),
 

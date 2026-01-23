@@ -26,7 +26,7 @@ export type MappingCategoryStats = z.infer<typeof mappingCategoryStatsSchema>;
 // ============================================================================
 
 export const confidenceDashboardSchema = z.object({
-  migrationStateId: z.string().uuid(),
+  migrationStateId: z.uuid(),
 
   // Totals
   totalMappings: z.number().int(),
@@ -68,7 +68,7 @@ export type ConfidenceDashboard = z.infer<typeof confidenceDashboardSchema>;
 // ============================================================================
 
 export const reviewItemSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   mappingType: z.enum(["column", "coa", "alias", "tax"]),
 
   // Source info
@@ -95,7 +95,7 @@ export type ReviewItem = z.infer<typeof reviewItemSchema>;
 // ============================================================================
 
 export const reviewQueueSchema = z.object({
-  migrationStateId: z.string().uuid(),
+  migrationStateId: z.uuid(),
 
   // Items to review
   items: z.array(reviewItemSchema),

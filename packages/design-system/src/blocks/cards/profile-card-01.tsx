@@ -8,11 +8,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/avatar"
+import { Badge } from "../../components/badge"
+import { Button } from "../../components/button"
+import { cn } from "../../lib/utils"
 
 export interface ProfileCard01Props {
   name: string

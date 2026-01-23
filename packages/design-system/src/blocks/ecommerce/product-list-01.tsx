@@ -2,14 +2,14 @@
 
 import * as React from "react"
 import { Grid, List, ShoppingCart, Star } from "lucide-react"
-import { Button } from "@/components/button"
-import { Badge } from "@/components/badge"
+import { Button } from "../../components/button"
+import { Badge } from "../../components/badge"
 import {
   Card,
   CardContent,
   CardFooter,
-} from "@/components/card"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { cn } from "../../lib/utils"
 
 export interface Product {
   id: string

@@ -26,7 +26,7 @@ export const economicEventRegistrySchema = metadataFullSchema
     entityType: z.literal("economic_event"),
 
     // Event-specific fields
-    documentId: z.string().uuid(), // Parent document
+    documentId: z.uuid(), // Parent document
     eventType: z.enum(EVENT_TYPE),
     description: z.string().min(1).max(500),
     eventDate: z.string().datetime(),
@@ -36,7 +36,7 @@ export const economicEventRegistrySchema = metadataFullSchema
     currency: z.string().length(3).default("USD"),
 
     // Entity reference
-    entityId: z.string().uuid().optional(),
+    entityId: z.uuid().optional(),
 
     // Business data
     data: z.record(z.string(), z.unknown()),

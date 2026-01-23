@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/button"
+import { Button } from "../../components/button"
 import {
   Card,
   CardContent,
@@ -9,10 +9,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from "@/components/field"
-import { Input } from "@/components/input"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from "../../components/field"
+import { Input } from "../../components/input"
+import { cn } from "../../lib/utils"
 
 export interface SignupForm01Props {
   onSubmit?: (data: { name: string; email: string; password: string }) => void

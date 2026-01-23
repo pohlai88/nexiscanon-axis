@@ -12,11 +12,11 @@ import { BANK_TRANSACTION_TYPE, IMPORT_SOURCE } from "./constants";
 // ============================================================================
 
 export const bankStatementSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Bank account
-  bankAccountId: z.string().uuid(),
+  bankAccountId: z.uuid(),
   bankAccountName: z.string().max(255),
 
   // Statement info
@@ -31,12 +31,12 @@ export const bankStatementSchema = z.object({
 
   // Import info
   importedAt: z.string().datetime(),
-  importedBy: z.string().uuid(),
+  importedBy: z.uuid(),
   importSource: z.enum(IMPORT_SOURCE).default("manual"),
   importFileName: z.string().max(255).optional(),
 
   // Reconciliation
-  reconciliationJobId: z.string().uuid().optional(),
+  reconciliationJobId: z.uuid().optional(),
   isReconciled: z.boolean().default(false),
   reconciledAt: z.string().datetime().optional(),
 
@@ -50,9 +50,9 @@ export type BankStatement = z.infer<typeof bankStatementSchema>;
 // ============================================================================
 
 export const bankStatementLineSchema = z.object({
-  id: z.string().uuid(),
-  statementId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  statementId: z.uuid(),
+  tenantId: z.uuid(),
 
   // Transaction details
   transactionDate: z.string().datetime(),
@@ -78,9 +78,9 @@ export const bankStatementLineSchema = z.object({
   // Matching
   isReconciled: z.boolean().default(false),
   matchedToType: z.string().max(50).optional(),
-  matchedToId: z.string().uuid().optional(),
+  matchedToId: z.uuid().optional(),
   matchedAt: z.string().datetime().optional(),
-  matchedBy: z.string().uuid().optional(),
+  matchedBy: z.uuid().optional(),
 
   createdAt: z.string().datetime(),
 });

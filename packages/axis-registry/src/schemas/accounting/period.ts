@@ -12,8 +12,8 @@ import { PERIOD_STATUS } from "./constants";
 // ============================================================================
 
 export const fiscalPeriodSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   fiscalYear: z.number().int(),
@@ -32,9 +32,9 @@ export const fiscalPeriodSchema = z.object({
 
   // Close tracking
   softClosedAt: z.string().datetime().optional(),
-  softClosedBy: z.string().uuid().optional(),
+  softClosedBy: z.uuid().optional(),
   hardClosedAt: z.string().datetime().optional(),
-  hardClosedBy: z.string().uuid().optional(),
+  hardClosedBy: z.uuid().optional(),
 
   // Balances at close (snapshot)
   closingTrialBalance: z.record(z.string(), z.string()).optional(),

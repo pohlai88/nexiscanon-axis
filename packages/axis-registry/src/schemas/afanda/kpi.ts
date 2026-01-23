@@ -25,8 +25,8 @@ export type KpiThresholds = z.infer<typeof kpiThresholdsSchema>;
 // ============================================================================
 
 export const kpiSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   code: z.string().min(1).max(50),

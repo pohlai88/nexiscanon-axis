@@ -2,15 +2,15 @@
 
 import * as React from "react"
 import { Clock } from "lucide-react"
-import { Calendar } from "@/components/calendar"
+import { Calendar } from "../../components/calendar"
 import {
   Card,
   CardContent,
   CardFooter,
-} from "@/components/card"
-import { Input } from "@/components/input"
-import { Label } from "@/components/label"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { Input } from "../../components/input"
+import { Label } from "../../components/label"
+import { cn } from "../../lib/utils"
 
 export interface DateTimePicker01Props {
   value?: Date

@@ -46,9 +46,9 @@ export const textGenerationRequestSchema = z.object({
   responseFormat: z.enum(RESPONSE_FORMAT).optional(),
 
   // Context
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid(),
-  requestId: z.string().uuid(),
+  tenantId: z.uuid(),
+  userId: z.uuid(),
+  requestId: z.uuid(),
 });
 
 export type TextGenerationRequest = z.infer<typeof textGenerationRequestSchema>;

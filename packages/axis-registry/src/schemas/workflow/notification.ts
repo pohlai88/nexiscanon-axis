@@ -16,16 +16,16 @@ import {
 // ============================================================================
 
 export const workflowNotificationSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Type
   notificationType: z.enum(NOTIFICATION_TYPE),
   channel: z.enum(NOTIFICATION_CHANNEL),
 
   // Recipient
-  recipientId: z.string().uuid(),
-  recipientEmail: z.string().email().optional(),
+  recipientId: z.uuid(),
+  recipientEmail: z.email().optional(),
   recipientPhone: z.string().max(20).optional(),
 
   // Content
@@ -34,8 +34,8 @@ export const workflowNotificationSchema = z.object({
   htmlBody: z.string().optional(),
 
   // Reference
-  workflowInstanceId: z.string().uuid().optional(),
-  taskId: z.string().uuid().optional(),
+  workflowInstanceId: z.uuid().optional(),
+  taskId: z.uuid().optional(),
 
   // Status
   status: z.enum(NOTIFICATION_STATUS).default("pending"),

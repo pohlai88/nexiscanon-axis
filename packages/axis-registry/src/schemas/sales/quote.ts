@@ -23,12 +23,12 @@ export type SalesQuoteLine = z.infer<typeof salesQuoteLineSchema>;
 
 export const salesQuoteSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Customer
-  customerId: z.string().uuid(),
+  customerId: z.uuid(),
   customerName: z.string().max(255),
 
   // Addresses (snapshot at quote time)
@@ -40,7 +40,7 @@ export const salesQuoteSchema = z.object({
   validUntil: z.string().datetime(),
 
   // Pricing
-  priceListId: z.string().uuid().optional(),
+  priceListId: z.uuid().optional(),
   currency: z.string().length(3), // ISO 4217
 
   // Lines
@@ -53,17 +53,17 @@ export const salesQuoteSchema = z.object({
   grandTotal: z.string(),
 
   // Terms
-  paymentTermId: z.string().uuid().optional(),
+  paymentTermId: z.uuid().optional(),
   notes: z.string().max(2000).optional(),
   termsAndConditions: z.string().max(5000).optional(),
 
   // Conversion tracking
-  convertedToOrderIds: z.array(z.string().uuid()).optional(),
+  convertedToOrderIds: z.array(z.uuid()).optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
 });
 

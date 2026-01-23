@@ -39,9 +39,9 @@ export type SourceColumn = z.infer<typeof sourceColumnSchema>;
 // ============================================================================
 
 export const sourceTableSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Table metadata
   schemaName: z.string().max(255).optional(),
@@ -70,9 +70,9 @@ export type SourceTable = z.infer<typeof sourceTableSchema>;
 // ============================================================================
 
 export const columnMappingSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  sourceTableId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  sourceTableId: z.uuid(),
 
   // Source column
   sourceColumnName: z.string().max(255),
@@ -102,7 +102,7 @@ export const columnMappingSchema = z.object({
   defaultValue: z.unknown().optional(),
 
   // User override
-  overriddenBy: z.string().uuid().optional(),
+  overriddenBy: z.uuid().optional(),
   overriddenAt: z.string().datetime().optional(),
   overrideReason: z.string().max(500).optional(),
 
@@ -117,9 +117,9 @@ export type ColumnMapping = z.infer<typeof columnMappingSchema>;
 // ============================================================================
 
 export const mappingVersionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Version
   version: z.number().int().positive(),
@@ -136,7 +136,7 @@ export const mappingVersionSchema = z.object({
   avgConfidence: z.number().min(0).max(1),
 
   createdAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type MappingVersion = z.infer<typeof mappingVersionSchema>;

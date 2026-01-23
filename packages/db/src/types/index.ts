@@ -98,3 +98,6 @@ export {
   metadataFullSchema,
   lineageSchema,
 } from "@axis/registry/schemas";
+
+// Report types (Phase 5)
+export type * from "./reports";

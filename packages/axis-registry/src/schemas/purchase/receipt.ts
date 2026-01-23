@@ -18,7 +18,7 @@ export const purchaseReceiptLineSchema = z.object({
   poLineNumber: z.number().int().positive(),
 
   // Item
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
 
@@ -27,11 +27,11 @@ export const purchaseReceiptLineSchema = z.object({
   quantityReceived: z.number().positive(),
   quantityAccepted: z.number().min(0).default(0),
   quantityRejected: z.number().min(0).default(0),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
 
   // Location
-  toLocationId: z.string().uuid(),
+  toLocationId: z.uuid(),
   toLocationName: z.string().max(255),
 
   // Lot/Serial
@@ -58,16 +58,16 @@ export type PurchaseReceiptLine = z.infer<typeof purchaseReceiptLineSchema>;
 
 export const purchaseReceiptSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Source
-  sourcePoId: z.string().uuid(),
+  sourcePoId: z.uuid(),
   sourcePoNumber: z.string().max(50),
 
   // Supplier (reference by UUID, not FK per B02)
-  supplierId: z.string().uuid(),
+  supplierId: z.uuid(),
   supplierName: z.string().max(255),
 
   // Delivery details
@@ -81,7 +81,7 @@ export const purchaseReceiptSchema = z.object({
   inspectionDate: z.string().datetime().optional(),
 
   // Warehouse (reference by UUID, not FK per B02)
-  warehouseId: z.string().uuid(),
+  warehouseId: z.uuid(),
   warehouseName: z.string().max(255),
 
   // Lines
@@ -89,23 +89,23 @@ export const purchaseReceiptSchema = z.object({
 
   // Quality
   requiresInspection: z.boolean().default(false),
-  inspectedBy: z.string().uuid().optional(),
+  inspectedBy: z.uuid().optional(),
 
   // Notes
   notes: z.string().max(2000).optional(),
 
   // Bill tracking
-  billId: z.string().uuid().optional(),
+  billId: z.uuid().optional(),
 
   // Posting reference (B01)
-  postingBatchId: z.string().uuid().optional(),
+  postingBatchId: z.uuid().optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  receivedBy: z.string().uuid().optional(),
+  receivedBy: z.uuid().optional(),
 });
 
 export type PurchaseReceipt = z.infer<typeof purchaseReceiptSchema>;

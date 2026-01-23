@@ -12,11 +12,11 @@ import { ESCALATION_ACTION } from "./constants";
 // ============================================================================
 
 export const escalationRuleSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Scope
-  workflowDefinitionId: z.string().uuid().optional(),
+  workflowDefinitionId: z.uuid().optional(),
   documentType: z.string().max(50).optional(),
 
   // Trigger
@@ -27,7 +27,7 @@ export const escalationRuleSchema = z.object({
 
   // For reassign action
   reassignToType: z.enum(["user", "role", "manager"]).optional(),
-  reassignToId: z.string().uuid().optional(),
+  reassignToId: z.uuid().optional(),
 
   // Notification settings
   notifyOriginalApprover: z.boolean().default(true),

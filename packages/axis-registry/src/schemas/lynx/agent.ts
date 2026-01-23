@@ -12,8 +12,8 @@ import { AGENT_MEMORY_TYPE, AGENT_STEP_TYPE } from "./constants";
 // ============================================================================
 
 export const agentDefinitionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   name: z.string().min(1).max(100),
@@ -24,7 +24,7 @@ export const agentDefinitionSchema = z.object({
   maxIterations: z.number().int().min(1).max(50).default(10),
 
   // Capabilities
-  toolIds: z.array(z.string().uuid()),
+  toolIds: z.array(z.uuid()),
 
   // Safety
   allowedDomains: z.array(z.string()),
@@ -67,7 +67,7 @@ export type AgentStep = z.infer<typeof agentStepSchema>;
 
 export const toolCallSchema = z.object({
   id: z.string(),
-  toolId: z.string().uuid(),
+  toolId: z.uuid(),
   toolName: z.string(),
   input: z.record(z.string(), z.unknown()),
   output: z.unknown(),
@@ -83,8 +83,8 @@ export type ToolCall = z.infer<typeof toolCallSchema>;
 // ============================================================================
 
 export const agentApprovalRequestSchema = z.object({
-  id: z.string().uuid(),
-  executionId: z.string().uuid(),
+  id: z.uuid(),
+  executionId: z.uuid(),
   actionType: z.string(),
   targetDomain: z.string(),
   description: z.string(),
@@ -100,10 +100,10 @@ export type AgentApprovalRequest = z.infer<typeof agentApprovalRequestSchema>;
 // ============================================================================
 
 export const agentExecutionSchema = z.object({
-  id: z.string().uuid(),
-  agentId: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid(),
+  id: z.uuid(),
+  agentId: z.uuid(),
+  tenantId: z.uuid(),
+  userId: z.uuid(),
 
   // Input
   input: z.string(),

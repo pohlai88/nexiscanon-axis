@@ -9,7 +9,7 @@ import {
 /**
  * Tenant context value.
  */
-export interface TenantContext {
+export interface TenantContextValue {
   /** Tenant slug (from URL path) */
   slug: string;
 
@@ -23,11 +23,11 @@ export interface TenantContext {
   role: "owner" | "admin" | "member" | "viewer";
 }
 
-const TenantContext = createContext<TenantContext | null>(null);
+const TenantContext = createContext<TenantContextValue | null>(null);
 
 interface TenantProviderProps {
   children: ReactNode;
-  value: TenantContext;
+  value: TenantContextValue;
 }
 
 /**
@@ -46,7 +46,7 @@ export function TenantProvider({ children, value }: TenantProviderProps) {
  *
  * @throws If used outside of TenantProvider
  */
-export function useTenant(): TenantContext {
+export function useTenant(): TenantContextValue {
   const context = useContext(TenantContext);
 
   if (!context) {

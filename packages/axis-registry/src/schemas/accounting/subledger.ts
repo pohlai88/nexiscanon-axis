@@ -11,16 +11,16 @@ import { z } from "zod";
 // ============================================================================
 
 export const arSubledgerSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Party (reference by UUID, not FK per B02)
-  customerId: z.string().uuid(),
+  customerId: z.uuid(),
   customerName: z.string().max(255),
 
   // Reference (cross-domain reference by UUID, not FK per B02)
   documentType: z.string().min(1).max(50),
-  documentId: z.string().uuid(),
+  documentId: z.uuid(),
   documentNumber: z.string().max(50),
   documentDate: z.string().datetime(),
 
@@ -33,19 +33,19 @@ export const arSubledgerSchema = z.object({
   baseCurrencyAmount: z.string(),
 
   // GL link
-  journalId: z.string().uuid(),
-  postingBatchId: z.string().uuid(),
+  journalId: z.uuid(),
+  postingBatchId: z.uuid(),
 
   // Dates
   effectiveDate: z.string().datetime(),
   dueDate: z.string().datetime().optional(),
 
   // Payment terms
-  paymentTermId: z.string().uuid().optional(),
+  paymentTermId: z.uuid().optional(),
 
   // Reconciliation
   isReconciled: z.boolean().default(false),
-  reconciledDocumentId: z.string().uuid().optional(),
+  reconciledDocumentId: z.uuid().optional(),
 
   createdAt: z.string().datetime(),
 });
@@ -57,16 +57,16 @@ export type ARSubledger = z.infer<typeof arSubledgerSchema>;
 // ============================================================================
 
 export const apSubledgerSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Party (reference by UUID, not FK per B02)
-  supplierId: z.string().uuid(),
+  supplierId: z.uuid(),
   supplierName: z.string().max(255),
 
   // Reference (cross-domain reference by UUID, not FK per B02)
   documentType: z.string().min(1).max(50),
-  documentId: z.string().uuid(),
+  documentId: z.uuid(),
   documentNumber: z.string().max(50),
   supplierInvoiceNumber: z.string().max(100).optional(),
   documentDate: z.string().datetime(),
@@ -80,8 +80,8 @@ export const apSubledgerSchema = z.object({
   baseCurrencyAmount: z.string(),
 
   // GL link
-  journalId: z.string().uuid(),
-  postingBatchId: z.string().uuid(),
+  journalId: z.uuid(),
+  postingBatchId: z.uuid(),
 
   // Dates
   effectiveDate: z.string().datetime(),

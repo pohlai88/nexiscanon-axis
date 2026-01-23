@@ -18,7 +18,7 @@ import {
 // ============================================================================
 
 export const personaConfigSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
 
   // Persona selection
   persona: z.enum(PERSONA_TYPE).default("quorum"),
@@ -47,8 +47,8 @@ export const personaConfigSchema = z.object({
   accentColor: z.string().max(20).optional(),
 
   // Branding
-  logoUrl: z.string().url().optional(),
-  faviconUrl: z.string().url().optional(),
+  logoUrl: z.url().optional(),
+  faviconUrl: z.url().optional(),
   brandName: z.string().max(100).optional(),
 
   // Locale
@@ -59,7 +59,7 @@ export const personaConfigSchema = z.object({
   numberFormat: z.string().max(20).default("1,234.56"),
 
   updatedAt: z.string().datetime(),
-  updatedBy: z.string().uuid(),
+  updatedBy: z.uuid(),
 });
 
 export type PersonaConfig = z.infer<typeof personaConfigSchema>;

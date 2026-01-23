@@ -14,7 +14,7 @@ import { dualLedgerReconStatusSchema } from "./constants";
 export const gateStatusSchema = z.object({
   status: dualLedgerReconStatusSchema,
   lastChecked: z.string().datetime(),
-  lastReconId: z.string().uuid().optional(),
+  lastReconId: z.uuid().optional(),
   variance: z.string(),
   variancePercent: z.number(),
   consecutiveMatchDays: z.number().int().default(0),
@@ -27,9 +27,9 @@ export type GateStatus = z.infer<typeof gateStatusSchema>;
 // ============================================================================
 
 export const migrationGatesSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Individual gates
   gates: z.object({
@@ -69,9 +69,9 @@ export type MigrationGates = z.infer<typeof migrationGatesSchema>;
 // ============================================================================
 
 export const gateHistoryEntrySchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Snapshot
   evaluatedAt: z.string().datetime(),
@@ -83,7 +83,7 @@ export const gateHistoryEntrySchema = z.object({
   gateStatuses: z.record(z.string(), dualLedgerReconStatusSchema),
 
   // Triggered by
-  triggeredByReconRunId: z.string().uuid().optional(),
+  triggeredByReconRunId: z.uuid().optional(),
 
   createdAt: z.string().datetime(),
 });
@@ -95,7 +95,7 @@ export type GateHistoryEntry = z.infer<typeof gateHistoryEntrySchema>;
 // ============================================================================
 
 export const gateDashboardSchema = z.object({
-  migrationStateId: z.string().uuid(),
+  migrationStateId: z.uuid(),
   migrationMode: z.enum(["mirror", "parallel", "cutover"]),
 
   // Current gates

@@ -12,8 +12,8 @@ import { RECONCILIATION_TYPE, RECONCILIATION_STATUS } from "./constants";
 // ============================================================================
 
 export const reconciliationJobSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   jobNumber: z.string().max(50),
@@ -24,14 +24,14 @@ export const reconciliationJobSchema = z.object({
   reconciliationType: z.enum(RECONCILIATION_TYPE),
 
   // Scope
-  fiscalPeriodId: z.string().uuid().optional(),
+  fiscalPeriodId: z.uuid().optional(),
   asOfDate: z.string().datetime(),
 
   // Source and Target
   sourceType: z.string().max(50),
-  sourceId: z.string().uuid().optional(),
+  sourceId: z.uuid().optional(),
   targetType: z.string().max(50),
-  targetId: z.string().uuid().optional(),
+  targetId: z.uuid().optional(),
 
   // Status
   status: z.enum(RECONCILIATION_STATUS).default("pending"),
@@ -57,14 +57,14 @@ export const reconciliationJobSchema = z.object({
   completedAt: z.string().datetime().optional(),
 
   // Approval
-  reviewedBy: z.string().uuid().optional(),
+  reviewedBy: z.uuid().optional(),
   reviewedAt: z.string().datetime().optional(),
-  approvedBy: z.string().uuid().optional(),
+  approvedBy: z.uuid().optional(),
   approvedAt: z.string().datetime().optional(),
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type ReconciliationJob = z.infer<typeof reconciliationJobSchema>;

@@ -4,8 +4,8 @@ import * as React from "react"
 import {
   SidebarInset,
   SidebarProvider,
-} from "@/components/sidebar"
-import { cn } from "@/lib/utils"
+} from "../../components/sidebar"
+import { cn } from "../../lib/utils"
 
 export interface DashboardLayout01Props {
   sidebar: React.ReactNode

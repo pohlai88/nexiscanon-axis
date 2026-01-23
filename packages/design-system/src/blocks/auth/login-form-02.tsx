@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/button"
-import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from "@/components/field"
-import { Input } from "@/components/input"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/button"
+import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSeparator } from "../../components/field"
+import { Input } from "../../components/input"
+import { cn } from "../../lib/utils"
 
 export interface LoginForm02Props {
   onSubmit?: (data: { email: string; password: string }) => void

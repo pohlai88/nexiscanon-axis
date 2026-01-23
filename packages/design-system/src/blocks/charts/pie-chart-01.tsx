@@ -9,21 +9,21 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
+} from "../../components/card"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/chart"
+} from "../../components/chart"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/select"
-import { cn } from "@/lib/utils"
+} from "../../components/select"
+import { cn } from "../../lib/utils"
 
 export interface PieChartDataPoint {
   name: string

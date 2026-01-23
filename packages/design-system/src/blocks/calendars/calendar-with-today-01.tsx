@@ -1,16 +1,16 @@
 "use client"
 
 import * as React from "react"
-import { Button } from "@/components/button"
-import { Calendar } from "@/components/calendar"
+import { Button } from "../../components/button"
+import { Calendar } from "../../components/calendar"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { cn } from "../../lib/utils"
 
 export interface CalendarWithToday01Props {
   value?: Date

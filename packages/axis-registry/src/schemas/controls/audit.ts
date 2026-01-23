@@ -12,16 +12,16 @@ import { AUDIT_SEVERITY } from "./constants";
 // ============================================================================
 
 export const auditExtensionSchema = z.object({
-  id: z.string().uuid(),
-  auditLogId: z.string().uuid(),
+  id: z.uuid(),
+  auditLogId: z.uuid(),
 
   // Classification
   severity: z.enum(AUDIT_SEVERITY).default("info"),
   category: z.string().max(50),
 
   // Context
-  sessionId: z.string().uuid().optional(),
-  requestId: z.string().uuid().optional(),
+  sessionId: z.uuid().optional(),
+  requestId: z.uuid().optional(),
 
   // Client info
   ipAddress: z.string().max(45).optional(),
@@ -35,7 +35,7 @@ export const auditExtensionSchema = z.object({
 
   // Policy context
   matchedPolicies: z.array(z.string()).optional(),
-  dangerZoneRequestId: z.string().uuid().optional(),
+  dangerZoneRequestId: z.uuid().optional(),
 
   // Timestamps
   createdAt: z.string().datetime(),

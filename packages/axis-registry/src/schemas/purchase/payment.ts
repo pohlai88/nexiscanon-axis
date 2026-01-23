@@ -12,7 +12,7 @@ import { PURCHASE_PAYMENT_STATUS, PURCHASE_PAYMENT_METHOD } from "./constants";
 // ============================================================================
 
 export const purchasePaymentAllocationSchema = z.object({
-  billId: z.string().uuid(),
+  billId: z.uuid(),
   billNumber: z.string().max(50),
   supplierInvoiceNumber: z.string().max(100),
 
@@ -34,12 +34,12 @@ export type PurchasePaymentAllocation = z.infer<
 
 export const purchasePaymentSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Supplier (reference by UUID, not FK per B02)
-  supplierId: z.string().uuid(),
+  supplierId: z.uuid(),
   supplierName: z.string().max(255),
 
   // Payment details
@@ -53,7 +53,7 @@ export const purchasePaymentSchema = z.object({
   amount: z.string(),
 
   // Bank/Cash account (reference by UUID, not FK per B02)
-  bankAccountId: z.string().uuid(),
+  bankAccountId: z.uuid(),
   bankAccountName: z.string().max(255),
 
   // Reference
@@ -67,16 +67,16 @@ export const purchasePaymentSchema = z.object({
   notes: z.string().max(2000).optional(),
 
   // Posting reference (B01)
-  postingBatchId: z.string().uuid().optional(),
+  postingBatchId: z.uuid().optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  postedBy: z.string().uuid().optional(),
+  postedBy: z.uuid().optional(),
   postedAt: z.string().datetime().optional(),
-  approvedBy: z.string().uuid().optional(),
+  approvedBy: z.uuid().optional(),
   approvedAt: z.string().datetime().optional(),
 });
 

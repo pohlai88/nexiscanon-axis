@@ -19,7 +19,7 @@ export const addressSnapshotSchema = z.object({
   country: z.string().length(2), // ISO 3166-1 alpha-2
   contactName: z.string().max(255).optional(),
   contactPhone: z.string().max(50).optional(),
-  contactEmail: z.string().email().optional(),
+  contactEmail: z.email().optional(),
 });
 
 export type AddressSnapshot = z.infer<typeof addressSnapshotSchema>;
@@ -32,13 +32,13 @@ export const salesLineBaseSchema = z.object({
   lineNumber: z.number().int().positive(),
 
   // Item reference
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
 
   // Quantity
   quantity: z.number().positive(),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
 
   // Pricing
@@ -47,7 +47,7 @@ export const salesLineBaseSchema = z.object({
   discountAmount: z.string().default("0"),
 
   // Tax
-  taxCodeId: z.string().uuid().optional(),
+  taxCodeId: z.uuid().optional(),
   taxRate: z.number().min(0).max(100).default(0),
   taxAmount: z.string().default("0"),
 

@@ -27,8 +27,8 @@ export type Currency = z.infer<typeof currencySchema>;
 // ============================================================================
 
 export const exchangeRateSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   fromCurrency: z.string().length(3),
   toCurrency: z.string().length(3),

@@ -20,7 +20,7 @@ import {
 export const migrationStateTransitionEventSchema = createEventSchema(
   "migration.state.transition",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     fromMode: z.enum(MIGRATION_MODE),
     toMode: z.enum(MIGRATION_MODE),
     gatePassed: z.array(z.string()),
@@ -32,7 +32,7 @@ export type MigrationStateTransitionEvent = z.infer<typeof migrationStateTransit
 export const migrationStartedEventSchema = createEventSchema(
   "migration.started",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     sourceSystem: z.enum(SOURCE_SYSTEM_TYPE),
     sourceVersion: z.string().optional(),
   })
@@ -43,7 +43,7 @@ export type MigrationStartedEvent = z.infer<typeof migrationStartedEventSchema>;
 export const migrationCompletedEventSchema = createEventSchema(
   "migration.completed",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     totalRecordsImported: z.number().int(),
     durationDays: z.number().int(),
   })
@@ -58,7 +58,7 @@ export type MigrationCompletedEvent = z.infer<typeof migrationCompletedEventSche
 export const schemaIntrospectedEventSchema = createEventSchema(
   "migration.schema.introspected",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     tablesFound: z.number().int(),
     columnsFound: z.number().int(),
     rowsEstimated: z.number().int().optional(),
@@ -74,7 +74,7 @@ export type SchemaIntrospectedEvent = z.infer<typeof schemaIntrospectedEventSche
 export const mappingAutoDetectedEventSchema = createEventSchema(
   "migration.mapping.auto_detected",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     totalColumns: z.number().int(),
     autoMapped: z.number().int(),
     needsReview: z.number().int(),
@@ -87,10 +87,10 @@ export type MappingAutoDetectedEvent = z.infer<typeof mappingAutoDetectedEventSc
 export const mappingConfirmedEventSchema = createEventSchema(
   "migration.mapping.confirmed",
   z.object({
-    mappingId: z.string().uuid(),
+    mappingId: z.uuid(),
     sourceColumn: z.string(),
     targetField: z.string(),
-    confirmedBy: z.string().uuid(),
+    confirmedBy: z.uuid(),
   })
 );
 
@@ -99,8 +99,8 @@ export type MappingConfirmedEvent = z.infer<typeof mappingConfirmedEventSchema>;
 export const mappingVersionCreatedEventSchema = createEventSchema(
   "migration.mapping.version_created",
   z.object({
-    migrationStateId: z.string().uuid(),
-    mappingVersionId: z.string().uuid(),
+    migrationStateId: z.uuid(),
+    mappingVersionId: z.uuid(),
     version: z.number().int(),
     totalMappings: z.number().int(),
   })
@@ -115,8 +115,8 @@ export type MappingVersionCreatedEvent = z.infer<typeof mappingVersionCreatedEve
 export const importBatchStartedEventSchema = createEventSchema(
   "migration.import.batch_started",
   z.object({
-    importBatchId: z.string().uuid(),
-    migrationStateId: z.string().uuid(),
+    importBatchId: z.uuid(),
+    migrationStateId: z.uuid(),
     sourceTable: z.string(),
     totalRecords: z.number().int(),
   })
@@ -127,7 +127,7 @@ export type ImportBatchStartedEvent = z.infer<typeof importBatchStartedEventSche
 export const importBatchCompletedEventSchema = createEventSchema(
   "migration.import.batch_completed",
   z.object({
-    importBatchId: z.string().uuid(),
+    importBatchId: z.uuid(),
     status: z.enum(IMPORT_STATUS),
     successRecords: z.number().int(),
     errorRecords: z.number().int(),
@@ -144,7 +144,7 @@ export type ImportBatchCompletedEvent = z.infer<typeof importBatchCompletedEvent
 export const reconCheckCompletedEventSchema = createEventSchema(
   "migration.recon.check_completed",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     checkType: z.enum(["trial_balance", "ar_aging", "ap_aging", "inventory"]),
     status: z.enum(RECON_STATUS),
     variance: z.string().optional(),
@@ -158,7 +158,7 @@ export type ReconCheckCompletedEvent = z.infer<typeof reconCheckCompletedEventSc
 export const allGatesGreenEventSchema = createEventSchema(
   "migration.gates.all_green",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     gatesPassed: z.array(z.string()),
   })
 );
@@ -172,8 +172,8 @@ export type AllGatesGreenEvent = z.infer<typeof allGatesGreenEventSchema>;
 export const cutoverApprovedEventSchema = createEventSchema(
   "migration.cutover.approved",
   z.object({
-    migrationStateId: z.string().uuid(),
-    approvedBy: z.string().uuid(),
+    migrationStateId: z.uuid(),
+    approvedBy: z.uuid(),
     financialSignOff: z.boolean(),
     operationalSignOff: z.boolean(),
   })
@@ -184,7 +184,7 @@ export type CutoverApprovedEvent = z.infer<typeof cutoverApprovedEventSchema>;
 export const cutoverExecutedEventSchema = createEventSchema(
   "migration.cutover.executed",
   z.object({
-    migrationStateId: z.string().uuid(),
+    migrationStateId: z.uuid(),
     legacyFrozenAt: z.string().datetime(),
     axisLiveAt: z.string().datetime(),
   })

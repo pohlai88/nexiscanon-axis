@@ -2,10 +2,10 @@
 
 import * as React from "react"
 import { addDays } from "date-fns"
-import { Button } from "@/components/button"
-import { Calendar } from "@/components/calendar"
-import { Card, CardContent, CardFooter } from "@/components/card"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/button"
+import { Calendar } from "../../components/calendar"
+import { Card, CardContent, CardFooter } from "../../components/card"
+import { cn } from "../../lib/utils"
 
 export interface CalendarPreset {
   label: string

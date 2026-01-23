@@ -1,12 +1,13 @@
 /**
- * Sales Domain Tables (B04)
- *
- * Quote → Order → Delivery → Invoice → Payment
+ * Sales Module Schema (Phase 2)
+ * 
+ * Rebuilds sales on clean B01 Posting Spine foundation.
+ * 
+ * Flow: Quote → Order → Invoice → Posted (GL)
  */
 
 export * from "./quote";
 export * from "./order";
-export * from "./delivery";
+export * from "./order-line";
 export * from "./invoice";
-export * from "./payment";
-export * from "./credit-note";
+export * from "./invoice-line";

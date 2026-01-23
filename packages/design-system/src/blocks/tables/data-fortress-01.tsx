@@ -20,17 +20,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/table"
-import { Input } from "@/components/input"
-import { Button } from "@/components/button"
+} from "../../components/table"
+import { Input } from "../../components/input"
+import { Button } from "../../components/button"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/dropdown-menu"
-import { DataTablePagination } from "@/components/data-table-pagination"
-import { cn } from "@/lib/utils"
+} from "../../components/dropdown-menu"
+import { DataTablePagination } from "../../components/data-table-pagination"
+import { cn } from "../../lib/utils"
 import { Search, SlidersHorizontal, Download } from "lucide-react"
 
 export interface DataFortress01Props<TData, TValue> {

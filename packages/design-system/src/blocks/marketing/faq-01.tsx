@@ -6,8 +6,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/accordion"
-import { cn } from "@/lib/utils"
+} from "../../components/accordion"
+import { cn } from "../../lib/utils"
 
 export interface FAQItem {
   id: string

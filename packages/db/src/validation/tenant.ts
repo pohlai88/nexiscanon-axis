@@ -50,7 +50,7 @@ export const insertTenantSchema = createCoercedInsertSchema(tenants, {
     .min(1, "Name is required")
     .max(255, "Name must be 255 characters or less"),
   type: tenantTypeSchema.optional(),
-  parentId: z.string().uuid().nullable().optional(),
+  parentId: z.uuid().nullable().optional(),
   status: tenantStatusSchema.optional(),
   plan: subscriptionPlanSchema.optional(),
   settings: tenantSettingsSchema.optional(),

@@ -2,10 +2,10 @@
 
 import * as React from "react"
 import { ChevronLeft, ChevronRight, Heart, Minus, Plus, Share2, ShoppingCart, Star } from "lucide-react"
-import { Button } from "@/components/button"
-import { Badge } from "@/components/badge"
-import { Separator } from "@/components/separator"
-import { cn } from "@/lib/utils"
+import { Button } from "../../components/button"
+import { Badge } from "../../components/badge"
+import { Separator } from "../../components/separator"
+import { cn } from "../../lib/utils"
 
 export interface ProductImage {
   id: string

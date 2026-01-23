@@ -2,16 +2,16 @@
 
 import * as React from "react"
 import { Minus, Plus, X } from "lucide-react"
-import { Button } from "@/components/button"
+import { Button } from "../../components/button"
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/card"
-import { Separator } from "@/components/separator"
-import { cn } from "@/lib/utils"
+} from "../../components/card"
+import { Separator } from "../../components/separator"
+import { cn } from "../../lib/utils"
 
 export interface CartItem {
   id: string

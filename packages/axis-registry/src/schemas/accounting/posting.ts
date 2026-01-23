@@ -11,12 +11,12 @@ import { z } from "zod";
 // ============================================================================
 
 export const glPostingBatchSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Source (cross-domain reference by UUID, not FK per B02)
   sourceDocumentType: z.string().min(1).max(50),
-  sourceDocumentId: z.string().uuid(),
+  sourceDocumentId: z.uuid(),
   sourceDocumentNumber: z.string().max(50),
 
   // Status
@@ -31,7 +31,7 @@ export const glPostingBatchSchema = z.object({
 
   // Seal timestamp
   sealedAt: z.string().datetime().optional(),
-  sealedBy: z.string().uuid().optional(),
+  sealedBy: z.uuid().optional(),
 
   createdAt: z.string().datetime(),
 });
@@ -43,19 +43,19 @@ export type GlPostingBatch = z.infer<typeof glPostingBatchSchema>;
 // ============================================================================
 
 export const glLedgerPostingSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Batch (groups all postings from one transaction)
-  postingBatchId: z.string().uuid(),
+  postingBatchId: z.uuid(),
 
   // Journal reference
-  journalId: z.string().uuid(),
+  journalId: z.uuid(),
   journalNumber: z.string().max(50),
   journalLineNumber: z.number().int(),
 
   // Account
-  accountId: z.string().uuid(),
+  accountId: z.uuid(),
   accountCode: z.string().max(20),
 
   // Amounts
@@ -69,23 +69,23 @@ export const glLedgerPostingSchema = z.object({
   baseCurrencyCredit: z.string().default("0"),
 
   // Subledger (reference by UUID, not FK per B02)
-  partyId: z.string().uuid().optional(),
+  partyId: z.uuid().optional(),
 
   // Dimensions
-  costCenterId: z.string().uuid().optional(),
-  projectId: z.string().uuid().optional(),
+  costCenterId: z.uuid().optional(),
+  projectId: z.uuid().optional(),
 
   // Dates
   effectiveDate: z.string().datetime(),
 
   // Period
-  fiscalPeriodId: z.string().uuid(),
+  fiscalPeriodId: z.uuid(),
   fiscalYear: z.number().int(),
   fiscalMonth: z.number().int(),
 
   // Source (cross-domain reference by UUID, not FK per B02)
   sourceDocumentType: z.string().max(50).optional(),
-  sourceDocumentId: z.string().uuid().optional(),
+  sourceDocumentId: z.uuid().optional(),
 
   // Immutability flag
   isPosted: z.boolean().default(true),

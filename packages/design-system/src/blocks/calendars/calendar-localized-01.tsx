@@ -3,22 +3,22 @@
 import * as React from "react"
 import type { DateRange } from "react-day-picker"
 import type { Locale } from "react-day-picker"
-import { Calendar } from "@/components/calendar"
+import { Calendar } from "../../components/calendar"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/card"
+} from "../../components/card"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/select"
-import { cn } from "@/lib/utils"
+} from "../../components/select"
+import { cn } from "../../lib/utils"
 
 export interface LocaleOption {
   code: string

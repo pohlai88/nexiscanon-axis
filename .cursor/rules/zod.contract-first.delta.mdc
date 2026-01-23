@@ -1,0 +1,85 @@
+---
+description: "Zod v4 contract-first: schema-driven types, namespaced IDs"
+alwaysApply: false
+globs:
+  - "packages/**/*.ts"
+  - "apps/**/*.ts"
+---
+
+# Zod v4 Contract-First (Delta Rule)
+
+> Applies on top of `00-global.always.mdc`. Do NOT restate global rules.
+
+## ID Namespace Convention (NON-NEGOTIABLE)
+
+Zod registries throw on duplicate IDs. All `.meta({ id })` MUST use namespaced format:
+
+| Package | Prefix | Example |
+|---------|--------|---------|
+| design-system | `ds.` | `ds.button.variant` |
+| db | `db.` | `db.invoice.id` |
+| axis-registry | `axis.` | `axis.valueSet.countryCode` |
+| kernel | `kernel.` | `kernel.config.env` |
+
+## Schema-Driven Type Generation (NON-NEGOTIABLE)
+
+### Required Pattern
+
+```typescript
+// 1. Define schema with namespaced ID
+const mySchema = z.object({...}).meta({
+  id: "ds.component.name",  // REQUIRED: namespaced
+  description: "Description for docs/AI",
+});
+
+// 2. Infer type from schema
+type MyType = z.infer<typeof mySchema>;  // NOT manual interface
+
+// 3. Error handling
+const result = schema.safeParse(input);
+if (!result.success) {
+  console.error(z.prettifyError(result.error));
+}
+```
+
+## Zod v4 Top-Level Formats (REQUIRED)
+
+```typescript
+// ✅ CORRECT - Top-level formats
+z.email();
+z.url();
+z.uuid();      // General RFC-compliant UUID (stricter in v4)
+z.guid();      // Permissive 8-4-4-4-12 hex pattern
+z.uuidv4();    // Only when enforcing UUIDv4 specifically
+z.uuidv7();    // Only when enforcing UUIDv7 specifically
+
+// ❌ DEPRECATED - Method forms
+z.string().email();  // Use z.email() instead
+z.string().uuid();   // Use z.uuid() instead
+```
+
+## JSON Schema Generation (CORRECT PATTERN)
+
+```typescript
+// ❌ WRONG: z.toJSONSchema(z.globalRegistry)
+// ✅ CORRECT: z.toJSONSchema(schema) per schema
+
+export const schemaIndex = {
+  buttonVariant: buttonVariantSchema,
+  // Add other root schemas here
+} as const;
+
+export const generateJSONSchemas = () =>
+  Object.fromEntries(
+    Object.entries(schemaIndex).map(([k, s]) => [k, z.toJSONSchema(s)])
+  );
+```
+
+## Enforcement Checklist
+
+Before completing Zod-related code:
+- [ ] All `.meta({ id })` use namespaced IDs (ds., db., axis., kernel.)
+- [ ] Types use `z.infer<typeof schema>`
+- [ ] Top-level formats used (`z.email()`, not `.email()`)
+- [ ] Error handling uses `z.prettifyError()`
+- [ ] JSON Schema uses `z.toJSONSchema(schema)` pattern

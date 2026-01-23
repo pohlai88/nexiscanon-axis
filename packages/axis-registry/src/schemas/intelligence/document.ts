@@ -32,8 +32,8 @@ export type ClassificationConfidence = z.infer<typeof classificationConfidenceSc
 // ============================================================================
 
 export const documentClassificationSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Input
   fileName: z.string().max(255),
@@ -105,7 +105,7 @@ export type ValidationResult = z.infer<typeof validationResultSchema>;
 
 export const suggestedEntityMatchSchema = z.object({
   entityType: z.string().max(100),
-  entityId: z.string().uuid().optional(),
+  entityId: z.uuid().optional(),
   matchConfidence: z.number().min(0).max(1),
 });
 
@@ -116,9 +116,9 @@ export type SuggestedEntityMatch = z.infer<typeof suggestedEntityMatchSchema>;
 // ============================================================================
 
 export const documentExtractionSchema = z.object({
-  id: z.string().uuid(),
-  classificationId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  classificationId: z.uuid(),
+  tenantId: z.uuid(),
 
   // Document type
   documentType: z.enum(INTEL_DOCUMENT_TYPE),

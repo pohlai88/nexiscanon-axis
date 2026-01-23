@@ -12,11 +12,11 @@ import { REFRESH_FREQUENCY, EXPORT_FORMAT, AFANDA_NOTIFICATION_CHANNEL } from ".
 // ============================================================================
 
 export const afandaConfigSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
 
   // Default dashboard
-  defaultExecutiveDashboard: z.string().uuid().optional(),
-  defaultOperationalDashboard: z.string().uuid().optional(),
+  defaultExecutiveDashboard: z.uuid().optional(),
+  defaultOperationalDashboard: z.uuid().optional(),
 
   // Refresh settings
   defaultRefreshFrequency: z.enum(REFRESH_FREQUENCY).default("5_minutes"),
@@ -45,7 +45,7 @@ export const afandaConfigSchema = z.object({
   trackDashboardUsage: z.boolean().default(true),
 
   updatedAt: z.string().datetime(),
-  updatedBy: z.string().uuid(),
+  updatedBy: z.uuid(),
 });
 
 export type AfandaConfig = z.infer<typeof afandaConfigSchema>;

@@ -12,12 +12,12 @@ import { LYNX_CAPABILITY } from "./constants";
 // ============================================================================
 
 export const lynxAuditLogSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  userId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  userId: z.uuid(),
 
   // Request
-  requestId: z.string().uuid(),
+  requestId: z.uuid(),
   capability: z.enum(LYNX_CAPABILITY),
   provider: z.string().max(50),
   model: z.string().max(100),

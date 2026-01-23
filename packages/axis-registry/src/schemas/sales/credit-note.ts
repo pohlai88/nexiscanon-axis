@@ -18,13 +18,13 @@ export const creditNoteLineSchema = z.object({
   invoiceLineNumber: z.number().int().optional(),
 
   // Item
-  itemId: z.string().uuid(),
+  itemId: z.uuid(),
   itemSku: z.string().min(1).max(50),
   itemName: z.string().min(1).max(255),
 
   // Quantity
   quantity: z.number().positive(),
-  uomId: z.string().uuid(),
+  uomId: z.uuid(),
   uomSymbol: z.string().min(1).max(10),
 
   // Pricing
@@ -32,7 +32,7 @@ export const creditNoteLineSchema = z.object({
   discountAmount: z.string().default("0"),
 
   // Tax
-  taxCodeId: z.string().uuid().optional(),
+  taxCodeId: z.uuid().optional(),
   taxRate: z.number().min(0).max(100).default(0),
   taxAmount: z.string().default("0"),
 
@@ -50,16 +50,16 @@ export type CreditNoteLine = z.infer<typeof creditNoteLineSchema>;
 
 export const salesCreditNoteSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Source invoice
-  sourceInvoiceId: z.string().uuid(),
+  sourceInvoiceId: z.uuid(),
   sourceInvoiceNumber: z.string().max(50),
 
   // Customer
-  customerId: z.string().uuid(),
+  customerId: z.uuid(),
   customerName: z.string().max(255),
 
   // Credit Note details
@@ -86,14 +86,14 @@ export const salesCreditNoteSchema = z.object({
   notes: z.string().max(2000).optional(),
 
   // Posting reference (B01)
-  postingBatchId: z.string().uuid().optional(),
+  postingBatchId: z.uuid().optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  postedBy: z.string().uuid().optional(),
+  postedBy: z.uuid().optional(),
   postedAt: z.string().datetime().optional(),
 });
 

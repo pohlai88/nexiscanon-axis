@@ -74,7 +74,7 @@ export type ReportSort = z.infer<typeof reportSortSchema>;
 export const reportScheduleSchema = z.object({
   cronExpression: z.string().max(100),
   format: z.enum(EXPORT_FORMAT),
-  recipients: z.array(z.string().email()),
+  recipients: z.array(z.email()),
   subject: z.string().max(255).optional(),
 });
 
@@ -98,8 +98,8 @@ export type ReportDataSource = z.infer<typeof reportDataSourceSchema>;
 // ============================================================================
 
 export const reportDefinitionSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   code: z.string().min(1).max(50),
@@ -140,7 +140,7 @@ export const reportDefinitionSchema = z.object({
 
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export type ReportDefinition = z.infer<typeof reportDefinitionSchema>;

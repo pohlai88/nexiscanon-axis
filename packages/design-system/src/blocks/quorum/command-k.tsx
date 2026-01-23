@@ -45,9 +45,9 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/components/command"
-import { Badge } from "@/components/badge"
-import { cn } from "@/lib/utils"
+} from "../../components/command"
+import { Badge } from "../../components/badge"
+import { cn } from "../../lib/utils"
 import {
   Search,
   Clock,

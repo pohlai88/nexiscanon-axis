@@ -15,7 +15,7 @@ import { addressSnapshotSchema, purchaseLineBaseSchema } from "./common";
 export const purchaseOrderLineSchema = purchaseLineBaseSchema.extend({
   // Source PR line reference
   prLineNumber: z.number().int().optional(),
-  prId: z.string().uuid().optional(),
+  prId: z.uuid().optional(),
 
   // Override quantity for PO specifics
   quantityOrdered: z.number().positive(),
@@ -25,7 +25,7 @@ export const purchaseOrderLineSchema = purchaseLineBaseSchema.extend({
 
   // Delivery
   expectedDeliveryDate: z.string().datetime().optional(),
-  deliverToLocationId: z.string().uuid(),
+  deliverToLocationId: z.uuid(),
   deliverToLocationName: z.string().max(255),
 });
 
@@ -37,18 +37,18 @@ export type PurchaseOrderLine = z.infer<typeof purchaseOrderLineSchema>;
 
 export const purchaseOrderSchema = z.object({
   // Identity
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
   documentNumber: z.string().min(1).max(50),
 
   // Source
-  sourcePrIds: z.array(z.string().uuid()).optional(),
+  sourcePrIds: z.array(z.uuid()).optional(),
 
   // Supplier (reference by UUID, not FK per B02)
-  supplierId: z.string().uuid(),
+  supplierId: z.uuid(),
   supplierName: z.string().max(255),
   supplierContactName: z.string().max(255).optional(),
-  supplierContactEmail: z.string().email().optional(),
+  supplierContactEmail: z.email().optional(),
 
   // Addresses
   supplierAddress: addressSnapshotSchema,
@@ -60,7 +60,7 @@ export const purchaseOrderSchema = z.object({
   expectedDeliveryDate: z.string().datetime().optional(),
 
   // Pricing
-  priceListId: z.string().uuid().optional(),
+  priceListId: z.uuid().optional(),
   currency: z.string().length(3),
   exchangeRate: z.number().positive().default(1),
 
@@ -74,7 +74,7 @@ export const purchaseOrderSchema = z.object({
   grandTotal: z.string(),
 
   // Terms
-  paymentTermId: z.string().uuid().optional(),
+  paymentTermId: z.uuid().optional(),
   paymentTermDays: z.number().int().min(0).optional(),
   incoterm: z.string().max(20).optional(),
   shippingMethod: z.string().max(100).optional(),
@@ -84,15 +84,15 @@ export const purchaseOrderSchema = z.object({
   supplierNotes: z.string().max(2000).optional(),
 
   // Receipt/Bill tracking
-  receiptIds: z.array(z.string().uuid()).optional(),
-  billIds: z.array(z.string().uuid()).optional(),
+  receiptIds: z.array(z.uuid()).optional(),
+  billIds: z.array(z.uuid()).optional(),
 
   // Audit
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
-  updatedBy: z.string().uuid().optional(),
+  updatedBy: z.uuid().optional(),
   updatedAt: z.string().datetime().optional(),
-  confirmedBy: z.string().uuid().optional(),
+  confirmedBy: z.uuid().optional(),
   confirmedAt: z.string().datetime().optional(),
 });
 

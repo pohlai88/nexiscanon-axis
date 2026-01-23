@@ -16,15 +16,15 @@ import { createEventSchema, auditedEventEnvelopeSchema } from "./base";
 // ============================================================================
 
 export const quoteCreatedPayloadSchema = z.object({
-  quoteId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  quoteId: z.uuid(),
+  tenantId: z.uuid(),
   quoteNumber: z.string().min(1),
-  customerId: z.string().uuid(),
+  customerId: z.uuid(),
   customerName: z.string().min(1), // Denormalized
   totalAmount: z.string(), // Decimal as string
   currency: z.string().length(3),
   validUntil: z.string().datetime(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export const quoteCreatedEventSchema = createEventSchema(
@@ -39,19 +39,19 @@ export type QuoteCreatedEvent = z.infer<typeof quoteCreatedEventSchema>;
 // ============================================================================
 
 export const orderConfirmedPayloadSchema = z.object({
-  orderId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  orderId: z.uuid(),
+  tenantId: z.uuid(),
   orderNumber: z.string().min(1),
-  customerId: z.string().uuid(),
+  customerId: z.uuid(),
   customerName: z.string().min(1),
-  quoteId: z.string().uuid().optional(), // Source quote if any
+  quoteId: z.uuid().optional(), // Source quote if any
   totalAmount: z.string(),
   currency: z.string().length(3),
-  confirmedBy: z.string().uuid(),
+  confirmedBy: z.uuid(),
   lines: z.array(
     z.object({
-      lineId: z.string().uuid(),
-      itemId: z.string().uuid(),
+      lineId: z.uuid(),
+      itemId: z.uuid(),
       itemSku: z.string(),
       itemName: z.string(),
       quantity: z.string(),
@@ -73,21 +73,21 @@ export type OrderConfirmedEvent = z.infer<typeof orderConfirmedEventSchema>;
 // ============================================================================
 
 export const deliveryShippedPayloadSchema = z.object({
-  deliveryId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  deliveryId: z.uuid(),
+  tenantId: z.uuid(),
   deliveryNumber: z.string().min(1),
-  orderId: z.string().uuid(),
+  orderId: z.uuid(),
   orderNumber: z.string(),
-  customerId: z.string().uuid(),
+  customerId: z.uuid(),
   customerName: z.string(),
-  warehouseId: z.string().uuid(),
+  warehouseId: z.uuid(),
   warehouseName: z.string(),
-  shippedBy: z.string().uuid(),
+  shippedBy: z.uuid(),
   shippedAt: z.string().datetime(),
   lines: z.array(
     z.object({
-      lineId: z.string().uuid(),
-      itemId: z.string().uuid(),
+      lineId: z.uuid(),
+      itemId: z.uuid(),
       itemSku: z.string(),
       quantity: z.string(),
     })
@@ -106,13 +106,13 @@ export type DeliveryShippedEvent = z.infer<typeof deliveryShippedEventSchema>;
 // ============================================================================
 
 export const invoicePostedPayloadSchema = z.object({
-  invoiceId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  invoiceId: z.uuid(),
+  tenantId: z.uuid(),
   invoiceNumber: z.string().min(1),
-  documentId: z.string().uuid(), // Link to PostingSpine document
-  orderId: z.string().uuid().optional(),
-  deliveryId: z.string().uuid().optional(),
-  customerId: z.string().uuid(),
+  documentId: z.uuid(), // Link to PostingSpine document
+  orderId: z.uuid().optional(),
+  deliveryId: z.uuid().optional(),
+  customerId: z.uuid(),
   customerName: z.string(),
   totalAmount: z.string(),
   taxAmount: z.string(),
@@ -120,7 +120,7 @@ export const invoicePostedPayloadSchema = z.object({
   postingDate: z.string().datetime(),
   fiscalPeriod: z.string(),
   dueDate: z.string().datetime(),
-  postedBy: z.string().uuid(),
+  postedBy: z.uuid(),
   // Event-carried state for Accounting domain
   accountingEntries: z.array(
     z.object({

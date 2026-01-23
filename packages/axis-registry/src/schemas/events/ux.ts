@@ -17,7 +17,7 @@ export const personaSwitchedEventSchema = createEventSchema(
   z.object({
     previousPersona: z.enum(PERSONA_TYPE),
     newPersona: z.enum(PERSONA_TYPE),
-    switchedBy: z.string().uuid(),
+    switchedBy: z.uuid(),
   })
 );
 
@@ -27,7 +27,7 @@ export const personaConfigUpdatedEventSchema = createEventSchema(
   "persona.config_updated",
   z.object({
     updatedFields: z.array(z.string()),
-    updatedBy: z.string().uuid(),
+    updatedBy: z.uuid(),
   })
 );
 
@@ -40,7 +40,7 @@ export type PersonaConfigUpdatedEvent = z.infer<typeof personaConfigUpdatedEvent
 export const userPreferenceUpdatedEventSchema = createEventSchema(
   "user_preference.updated",
   z.object({
-    userId: z.string().uuid(),
+    userId: z.uuid(),
     updatedFields: z.array(z.string()),
   })
 );
@@ -50,9 +50,9 @@ export type UserPreferenceUpdatedEvent = z.infer<typeof userPreferenceUpdatedEve
 export const favoriteAddedEventSchema = createEventSchema(
   "user_preference.favorite_added",
   z.object({
-    userId: z.string().uuid(),
+    userId: z.uuid(),
     favoriteType: z.string(),
-    favoriteId: z.string().uuid(),
+    favoriteId: z.uuid(),
     favoriteLabel: z.string(),
   })
 );
@@ -62,9 +62,9 @@ export type FavoriteAddedEvent = z.infer<typeof favoriteAddedEventSchema>;
 export const favoriteRemovedEventSchema = createEventSchema(
   "user_preference.favorite_removed",
   z.object({
-    userId: z.string().uuid(),
+    userId: z.uuid(),
     favoriteType: z.string(),
-    favoriteId: z.string().uuid(),
+    favoriteId: z.uuid(),
   })
 );
 
@@ -77,8 +77,8 @@ export type FavoriteRemovedEvent = z.infer<typeof favoriteRemovedEventSchema>;
 export const onboardingStartedEventSchema = createEventSchema(
   "onboarding.started",
   z.object({
-    progressId: z.string().uuid(),
-    userId: z.string().uuid().optional(),
+    progressId: z.uuid(),
+    userId: z.uuid().optional(),
     totalSteps: z.number().int(),
   })
 );
@@ -88,9 +88,9 @@ export type OnboardingStartedEvent = z.infer<typeof onboardingStartedEventSchema
 export const onboardingStepCompletedEventSchema = createEventSchema(
   "onboarding.step_completed",
   z.object({
-    progressId: z.string().uuid(),
+    progressId: z.uuid(),
     stepId: z.string(),
-    userId: z.string().uuid().optional(),
+    userId: z.uuid().optional(),
     percentComplete: z.number(),
   })
 );
@@ -100,9 +100,9 @@ export type OnboardingStepCompletedEvent = z.infer<typeof onboardingStepComplete
 export const onboardingStepSkippedEventSchema = createEventSchema(
   "onboarding.step_skipped",
   z.object({
-    progressId: z.string().uuid(),
+    progressId: z.uuid(),
     stepId: z.string(),
-    userId: z.string().uuid().optional(),
+    userId: z.uuid().optional(),
   })
 );
 
@@ -111,8 +111,8 @@ export type OnboardingStepSkippedEvent = z.infer<typeof onboardingStepSkippedEve
 export const onboardingCompletedEventSchema = createEventSchema(
   "onboarding.completed",
   z.object({
-    progressId: z.string().uuid(),
-    userId: z.string().uuid().optional(),
+    progressId: z.uuid(),
+    userId: z.uuid().optional(),
     status: z.enum(ONBOARDING_STATUS),
     stepsCompleted: z.number().int(),
     stepsSkipped: z.number().int(),
@@ -128,7 +128,7 @@ export type OnboardingCompletedEvent = z.infer<typeof onboardingCompletedEventSc
 export const themeChangedEventSchema = createEventSchema(
   "theme.changed",
   z.object({
-    userId: z.string().uuid(),
+    userId: z.uuid(),
     previousTheme: z.string(),
     newTheme: z.string(),
   })

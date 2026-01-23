@@ -11,7 +11,7 @@ import { z } from "zod";
 // ============================================================================
 
 export const reconciliationConfigSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
 
   // Auto-reconciliation
   enableAutoReconciliation: z.boolean().default(true),
@@ -39,13 +39,13 @@ export const reconciliationConfigSchema = z.object({
   exceptionNotificationRoles: z.array(z.string()).default(["finance_manager"]),
 
   // Variance accounts
-  bankVarianceAccountId: z.string().uuid().optional(),
-  inventoryVarianceAccountId: z.string().uuid().optional(),
-  apVarianceAccountId: z.string().uuid().optional(),
-  arVarianceAccountId: z.string().uuid().optional(),
+  bankVarianceAccountId: z.uuid().optional(),
+  inventoryVarianceAccountId: z.uuid().optional(),
+  apVarianceAccountId: z.uuid().optional(),
+  arVarianceAccountId: z.uuid().optional(),
 
   updatedAt: z.string().datetime(),
-  updatedBy: z.string().uuid(),
+  updatedBy: z.uuid(),
 });
 
 export type ReconciliationConfig = z.infer<typeof reconciliationConfigSchema>;

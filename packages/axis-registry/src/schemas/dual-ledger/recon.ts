@@ -42,9 +42,9 @@ export type ReconExceptionSummary = z.infer<typeof reconExceptionSummarySchema>;
 // ============================================================================
 
 export const migrationReconSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Type
   reconType: migrationReconTypeSchema,
@@ -86,13 +86,13 @@ export type MigrationRecon = z.infer<typeof migrationReconSchema>;
 // ============================================================================
 
 export const reconRunSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
-  migrationStateId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
+  migrationStateId: z.uuid(),
 
   // Run info
   triggeredBy: z.enum(["scheduled", "manual", "sync_complete"]),
-  triggeredByUserId: z.string().uuid().optional(),
+  triggeredByUserId: z.uuid().optional(),
 
   // Timing
   startedAt: z.string().datetime(),
@@ -106,7 +106,7 @@ export const reconRunSchema = z.object({
   results: z.array(
     z.object({
       reconType: migrationReconTypeSchema,
-      reconId: z.string().uuid(),
+      reconId: z.uuid(),
       status: dualLedgerReconStatusSchema,
       variance: z.string(),
     })

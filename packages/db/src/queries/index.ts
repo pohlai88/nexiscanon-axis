@@ -1,19 +1,10 @@
 /**
- * Centralized Drizzle query functions.
+ * Query Helpers
  *
- * Pattern: All database queries go through this layer.
- * - Input validation via Zod (from @axis/db/validation)
- * - Type-safe Drizzle ORM queries
- * - Single source of truth for query logic
- *
- * Usage:
- *   import { findTenantBySlug, createTenant } from "@axis/db/queries";
- *   import { searchEmbeddings, insertEmbedding } from "@axis/db/queries";
+ * Efficient read operations for common queries.
  */
 
-export * from "./tenants";
-export * from "./users";
-export * from "./embeddings";
-
-// B1 — Posting Spine queries
-export * from "./posting";
+export * from "./posting-spine";
+export * from "./balanced-books";
+export * from "./financial-reports";
+export * from "./report-helpers";

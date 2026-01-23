@@ -10,6 +10,10 @@ export * from "./user";
 export * from "./api-key";
 export * from "./audit-log";
 
+// Master Data
+export * from "./customer";
+export * from "./vendor";
+
 // AI/Vector search schemas
 export * from "./embeddings";
 
@@ -25,8 +29,11 @@ export * from "./outbox";
 // B4 — Sales Domain
 export * from "./sales";
 
-// B5 — Purchase Domain
+// B5 — Purchase Domain (Phase 3)
 export * from "./purchase";
+
+// Payment Processing (Phase 4)
+export * from "./payment";
 
 // B6 — Inventory Domain
 export * from "./inventory";

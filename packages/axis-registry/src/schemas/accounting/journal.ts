@@ -15,7 +15,7 @@ export const journalLineSchema = z.object({
   lineNumber: z.number().int().positive(),
 
   // Account
-  accountId: z.string().uuid(),
+  accountId: z.uuid(),
   accountCode: z.string().min(1).max(20),
   accountName: z.string().max(255),
 
@@ -29,12 +29,12 @@ export const journalLineSchema = z.object({
   foreignCurrency: z.string().length(3).optional(),
 
   // Subledger (for control accounts) - reference by UUID, not FK per B02
-  partyId: z.string().uuid().optional(),
+  partyId: z.uuid().optional(),
   partyName: z.string().max(255).optional(),
 
   // Dimensions
-  costCenterId: z.string().uuid().optional(),
-  projectId: z.string().uuid().optional(),
+  costCenterId: z.uuid().optional(),
+  projectId: z.uuid().optional(),
 
   // Description
   description: z.string().max(255).optional(),
@@ -42,7 +42,7 @@ export const journalLineSchema = z.object({
   // Reconciliation
   isReconciled: z.boolean().default(false),
   reconciledAt: z.string().datetime().optional(),
-  bankStatementId: z.string().uuid().optional(),
+  bankStatementId: z.uuid().optional(),
 });
 
 export type JournalLine = z.infer<typeof journalLineSchema>;
@@ -52,8 +52,8 @@ export type JournalLine = z.infer<typeof journalLineSchema>;
 // ============================================================================
 
 export const journalEntrySchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  id: z.uuid(),
+  tenantId: z.uuid(),
 
   // Identity
   documentNumber: z.string().min(1).max(50),
@@ -65,7 +65,7 @@ export const journalEntrySchema = z.object({
 
   // Source document (cross-domain reference by UUID, not FK per B02)
   sourceDocumentType: z.string().max(50).optional(),
-  sourceDocumentId: z.string().uuid().optional(),
+  sourceDocumentId: z.uuid().optional(),
   sourceDocumentNumber: z.string().max(50).optional(),
 
   // Dates
@@ -73,7 +73,7 @@ export const journalEntrySchema = z.object({
   effectiveDate: z.string().datetime(),
 
   // Period (reference by UUID, not FK per B02)
-  fiscalPeriodId: z.string().uuid(),
+  fiscalPeriodId: z.uuid(),
   fiscalYear: z.number().int(),
   fiscalMonth: z.number().int().min(1).max(13),
 
@@ -92,21 +92,21 @@ export const journalEntrySchema = z.object({
   totalCredit: z.string(),
 
   // Approval
-  approvedBy: z.string().uuid().optional(),
+  approvedBy: z.uuid().optional(),
   approvedAt: z.string().datetime().optional(),
 
   // Posting
-  postedBy: z.string().uuid().optional(),
+  postedBy: z.uuid().optional(),
   postedAt: z.string().datetime().optional(),
-  postingBatchId: z.string().uuid().optional(),
+  postingBatchId: z.uuid().optional(),
 
   // Reversal
   isReversal: z.boolean().default(false),
-  reversesJournalId: z.string().uuid().optional(),
-  reversedByJournalId: z.string().uuid().optional(),
+  reversesJournalId: z.uuid().optional(),
+  reversedByJournalId: z.uuid().optional(),
 
   // Metadata
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });

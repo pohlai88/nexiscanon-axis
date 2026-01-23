@@ -1,0 +1,33 @@
+---
+description: "pnpm dependency governance: catalog-first, version alignment"
+alwaysApply: true
+---
+
+# pnpm Dependency Governance (Always Apply)
+
+> Applies on top of `00-global.always.mdc`. Do NOT restate global rules.
+
+## Catalog-First Dependencies (NON-NEGOTIABLE)
+
+### Required Pattern
+
+1. Check `pnpm-workspace.yaml` catalog FIRST before adding any dependency
+2. If dependency exists in catalog: use `"catalog:"` reference preferred
+3. If not in catalog: align version with existing packages or ask user
+
+### Before Adding Any Dependency
+
+1. Search `pnpm-workspace.yaml` for existing catalog entry
+2. Search `packages/*/package.json` for existing version
+3. If version mismatch detected: STOP and report to user
+
+### Version Alignment Rule
+
+All packages SHOULD use the same version of shared dependencies:
+- `zod` → align to catalog version `^4.3.6`
+- `react` / `react-dom` → align to catalog
+- `typescript` → align to catalog
+
+### Enforcement
+
+Run `pnpm install` after any `package.json` change to verify resolution.

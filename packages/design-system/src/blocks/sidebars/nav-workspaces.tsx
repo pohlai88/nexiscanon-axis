@@ -6,7 +6,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/collapsible"
+} from "../../components/collapsible"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -18,7 +18,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/sidebar"
+} from "../../components/sidebar"
 
 export interface WorkspacePage {
   name: string

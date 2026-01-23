@@ -15,11 +15,11 @@ import { createEventSchema } from "./base";
 // ============================================================================
 
 export const tenantCreatedPayloadSchema = z.object({
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
   name: z.string().min(1),
   slug: z.string().min(1),
   plan: z.string().optional(),
-  createdBy: z.string().uuid(),
+  createdBy: z.uuid(),
 });
 
 export const tenantCreatedEventSchema = createEventSchema(
@@ -34,10 +34,10 @@ export type TenantCreatedEvent = z.infer<typeof tenantCreatedEventSchema>;
 // ============================================================================
 
 export const userCreatedPayloadSchema = z.object({
-  userId: z.string().uuid(),
-  email: z.string().email(),
+  userId: z.uuid(),
+  email: z.email(),
   name: z.string().optional(),
-  tenantId: z.string().uuid(),
+  tenantId: z.uuid(),
 });
 
 export const userCreatedEventSchema = createEventSchema(
@@ -52,10 +52,10 @@ export type UserCreatedEvent = z.infer<typeof userCreatedEventSchema>;
 // ============================================================================
 
 export const userRoleAssignedPayloadSchema = z.object({
-  userId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  userId: z.uuid(),
+  tenantId: z.uuid(),
   role: z.string().min(1),
-  assignedBy: z.string().uuid(),
+  assignedBy: z.uuid(),
   previousRole: z.string().optional(),
 });
 
