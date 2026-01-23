@@ -1,0 +1,2 @@
+# Generated files - regenerate with: pnpm --filter @axis/registry codegen
+__generated__/

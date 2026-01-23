@@ -19,6 +19,14 @@
     "./validation": {
       "types": "./src/validation/index.ts",
       "import": "./src/validation/index.ts"
+    },
+    "./queries": {
+      "types": "./src/queries/index.ts",
+      "import": "./src/queries/index.ts"
+    },
+    "./types": {
+      "types": "./src/types/index.ts",
+      "import": "./src/types/index.ts"
     }
   },
   "scripts": {
@@ -30,6 +38,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
+    "@axis/registry": "workspace:*",
     "@neondatabase/serverless": "^0.10.4",
     "drizzle-orm": "^0.38.3",
     "drizzle-zod": "^0.7.0",

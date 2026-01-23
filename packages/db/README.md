@@ -1,6 +1,6 @@
 # @axis/db
 
-> Database layer for AXIS ERP - Drizzle ORM + Zod validation
+> Database layer for AXIS ERP - Drizzle ORM + Zod v4 + Query layer
 
 [![Drizzle ORM](https://img.shields.io/badge/Drizzle-0.38.4-C5F74F)](https://orm.drizzle.team/)
 [![Zod](https://img.shields.io/badge/Zod-4.x-3068B7)](https://zod.dev/v4)
@@ -15,7 +15,8 @@
 Single source of truth for:
 - **Schema**: Drizzle ORM table definitions
 - **Types**: Inferred TypeScript types (`$inferSelect`, `$inferInsert`)
-- **Validation**: Zod schemas (auto-generated via drizzle-zod)
+- **Validation**: Zod v4 schemas (drizzle-zod with date coercion)
+- **Queries**: Drizzle ORM query functions (preferred over raw SQL)
 - **Client**: Neon serverless connection + tenant scoping
 
 ---
@@ -28,6 +29,7 @@ This package is internal to the monorepo:
 // In apps/web or other packages
 import { type User, type Tenant } from "@axis/db/schema";
 import { insertUserSchema, userRoleSchema } from "@axis/db/validation";
+import { findTenantBySlug, createTenant } from "@axis/db/queries";
 import { createDbClient } from "@axis/db/client";
 ```
 
@@ -59,6 +61,10 @@ export type { TenantSettings, UserSettings };
 Zod schemas generated from Drizzle:
 
 ```typescript
+// Schema factory (Zod v4 with date coercion)
+export { createCoercedInsertSchema, createCoercedSelectSchema, createCoercedUpdateSchema };
+export { createInsertSchema, createSelectSchema, createUpdateSchema }; // strict (no coercion)
+
 // Tenant
 export { insertTenantSchema, selectTenantSchema, updateTenantSchema };
 export { createTenantFormSchema, tenantStatusSchema, subscriptionPlanSchema };
@@ -72,6 +78,31 @@ export { insertApiKeySchema, selectApiKeySchema, createApiKeyFormSchema };
 
 // Audit
 export { insertAuditLogSchema, auditLogEntrySchema, auditActionSchema };
+```
+
+**Zod v4 Best Practice:**
+- `createCoercedInsertSchema`: Use for API input (coerces date strings → Date objects)
+- `createSelectSchema`: Use for DB output (strict types, no coercion needed)
+
+### `@axis/db/queries`
+
+Drizzle ORM query functions (preferred over raw SQL):
+
+```typescript
+// Tenant queries
+export { findTenantBySlug, findTenantById, findTenantByDomain };
+export { createTenant, createTeam, createPersonalWorkspace };
+export { listTenants, getTeamsForOrg, isSlugAvailable };
+export { updateTenantBranding, updateTenantStatus, deleteTenant };
+
+// User queries
+export { findUserByEmail, findUserById, findUserByAuthSubject };
+export { upsertUserFromAuth, listUsers };
+export { getUserTenants, getTenantMembers, getUserTenantMembership };
+export { addUserToTenant, removeUserFromTenant, verifyTenantAccess };
+
+// Types
+export type { TenantBranding, TenantSettingsExtended, TenantMembership };
 ```
 
 ### `@axis/db/client`
@@ -258,6 +289,55 @@ pnpm typecheck
 │     await db.insert(tenants).values(result.data);       │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Row-Level Security (RLS) Patterns
+
+The tenant-scoped client sets session variables that RLS policies can reference.
+
+**Session Variables Set:**
+```sql
+SET app.current_tenant_id = 'uuid';
+SET app.current_user_id = 'uuid';
+```
+
+**Example RLS Policy Templates:**
+
+```sql
+-- Enable RLS on a table
+ALTER TABLE public.some_table ENABLE ROW LEVEL SECURITY;
+
+-- Allow tenant members to access their data
+-- Uses (SELECT ...) pattern for plan caching (Supabase best practice)
+CREATE POLICY "Tenant members can access their data"
+  ON public.some_table
+  FOR ALL
+  USING (
+    tenant_id = (SELECT current_setting('app.current_tenant_id', true))::uuid
+  );
+
+-- Index for performance (required for RLS-filtered tables)
+CREATE INDEX idx_some_table_tenant_id ON public.some_table (tenant_id);
+
+-- Combined tenant + user policy (more restrictive)
+CREATE POLICY "Users can only see their own rows"
+  ON public.some_table
+  FOR SELECT
+  USING (
+    tenant_id = (SELECT current_setting('app.current_tenant_id', true))::uuid
+    AND user_id = (SELECT current_setting('app.current_user_id', true))::uuid
+  );
+```
+
+**Policy Checklist:**
+- [ ] RLS enabled on table (`ALTER TABLE ... ENABLE ROW LEVEL SECURITY`)
+- [ ] SELECT policy defined
+- [ ] INSERT/UPDATE/DELETE policies defined (or use FOR ALL)
+- [ ] Index on `tenant_id` column for performance
+- [ ] `(SELECT ...)` wrapper for session variables (plan caching)
+
+**Reference:** [Supabase RLS Best Practices](https://supabase.com/docs/guides/database/postgres/row-level-security)
 
 ---
 

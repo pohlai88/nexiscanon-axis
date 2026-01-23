@@ -47,7 +47,7 @@ export function RegisterForm({ inviteToken, prefillEmail }: RegisterFormProps) {
             id="org"
             name="org"
             required={!inviteToken}
-            className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+            className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
             placeholder="Acme Inc."
           />
         </div>
@@ -65,11 +65,11 @@ export function RegisterForm({ inviteToken, prefillEmail }: RegisterFormProps) {
           autoComplete="email"
           defaultValue={prefillEmail}
           readOnly={Boolean(prefillEmail)}
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] read-only:opacity-50 read-only:cursor-not-allowed"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary read-only:opacity-50 read-only:cursor-not-allowed"
           placeholder="you@example.com"
         />
         {prefillEmail && (
-          <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+          <p className="mt-1 text-xs text-muted-foreground">
             Email is locked to the invitation
           </p>
         )}
@@ -86,10 +86,10 @@ export function RegisterForm({ inviteToken, prefillEmail }: RegisterFormProps) {
           required
           minLength={8}
           autoComplete="new-password"
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="••••••••"
         />
-        <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+        <p className="mt-1 text-xs text-muted-foreground">
           Must be at least 8 characters
         </p>
       </div>
@@ -97,7 +97,7 @@ export function RegisterForm({ inviteToken, prefillEmail }: RegisterFormProps) {
       <button
         type="submit"
         disabled={isPending}
-        className="w-full py-3 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg font-medium hover:opacity-90 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isPending ? "Creating account..." : "Create Account"}
       </button>

@@ -13,6 +13,7 @@ import { findTenantBySlug } from "../db/tenants";
 import { getUserTenantMembership } from "../db/users";
 import { query } from "../db";
 import { createApiKeyFormSchema } from "@axis/db/validation";
+import { logger } from "../logger";
 
 export interface ApiKeyActionResult {
   success: boolean;
@@ -109,7 +110,7 @@ export async function createApiKeyAction(
     revalidatePath(`/${tenantSlug}/settings/api-keys`);
     return { success: true, key };
   } catch (error) {
-    console.error("Create API key error:", error);
+    logger.error("Create API key error", error);
     return { success: false, error: "Failed to create API key" };
   }
 }
@@ -147,7 +148,7 @@ export async function revokeApiKeyAction(
     revalidatePath(`/${tenantSlug}/settings/api-keys`);
     return { success: true };
   } catch (error) {
-    console.error("Revoke API key error:", error);
+    logger.error("Revoke API key error", error);
     return { success: false, error: "Failed to revoke API key" };
   }
 }

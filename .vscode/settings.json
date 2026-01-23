@@ -1,8 +1,10 @@
 {
+  // ESLint
   "eslint.useFlatConfig": true,
   "eslint.experimental.useFlatConfig": true,
   "eslint.workingDirectories": [
-    { "pattern": "packages/*/" }
+    { "pattern": "packages/*/" },
+    { "pattern": "apps/*/" }
   ],
   "eslint.validate": [
     "javascript",
@@ -10,25 +12,74 @@
     "typescript",
     "typescriptreact"
   ],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+
+  // Editor
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.rulers": [100],
+
+  // TypeScript
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
+  // Tailwind CSS
   "tailwindCSS.classFunctions": ["cva", "cn"],
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
+
+  // Testing
   "vitest.debugExclude": [
     "<node_internals>/**",
     "**/node_modules/**",
     "**/fixtures/**"
   ],
+  "vitest.maximumConfigs": 10,
+  "vitest.exclude": [
+    "**/node_modules/**",
+    "**/fixtures/**",
+    "**/tools/**",
+    "**/templates/**",
+    "**/.next/**",
+    "**/dist/**"
+  ],
+
+  // Files
   "files.exclude": {
-    "deprecated": true
+    "deprecated": true,
+    "**/node_modules": true,
+    "**/.turbo": true
   },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  // Search
   "search.exclude": {
     "packages/design-system/tailwindV4/registry/radix-*": true,
     "packages/design-system/tailwindV4/public/r/*": true,
-    "packages/design-system/shadcn/test/fixtures/*": true
+    "packages/design-system/shadcn/test/fixtures/*": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true
+  },
+
+  // Terminal
+  "terminal.integrated.cwd": "${workspaceFolder}",
+
+  // Emmet for JSX
+  "emmet.includeLanguages": {
+    "typescriptreact": "html"
   }
 }

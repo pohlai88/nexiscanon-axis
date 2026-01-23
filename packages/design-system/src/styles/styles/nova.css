@@ -1,0 +1,18 @@
+/**
+ * Style: Nova - Sharp, minimal with zero radius
+ * Clean, angular aesthetic with border-based depth.
+ */
+
+:root[data-style="nova"] {
+  --radius: 0;
+  --shadow-sm: none;
+  --shadow: 0 0 0 1px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 0 0 1px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 0 0 1px rgb(0 0 0 / 0.1);
+}
+
+:root[data-style="nova"].dark {
+  --shadow: 0 0 0 1px rgb(255 255 255 / 0.05);
+  --shadow-md: 0 0 0 1px rgb(255 255 255 / 0.08);
+  --shadow-lg: 0 0 0 1px rgb(255 255 255 / 0.1);
+}

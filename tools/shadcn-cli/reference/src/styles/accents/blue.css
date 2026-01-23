@@ -1,0 +1,24 @@
+/* Accent: Blue - Trust, professional */
+:root[data-accent="blue"] {
+  --primary: oklch(0.50 0.22 260);
+  --primary-foreground: oklch(0.98 0.01 260);
+  --ring: oklch(0.55 0.22 260);
+
+  --chart-1: oklch(0.55 0.22 260);
+  --chart-2: oklch(0.45 0.18 245);
+  --chart-3: oklch(0.50 0.15 275);
+  --chart-4: oklch(0.60 0.12 255);
+  --chart-5: oklch(0.40 0.20 265);
+}
+
+:root[data-accent="blue"].dark {
+  --primary: oklch(0.70 0.18 260);
+  --primary-foreground: oklch(0.15 0.05 260);
+  --ring: oklch(0.62 0.20 260);
+
+  --chart-1: oklch(0.70 0.18 260);
+  --chart-2: oklch(0.60 0.15 245);
+  --chart-3: oklch(0.65 0.12 275);
+  --chart-4: oklch(0.75 0.10 255);
+  --chart-5: oklch(0.55 0.18 265);
+}

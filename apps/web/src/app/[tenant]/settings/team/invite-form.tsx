@@ -23,7 +23,7 @@ export function InviteForm({ tenantSlug }: InviteFormProps) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg hover:opacity-90 transition-opacity duration-200"
+        className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity duration-200"
       >
         Invite Member
       </button>
@@ -32,7 +32,7 @@ export function InviteForm({ tenantSlug }: InviteFormProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-[var(--background)] rounded-xl p-6 w-full max-w-md">
+      <div className="bg-background rounded-xl p-6 w-full max-w-md">
         <h2 className="text-xl font-bold mb-4">Invite Team Member</h2>
 
         <form action={formAction} className="space-y-4">
@@ -57,7 +57,7 @@ export function InviteForm({ tenantSlug }: InviteFormProps) {
               id="email"
               name="email"
               required
-              className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="colleague@example.com"
             />
           </div>
@@ -69,7 +69,7 @@ export function InviteForm({ tenantSlug }: InviteFormProps) {
             <select
               id="role"
               name="role"
-              className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="member">Member</option>
               <option value="admin">Admin</option>
@@ -81,14 +81,14 @@ export function InviteForm({ tenantSlug }: InviteFormProps) {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="px-4 py-2 border border-[var(--border)] rounded-lg hover:bg-[var(--muted)] transition-colors duration-200"
+              className="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors duration-200"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
             >
               {isPending ? "Sending..." : "Send Invite"}
             </button>

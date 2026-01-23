@@ -7,6 +7,7 @@
  * - invitationEmail: Team invitation
  * - passwordResetEmail: Password reset link
  * - welcomeEmail: Welcome after registration
+ * - paymentFailedEmail: Payment failed notification
  */
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
@@ -230,6 +231,78 @@ Visit your dashboard:
 ${dashboardUrl}
 
 Need help? Reply to this email or check out our documentation.
+  `.trim();
+
+  return { subject, html, text };
+}
+
+/**
+ * Payment failed email template.
+ */
+export function paymentFailedEmail(params: {
+  tenantName: string;
+  invoiceAmount?: string;
+  invoiceId?: string;
+}): { subject: string; html: string; text: string } {
+  const { tenantName, invoiceAmount, invoiceId } = params;
+  const billingUrl = `${BASE_URL}/${tenantName.toLowerCase().replace(/\s+/g, "-")}/settings/billing`;
+
+  const subject = `Payment failed for ${tenantName}`;
+
+  const content = `
+    <h1 style="margin: 0 0 24px; font-size: 24px; font-weight: 600; color: #18181b;">
+      Payment Failed
+    </h1>
+
+    <p style="margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: #3f3f46;">
+      We were unable to process your payment${invoiceAmount ? ` of <strong>${invoiceAmount}</strong>` : ""} for <strong>${tenantName}</strong>.
+    </p>
+
+    <p style="margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: #3f3f46;">
+      Please update your payment method to continue using your subscription without interruption.
+    </p>
+
+    ${invoiceId ? `
+    <p style="margin: 0 0 16px; font-size: 14px; color: #71717a;">
+      Invoice ID: ${invoiceId}
+    </p>
+    ` : ""}
+
+    <p style="margin: 0 0 32px; font-size: 16px; line-height: 1.6; color: #3f3f46;">
+      Click below to update your payment information.
+    </p>
+
+    <a href="${billingUrl}" style="display: inline-block; padding: 14px 28px; font-size: 16px; font-weight: 500; color: #ffffff; background-color: #dc2626; text-decoration: none; border-radius: 8px;">
+      Update Payment Method
+    </a>
+
+    <p style="margin: 32px 0 0; font-size: 14px; line-height: 1.6; color: #71717a;">
+      If you can't click the button, copy and paste this link into your browser:
+    </p>
+    <p style="margin: 8px 0 0; font-size: 14px; word-break: break-all; color: #3f3f46;">
+      ${billingUrl}
+    </p>
+
+    <hr style="margin: 32px 0; border: none; border-top: 1px solid #e4e4e7;">
+
+    <p style="margin: 0; font-size: 12px; color: #a1a1aa;">
+      If you have any questions about your subscription, please reply to this email.
+    </p>
+  `;
+
+  const html = emailWrapper(content, subject);
+
+  const text = `
+Payment Failed
+
+We were unable to process your payment${invoiceAmount ? ` of ${invoiceAmount}` : ""} for ${tenantName}.
+
+Please update your payment method to continue using your subscription without interruption.
+${invoiceId ? `\nInvoice ID: ${invoiceId}\n` : ""}
+Update your payment information:
+${billingUrl}
+
+If you have any questions about your subscription, please reply to this email.
   `.trim();
 
   return { subject, html, text };

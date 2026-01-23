@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york-v4",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "stone",
+    "cssVariables": true
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@workspace/design-system/components",
+    "utils": "@workspace/design-system/lib/utils",
+    "hooks": "@workspace/design-system/hooks",
+    "lib": "@workspace/design-system/lib",
+    "ui": "@workspace/design-system/components"
+  },
+  "registries": {
+    "@shadcn": "https://ui.shadcn.com/r/styles/new-york-v4/{name}.json",
+    "@ss-components": "https://registry.shadcn.studio/api/r/{name}.json",
+    "@ss-blocks": "https://registry.shadcn.studio/api/r/{name}.json",
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
+    "@magicui": "https://magicui.design/r/{name}.json"
+  }
+}

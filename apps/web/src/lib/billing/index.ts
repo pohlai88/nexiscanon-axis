@@ -5,9 +5,10 @@
  */
 
 import Stripe from "stripe";
+import { logger } from "@/lib/logger";
 
 if (!process.env.STRIPE_SECRET_KEY) {
-  console.warn("STRIPE_SECRET_KEY not configured");
+  logger.warn("STRIPE_SECRET_KEY not configured");
 }
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
@@ -72,7 +73,7 @@ export async function createCustomer(params: {
     });
     return customer.id;
   } catch (error) {
-    console.error("Create customer error:", error);
+    logger.error("Create customer error", error, { tenantId: params.tenantId });
     return null;
   }
 }
@@ -113,7 +114,7 @@ export async function createCheckoutSession(params: {
 
     return { success: true, url: session.url ?? undefined };
   } catch (error) {
-    console.error("Create checkout session error:", error);
+    logger.error("Create checkout session error", error, { tenantId: params.tenantId });
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to create checkout",
@@ -142,7 +143,7 @@ export async function createPortalSession(params: {
 
     return { success: true, url: session.url };
   } catch (error) {
-    console.error("Create portal session error:", error);
+    logger.error("Create portal session error", error, { customerId: params.customerId });
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to create portal",
@@ -169,7 +170,7 @@ export async function getSubscription(
 
     return subscriptions.data[0] ?? null;
   } catch (error) {
-    console.error("Get subscription error:", error);
+    logger.error("Get subscription error", error, { customerId });
     return null;
   }
 }
@@ -188,7 +189,7 @@ export async function cancelSubscription(
     await stripe.subscriptions.cancel(subscriptionId);
     return { success: true };
   } catch (error) {
-    console.error("Cancel subscription error:", error);
+    logger.error("Cancel subscription error", error, { subscriptionId });
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to cancel",

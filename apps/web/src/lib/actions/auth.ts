@@ -9,6 +9,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { authConfig } from "../auth/config";
+import { logger } from "../logger";
 
 export interface AuthActionResult {
   success: boolean;
@@ -33,7 +34,7 @@ export async function signInAction(
 
   try {
     const origin = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-    console.log("[signInAction] Calling Neon Auth:", `${authConfig.baseUrl}/sign-in/email`);
+    logger.debug("Calling Neon Auth for sign-in", { url: `${authConfig.baseUrl}/sign-in/email` });
 
     const response = await fetch(`${authConfig.baseUrl}/sign-in/email`, {
       method: "POST",
@@ -44,11 +45,11 @@ export async function signInAction(
       body: JSON.stringify({ email, password }),
     });
 
-    console.log("[signInAction] Response status:", response.status);
+    logger.debug("Sign-in response received", { status: response.status });
 
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
-      console.log("[signInAction] Error response:", data);
+      logger.debug("Sign-in error response", { data });
       return {
         success: false,
         error: data.message ?? "Invalid email or password",
@@ -57,7 +58,7 @@ export async function signInAction(
 
     // Get session cookie from response
     const setCookie = response.headers.get("set-cookie");
-    console.log("[signInAction] Set-Cookie header:", setCookie ? "present" : "missing");
+    logger.debug("Set-Cookie header status", { present: !!setCookie });
     if (setCookie) {
       // Parse and set the cookie
       const cookieStore = await cookies();
@@ -78,10 +79,10 @@ export async function signInAction(
 
     return {
       success: true,
-      redirect: redirectTo ?? "/",
+      redirect: redirectTo ?? "/dashboard",
     };
   } catch (error) {
-    console.error("Sign in error:", error);
+    logger.error("Sign in error", error);
     return {
       success: false,
       error: "An error occurred. Please try again.",
@@ -111,7 +112,7 @@ export async function signUpAction(
   try {
     // 1. Sign up with Neon Auth (Better Auth uses /sign-up/email)
     const signupUrl = `${authConfig.baseUrl}/sign-up/email`;
-    console.log("[signUpAction] Calling Neon Auth:", signupUrl);
+    logger.debug("Calling Neon Auth for sign-up", { url: signupUrl });
 
     const origin = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
     const response = await fetch(signupUrl, {
@@ -123,11 +124,11 @@ export async function signUpAction(
       body: JSON.stringify({ email, password, name: orgName }),
     });
 
-    console.log("[signUpAction] Response status:", response.status);
+    logger.debug("Sign-up response received", { status: response.status });
 
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
-      console.log("[signUpAction] Error response:", data);
+      logger.debug("Sign-up error response", { data });
       return {
         success: false,
         error: data.message ?? "Sign up failed",
@@ -162,7 +163,7 @@ export async function signUpAction(
       redirect: "/onboarding",
     };
   } catch (error) {
-    console.error("Sign up error:", error);
+    logger.error("Sign up error", error);
     return {
       success: false,
       error: "An error occurred. Please try again.",

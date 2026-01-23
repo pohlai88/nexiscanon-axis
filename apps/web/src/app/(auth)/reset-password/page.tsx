@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ResetPasswordForm } from "./reset-password-form";
 
 interface ResetPasswordPageProps {
@@ -12,12 +12,12 @@ export default async function ResetPasswordPage({ searchParams }: ResetPasswordP
     return (
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-2">Invalid Reset Link</h1>
-        <p className="text-[var(--muted-foreground)] mb-4">
+        <p className="text-muted-foreground mb-4">
           This password reset link is invalid or has expired.
         </p>
         <Link
           href="/forgot-password"
-          className="text-[var(--primary)] hover:underline"
+          className="text-primary hover:underline"
         >
           Request a new reset link
         </Link>
@@ -28,7 +28,7 @@ export default async function ResetPasswordPage({ searchParams }: ResetPasswordP
   return (
     <div>
       <h1 className="text-2xl font-bold mb-2 text-center">Set New Password</h1>
-      <p className="text-[var(--muted-foreground)] text-center mb-6">
+      <p className="text-muted-foreground text-center mb-6">
         Enter your new password below
       </p>
       <ResetPasswordForm token={token} />

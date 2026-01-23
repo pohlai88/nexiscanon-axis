@@ -62,11 +62,11 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
           required
           minLength={8}
           autoComplete="new-password"
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="••••••••"
           disabled={isSubmitting}
         />
-        <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+        <p className="mt-1 text-xs text-muted-foreground">
           Must be at least 8 characters
         </p>
       </div>
@@ -83,7 +83,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
           required
           minLength={8}
           autoComplete="new-password"
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="••••••••"
           disabled={isSubmitting}
         />
@@ -92,7 +92,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-3 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg font-medium hover:opacity-90 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? "Resetting..." : "Reset Password"}
       </button>

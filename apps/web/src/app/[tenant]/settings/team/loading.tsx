@@ -1,4 +1,5 @@
-import { Skeleton, SkeletonTableRow } from "@/components/ui/skeleton";
+import { Skeleton } from "@workspace/design-system";
+import { TableRowSkeleton } from "@workspace/design-system/patterns";
 
 /**
  * Loading state for team page.
@@ -11,7 +12,7 @@ export default function TeamLoading() {
       <Skeleton className="h-5 w-80 mb-8" />
 
       {/* Invite form skeleton */}
-      <div className="bg-[var(--muted)] rounded-lg p-6 mb-8">
+      <div className="bg-muted rounded-lg p-6 mb-8">
         <Skeleton className="h-6 w-40 mb-4" />
         <div className="flex gap-4">
           <div className="flex-1">
@@ -29,9 +30,9 @@ export default function TeamLoading() {
       </div>
 
       {/* Members table skeleton */}
-      <div className="border border-[var(--border)] rounded-lg overflow-hidden">
+      <div className="border border-border rounded-lg overflow-hidden">
         <table className="w-full">
-          <thead className="bg-[var(--muted)]">
+          <thead className="bg-muted">
             <tr>
               <th className="text-left px-6 py-3">
                 <Skeleton className="h-4 w-16" />
@@ -46,9 +47,9 @@ export default function TeamLoading() {
             </tr>
           </thead>
           <tbody>
-            <SkeletonTableRow columns={4} />
-            <SkeletonTableRow columns={4} />
-            <SkeletonTableRow columns={4} />
+            <TableRowSkeleton />
+            <TableRowSkeleton />
+            <TableRowSkeleton />
           </tbody>
         </table>
       </div>

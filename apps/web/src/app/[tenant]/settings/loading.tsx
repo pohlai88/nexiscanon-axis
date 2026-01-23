@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@workspace/design-system";
 
 /**
  * Loading state for settings pages.
@@ -12,7 +12,7 @@ export default function SettingsLoading() {
 
       {/* Sections */}
       <div className="space-y-6">
-        <div className="p-6 bg-[var(--muted)] rounded-xl">
+        <div className="p-6 bg-muted rounded-xl">
           <Skeleton className="h-6 w-24 mb-4" />
           <div className="space-y-4">
             <div>
@@ -26,7 +26,7 @@ export default function SettingsLoading() {
           </div>
         </div>
 
-        <div className="p-6 bg-[var(--muted)] rounded-xl">
+        <div className="p-6 bg-muted rounded-xl">
           <Skeleton className="h-6 w-28 mb-4" />
           <div className="flex items-center justify-between">
             <div>

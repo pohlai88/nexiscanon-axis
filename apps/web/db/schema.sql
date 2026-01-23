@@ -4,11 +4,14 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Tenants (Organizations)
+-- Tenants (Organizations, Teams, Personal Workspaces)
+-- Supports hierarchy: organization → team (via parent_id)
 CREATE TABLE IF NOT EXISTS tenants (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   slug VARCHAR(63) UNIQUE NOT NULL,
   name VARCHAR(255) NOT NULL,
+  type VARCHAR(20) NOT NULL DEFAULT 'organization' CHECK (type IN ('organization', 'team', 'personal')),
+  parent_id UUID REFERENCES tenants(id) ON DELETE CASCADE,
   status VARCHAR(20) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'suspended', 'pending', 'deleted')),
   plan VARCHAR(20) NOT NULL DEFAULT 'free' CHECK (plan IN ('free', 'starter', 'professional', 'enterprise')),
   settings JSONB DEFAULT '{}',
@@ -18,6 +21,8 @@ CREATE TABLE IF NOT EXISTS tenants (
 
 CREATE INDEX IF NOT EXISTS idx_tenants_slug ON tenants(slug);
 CREATE INDEX IF NOT EXISTS idx_tenants_status ON tenants(status);
+CREATE INDEX IF NOT EXISTS idx_tenants_type ON tenants(type);
+CREATE INDEX IF NOT EXISTS idx_tenants_parent ON tenants(parent_id);
 
 -- Users
 CREATE TABLE IF NOT EXISTS users (

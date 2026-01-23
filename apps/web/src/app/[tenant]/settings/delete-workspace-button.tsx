@@ -47,18 +47,18 @@ export function DeleteWorkspaceButton({
 
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-[var(--background)] rounded-xl p-6 w-full max-w-md mx-4">
+          <div className="bg-background rounded-xl p-6 w-full max-w-md mx-4">
             <h2 className="text-xl font-bold mb-4 text-red-600">
               Delete Workspace
             </h2>
 
-            <p className="text-[var(--muted-foreground)] mb-4">
+            <p className="text-muted-foreground mb-4">
               This action cannot be undone. This will permanently delete the{" "}
-              <strong className="text-[var(--foreground)]">{tenantName}</strong>{" "}
+              <strong className="text-foreground">{tenantName}</strong>{" "}
               workspace and remove all associated data including:
             </p>
 
-            <ul className="list-disc list-inside text-sm text-[var(--muted-foreground)] mb-4 space-y-1">
+            <ul className="list-disc list-inside text-sm text-muted-foreground mb-4 space-y-1">
               <li>All team members and their access</li>
               <li>All API keys</li>
               <li>All pending invitations</li>
@@ -67,7 +67,7 @@ export function DeleteWorkspaceButton({
 
             <p className="text-sm mb-2">
               Please type{" "}
-              <code className="px-2 py-1 bg-[var(--muted)] rounded font-mono">
+              <code className="px-2 py-1 bg-muted rounded font-mono">
                 {tenantSlug}
               </code>{" "}
               to confirm.
@@ -78,7 +78,7 @@ export function DeleteWorkspaceButton({
               value={confirmation}
               onChange={(e) => setConfirmation(e.target.value)}
               placeholder={tenantSlug}
-              className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] mb-4"
+              className="w-full px-4 py-2 border border-border rounded-lg bg-background mb-4"
               autoFocus
             />
 
@@ -94,7 +94,7 @@ export function DeleteWorkspaceButton({
                   setError(null);
                 }}
                 disabled={isPending}
-                className="px-4 py-2 border border-[var(--border)] rounded-lg hover:bg-[var(--muted)] transition-colors duration-200 disabled:opacity-50"
+                className="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors duration-200 disabled:opacity-50"
               >
                 Cancel
               </button>

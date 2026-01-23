@@ -31,7 +31,7 @@ Before writing code:
 ```tsx
 // ✅ CORRECT
 import { Button, Card } from "@workspace/design-system";
-import { HeroSection01 } from "@workspace/shared-ui/blocks";
+import { HeroSection01 } from "@workspace/design-system/blocks";
 import { cn } from "@workspace/design-system/lib/utils";
 
 // ❌ STOP - Fix immediately
@@ -81,7 +81,7 @@ className={`base ${condition ? 'active' : ''}`}
 
 **"Create landing page"** → Use TEMPLATE_INDEX.md landing pattern + blocks
 **"Create dashboard"** → Use TEMPLATE_INDEX.md dashboard + ApplicationShell01
-**"Create data table"** → Use DataFortress from @workspace/shared-ui/blocks
+**"Create data table"** → Use DataFortress from @workspace/design-system/blocks
 **"Add form"** → Use Button/Input/Label from @workspace/design-system + cn()
 
 ---

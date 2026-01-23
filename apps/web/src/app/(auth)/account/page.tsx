@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+﻿import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getUserTenants } from "@/lib/db/users";
 import { ProfileForm } from "./profile-form";
@@ -18,27 +18,27 @@ export default async function AccountPage() {
   return (
     <div className="max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-2">Account Settings</h1>
-      <p className="text-[var(--muted-foreground)] mb-8">
+      <p className="text-muted-foreground mb-8">
         Manage your personal account settings
       </p>
 
       {/* Profile Section */}
-      <section className="bg-[var(--muted)] rounded-xl p-6 mb-6">
+      <section className="bg-muted rounded-xl p-6 mb-6">
         <h2 className="text-lg font-semibold mb-4">Profile</h2>
         <ProfileForm user={user} />
       </section>
 
       {/* Organizations Section */}
-      <section className="bg-[var(--muted)] rounded-xl p-6 mb-6">
+      <section className="bg-muted rounded-xl p-6 mb-6">
         <h2 className="text-lg font-semibold mb-4">Your Organizations</h2>
         {tenants.length === 0 ? (
           <div className="text-center py-4">
-            <p className="text-[var(--muted-foreground)] mb-4">
+            <p className="text-muted-foreground mb-4">
               You're not a member of any organizations yet.
             </p>
             <Link
               href="/onboarding"
-              className="inline-block px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg hover:opacity-90 transition-opacity duration-200"
+              className="inline-block px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity duration-200"
             >
               Create Organization
             </Link>
@@ -48,17 +48,17 @@ export default async function AccountPage() {
             {tenants.map((tenant) => (
               <div
                 key={tenant.tenantId}
-                className="flex items-center justify-between p-3 bg-[var(--background)] rounded-lg"
+                className="flex items-center justify-between p-3 bg-background rounded-lg"
               >
                 <div>
                   <p className="font-medium">{tenant.tenantName}</p>
-                  <p className="text-sm text-[var(--muted-foreground)] capitalize">
+                  <p className="text-sm text-muted-foreground capitalize">
                     {tenant.role}
                   </p>
                 </div>
                 <Link
                   href={`/${tenant.tenantSlug}`}
-                  className="text-sm text-[var(--primary)] hover:underline"
+                  className="text-sm text-primary hover:underline"
                 >
                   Open →
                 </Link>
@@ -69,15 +69,15 @@ export default async function AccountPage() {
       </section>
 
       {/* Password Section */}
-      <section className="bg-[var(--muted)] rounded-xl p-6 mb-6">
+      <section className="bg-muted rounded-xl p-6 mb-6">
         <h2 className="text-lg font-semibold mb-4">Change Password</h2>
         <PasswordForm />
       </section>
 
       {/* Danger Zone */}
-      <section className="bg-[var(--muted)] rounded-xl p-6 border-2 border-red-200">
+      <section className="bg-muted rounded-xl p-6 border-2 border-red-200">
         <h2 className="text-lg font-semibold mb-4 text-red-600">Danger Zone</h2>
-        <p className="text-sm text-[var(--muted-foreground)] mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           Once you delete your account, there is no going back. This will remove
           you from all organizations.
         </p>
@@ -88,7 +88,7 @@ export default async function AccountPage() {
       <div className="mt-6">
         <Link
           href="/"
-          className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors duration-200"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
         >
           ← Back to Home
         </Link>

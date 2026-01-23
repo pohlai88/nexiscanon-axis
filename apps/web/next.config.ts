@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   // typedRoutes: true,
 
   // Transpile workspace packages
-  transpilePackages: ["@axis/kernel", "@axis/db"],
+  transpilePackages: ["@axis/kernel", "@axis/db", "@workspace/design-system"],
 };
 
 export default nextConfig;

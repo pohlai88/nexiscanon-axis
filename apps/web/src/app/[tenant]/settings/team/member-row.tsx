@@ -5,11 +5,11 @@ import {
   removeTeamMemberAction,
   updateMemberRoleAction,
 } from "@/lib/actions/team";
-import type { User, TenantMembership } from "@/lib/db/users";
+import type { User, TenantUser, UserRole } from "@/lib/db/users";
 
 interface MemberRowProps {
   member: User;
-  membership: TenantMembership;
+  membership: TenantUser;
   tenantSlug: string;
   canManage: boolean;
   isCurrentUser: boolean;
@@ -35,13 +35,13 @@ export function MemberRow({
     setIsRemoving(false);
   };
 
-  const handleRoleChange = async (newRole: TenantMembership["role"]) => {
+  const handleRoleChange = async (newRole: UserRole) => {
     setIsUpdating(true);
     await updateMemberRoleAction(tenantSlug, member.id, newRole);
     setIsUpdating(false);
   };
 
-  const roleColors: Record<TenantMembership["role"], string> = {
+  const roleColors: Record<UserRole, string> = {
     owner: "bg-purple-100 text-purple-800",
     admin: "bg-blue-100 text-blue-800",
     member: "bg-gray-100 text-gray-800",
@@ -49,22 +49,22 @@ export function MemberRow({
   };
 
   return (
-    <tr className="border-b border-[var(--border)] last:border-0">
+    <tr className="border-b border-border last:border-0">
       <td className="px-6 py-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm font-medium">
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-medium">
             {member.name?.[0]?.toUpperCase() ?? member.email[0]?.toUpperCase() ?? "U"}
           </div>
           <div>
             <p className="font-medium">
               {member.name ?? member.email.split("@")[0]}
               {isCurrentUser && (
-                <span className="ml-2 text-xs text-[var(--muted-foreground)]">
+                <span className="ml-2 text-xs text-muted-foreground">
                   (you)
                 </span>
               )}
             </p>
-            <p className="text-sm text-[var(--muted-foreground)]">
+            <p className="text-sm text-muted-foreground">
               {member.email}
             </p>
           </div>
@@ -75,10 +75,10 @@ export function MemberRow({
           <select
             value={membership.role}
             onChange={(e) =>
-              handleRoleChange(e.target.value as TenantMembership["role"])
+              handleRoleChange(e.target.value as UserRole)
             }
             disabled={isUpdating}
-            className="px-2 py-1 text-xs rounded-lg border border-[var(--border)] bg-[var(--background)]"
+            className="px-2 py-1 text-xs rounded-lg border border-border bg-background"
           >
             <option value="admin">Admin</option>
             <option value="member">Member</option>
@@ -92,7 +92,7 @@ export function MemberRow({
           </span>
         )}
       </td>
-      <td className="px-6 py-4 text-sm text-[var(--muted-foreground)]">
+      <td className="px-6 py-4 text-sm text-muted-foreground">
         {membership.createdAt.toLocaleDateString()}
       </td>
       {canManage && (

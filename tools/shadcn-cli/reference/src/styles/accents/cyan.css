@@ -1,0 +1,24 @@
+/* Accent: Cyan - Cool, tech */
+:root[data-accent="cyan"] {
+  --primary: oklch(0.60 0.15 195);
+  --primary-foreground: oklch(0.98 0.01 195);
+  --ring: oklch(0.65 0.15 195);
+
+  --chart-1: oklch(0.65 0.15 195);
+  --chart-2: oklch(0.55 0.12 180);
+  --chart-3: oklch(0.60 0.10 210);
+  --chart-4: oklch(0.70 0.08 200);
+  --chart-5: oklch(0.50 0.14 190);
+}
+
+:root[data-accent="cyan"].dark {
+  --primary: oklch(0.75 0.13 195);
+  --primary-foreground: oklch(0.15 0.04 195);
+  --ring: oklch(0.68 0.15 195);
+
+  --chart-1: oklch(0.75 0.13 195);
+  --chart-2: oklch(0.65 0.10 180);
+  --chart-3: oklch(0.70 0.08 210);
+  --chart-4: oklch(0.80 0.06 200);
+  --chart-5: oklch(0.60 0.12 190);
+}

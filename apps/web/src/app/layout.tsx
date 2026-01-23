@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { NotificationProvider } from "@/components/notifications";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: "AXIS ERP",
@@ -35,11 +34,9 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ThemeProvider>
-          <NotificationProvider>
-            {children}
-          </NotificationProvider>
-        </ThemeProvider>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

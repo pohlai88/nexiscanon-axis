@@ -5,6 +5,7 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { getUserTenantMembership } from "@/lib/db/users";
 import { DeleteWorkspaceButton } from "./delete-workspace-button";
 import { WorkspaceNameForm } from "./workspace-name-form";
+import { BrandingForm } from "./branding-form";
 
 interface SettingsPageProps {
   params: Promise<{ tenant: string }>;
@@ -31,12 +32,12 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Settings</h1>
-      <p className="text-[var(--muted-foreground)] mb-8">
+      <p className="text-muted-foreground mb-8">
         Manage {tenant.name}&apos;s workspace settings
       </p>
 
       <div className="space-y-6">
-        <section className="p-6 bg-[var(--muted)] rounded-xl">
+        <section className="p-6 bg-muted rounded-xl">
           <h2 className="text-xl font-semibold mb-4">General</h2>
           <div className="space-y-6">
             <WorkspaceNameForm
@@ -49,36 +50,45 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
                 Workspace URL
               </label>
               <div className="flex items-center gap-2">
-                <span className="text-[var(--muted-foreground)]">
+                <span className="text-muted-foreground">
                   {process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/
                 </span>
                 <input
                   type="text"
                   value={tenant.slug}
                   disabled
-                  className="flex-1 max-w-xs px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] opacity-50"
+                  className="flex-1 max-w-xs px-4 py-2 border border-border rounded-lg bg-background opacity-50"
                 />
               </div>
-              <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Workspace URL cannot be changed
               </p>
             </div>
           </div>
         </section>
 
-        <section className="p-6 bg-[var(--muted)] rounded-xl">
+        <section className="p-6 bg-muted rounded-xl">
+          <h2 className="text-xl font-semibold mb-4">Branding</h2>
+          <BrandingForm
+            tenantSlug={slug}
+            currentBranding={(tenant.settings as Record<string, unknown> | null)?.branding as Record<string, unknown> ?? {}}
+            isOwner={isOwner}
+          />
+        </section>
+
+        <section className="p-6 bg-muted rounded-xl">
           <h2 className="text-xl font-semibold mb-4">Subscription</h2>
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium capitalize">{tenant.plan} Plan</p>
-              <p className="text-sm text-[var(--muted-foreground)]">
+              <p className="text-sm text-muted-foreground">
                 Your current subscription plan
               </p>
             </div>
             {isOwner && (
               <Link
                 href={`/${slug}/settings/billing`}
-                className="px-4 py-2 border border-[var(--border)] rounded-lg hover:bg-[var(--background)] transition-colors duration-200"
+                className="px-4 py-2 border border-border rounded-lg hover:bg-background transition-colors duration-200"
               >
                 Manage Billing
               </Link>
@@ -87,11 +97,11 @@ export default async function SettingsPage({ params }: SettingsPageProps) {
         </section>
 
         {isOwner && (
-          <section className="p-6 bg-[var(--muted)] rounded-xl border-2 border-red-200">
+          <section className="p-6 bg-muted rounded-xl border-2 border-red-200">
             <h2 className="text-xl font-semibold mb-4 text-red-600">
               Danger Zone
             </h2>
-            <p className="text-sm text-[var(--muted-foreground)] mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               Once you delete a workspace, there is no going back. Please be
               certain.
             </p>

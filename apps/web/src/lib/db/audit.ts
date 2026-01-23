@@ -13,6 +13,7 @@ import {
   type AuditLogEntry,
   type AuditAction,
 } from "@axis/db/validation";
+import { logger } from "../logger";
 
 // Re-export types and schema
 export { auditLogEntrySchema, auditActionSchema };
@@ -51,8 +52,8 @@ export async function logAuditEvent(entry: AuditLogEntry): Promise<void> {
       `;
     });
   } catch (error) {
-    // Don't throw on audit log failures - just log to console
-    console.error("Failed to log audit event:", error);
+    // Don't throw on audit log failures - just log
+    logger.error("Failed to log audit event", error);
   }
 }
 

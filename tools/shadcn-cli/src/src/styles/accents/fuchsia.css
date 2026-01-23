@@ -1,0 +1,24 @@
+/* Accent: Fuchsia - Vibrant, modern */
+:root[data-accent="fuchsia"] {
+  --primary: oklch(0.55 0.24 320);
+  --primary-foreground: oklch(0.98 0.01 320);
+  --ring: oklch(0.60 0.24 320);
+
+  --chart-1: oklch(0.60 0.24 320);
+  --chart-2: oklch(0.50 0.20 305);
+  --chart-3: oklch(0.55 0.18 335);
+  --chart-4: oklch(0.65 0.15 315);
+  --chart-5: oklch(0.45 0.22 325);
+}
+
+:root[data-accent="fuchsia"].dark {
+  --primary: oklch(0.75 0.20 320);
+  --primary-foreground: oklch(0.15 0.05 320);
+  --ring: oklch(0.68 0.22 320);
+
+  --chart-1: oklch(0.75 0.20 320);
+  --chart-2: oklch(0.65 0.17 305);
+  --chart-3: oklch(0.70 0.15 335);
+  --chart-4: oklch(0.80 0.12 315);
+  --chart-5: oklch(0.60 0.20 325);
+}

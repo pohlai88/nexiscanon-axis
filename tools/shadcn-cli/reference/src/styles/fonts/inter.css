@@ -1,0 +1,7 @@
+/* Font: Inter - Modern, balanced (default) */
+@import "@fontsource-variable/inter";
+
+:root[data-font="inter"],
+:root:not([data-font]) {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+}

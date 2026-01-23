@@ -28,19 +28,19 @@ export function ApiKeyRow({ apiKey, tenantSlug }: ApiKeyRowProps) {
   };
 
   return (
-    <tr className="border-b border-[var(--border)] last:border-0">
+    <tr className="border-b border-border last:border-0">
       <td className="px-6 py-4 font-medium">{apiKey.name}</td>
       <td className="px-6 py-4">
-        <code className="text-sm text-[var(--muted-foreground)]">
+        <code className="text-sm text-muted-foreground">
           {apiKey.keyPrefix}...
         </code>
       </td>
-      <td className="px-6 py-4 text-sm text-[var(--muted-foreground)]">
+      <td className="px-6 py-4 text-sm text-muted-foreground">
         {apiKey.lastUsedAt
           ? apiKey.lastUsedAt.toLocaleDateString()
           : "Never"}
       </td>
-      <td className="px-6 py-4 text-sm text-[var(--muted-foreground)]">
+      <td className="px-6 py-4 text-sm text-muted-foreground">
         {apiKey.createdAt.toLocaleDateString()}
       </td>
       <td className="px-6 py-4 text-right">

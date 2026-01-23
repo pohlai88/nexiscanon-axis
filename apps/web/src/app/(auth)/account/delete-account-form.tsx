@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { deleteAccountAction } from "@/lib/actions/account";
@@ -44,7 +44,7 @@ export function DeleteAccountForm() {
           value={confirmText}
           onChange={(e) => setConfirmText(e.target.value)}
           placeholder="DELETE"
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-red-500"
           disabled={isDeleting}
         />
       </div>

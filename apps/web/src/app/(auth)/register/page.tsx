@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { RegisterForm } from "./register-form";
 
 interface RegisterPageProps {
@@ -17,11 +17,11 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
         </div>
       )}
       <RegisterForm inviteToken={invite} prefillEmail={email} />
-      <p className="mt-6 text-center text-sm text-[var(--muted-foreground)]">
+      <p className="mt-6 text-center text-sm text-muted-foreground">
         Already have an account?{" "}
         <Link 
           href={invite ? `/login?redirect=/invite?token=${invite}` : "/login"} 
-          className="text-[var(--primary)] hover:underline"
+          className="text-primary hover:underline"
         >
           Sign In
         </Link>

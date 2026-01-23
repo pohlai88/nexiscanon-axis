@@ -1,12 +1,14 @@
-"use client";
+﻿"use client";
 
 /**
  * Global error boundary.
  * 
  * Pattern: Catches errors in the app and shows a friendly message.
+ * Reports to GlitchTip (Sentry-compatible) via SENTRY_DSN.
  */
 
 import { useEffect } from "react";
+import { reportError } from "@/lib/error-reporting";
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -15,8 +17,11 @@ interface ErrorProps {
 
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
-    // Log error to error reporting service
+    // Log error locally
     console.error("App error:", error);
+    
+    // Report to error tracking service
+    reportError(error, { location: "global" });
   }, [error]);
 
   return (
@@ -39,12 +44,12 @@ export default function Error({ error, reset }: ErrorProps) {
         </div>
         
         <h1 className="text-2xl font-bold mb-2">Something went wrong</h1>
-        <p className="text-[var(--muted-foreground)] mb-6">
+        <p className="text-muted-foreground mb-6">
           An unexpected error occurred. Our team has been notified.
         </p>
 
         {error.digest && (
-          <p className="text-xs text-[var(--muted-foreground)] mb-4">
+          <p className="text-xs text-muted-foreground mb-4">
             Error ID: {error.digest}
           </p>
         )}
@@ -52,13 +57,13 @@ export default function Error({ error, reset }: ErrorProps) {
         <div className="flex gap-4 justify-center">
           <button
             onClick={reset}
-            className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg hover:opacity-90 transition-opacity duration-200"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity duration-200"
           >
             Try again
           </button>
           <a
             href="/"
-            className="px-4 py-2 border border-[var(--border)] rounded-lg hover:bg-[var(--muted)] transition-colors duration-200"
+            className="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors duration-200"
           >
             Go home
           </a>

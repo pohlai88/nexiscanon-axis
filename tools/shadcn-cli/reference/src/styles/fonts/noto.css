@@ -1,0 +1,6 @@
+/* Font: Noto Sans - Universal, clean */
+@import "@fontsource-variable/noto-sans";
+
+:root[data-font="noto"] {
+  --font-sans: 'Noto Sans Variable', ui-sans-serif, system-ui, sans-serif;
+}

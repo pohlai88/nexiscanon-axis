@@ -84,7 +84,7 @@ export function CreateKeyForm({ tenantSlug }: CreateKeyFormProps) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g., Production API"
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)]"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background"
           disabled={isCreating}
         />
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
@@ -92,7 +92,7 @@ export function CreateKeyForm({ tenantSlug }: CreateKeyFormProps) {
       <button
         type="submit"
         disabled={!name.trim() || isCreating}
-        className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
+        className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
       >
         {isCreating ? "Creating..." : "Create Key"}
       </button>

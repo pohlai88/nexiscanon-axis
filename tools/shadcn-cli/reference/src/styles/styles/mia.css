@@ -1,0 +1,8 @@
+/* Style: Mia - Soft, rounded with gentle shadows */
+:root[data-style="mia"] {
+  --radius: 1rem;
+  --shadow-sm: 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow: 0 4px 8px -2px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 8px 16px -4px rgb(0 0 0 / 0.08), 0 4px 8px -4px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 16px 32px -8px rgb(0 0 0 / 0.1), 0 8px 16px -8px rgb(0 0 0 / 0.05);
+}

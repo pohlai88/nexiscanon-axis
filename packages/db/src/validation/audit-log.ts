@@ -1,11 +1,15 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
+import {
+  createCoercedInsertSchema,
+  createSelectSchema,
+  z,
+} from "./factory";
 import { auditLogs } from "../schema/audit-log";
 
 /**
  * Audit log insert schema.
+ * Uses coerced schema for date fields (Zod v4 best practice).
  */
-export const insertAuditLogSchema = createInsertSchema(auditLogs, {
+export const insertAuditLogSchema = createCoercedInsertSchema(auditLogs, {
   action: z.string().min(1).max(100),
   resourceType: z.string().max(100).nullable().optional(),
   metadata: z.string().nullable().optional(), // JSON string

@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "../auth/session";
 import { authConfig } from "../auth/config";
 import { query } from "../db";
+import { logger } from "../logger";
 
 export interface AccountActionResult {
   success: boolean;
@@ -39,7 +40,7 @@ export async function updateProfileAction(data: {
 
     return { success: true };
   } catch (error) {
-    console.error("Update profile error:", error);
+    logger.error("Update profile error", error);
     return { success: false, error: "Failed to update profile" };
   }
 }
@@ -83,7 +84,7 @@ export async function changePasswordAction(data: {
 
     return { success: true };
   } catch (error) {
-    console.error("Change password error:", error);
+    logger.error("Change password error", error);
     return { success: false, error: "Failed to change password" };
   }
 }
@@ -109,12 +110,12 @@ export async function requestPasswordResetAction(
     // Always return success to prevent email enumeration
     if (!response.ok) {
       // Log but don't expose error to user
-      console.error("Password reset request failed:", await response.text());
+      logger.error("Password reset request failed", { status: response.status });
     }
 
     return { success: true };
   } catch (error) {
-    console.error("Request password reset error:", error);
+    logger.error("Request password reset error", error);
     return { success: true }; // Still return success to prevent enumeration
   }
 }
@@ -148,7 +149,7 @@ export async function resetPasswordAction(data: {
 
     return { success: true };
   } catch (error) {
-    console.error("Reset password error:", error);
+    logger.error("Reset password error", error);
     return { success: false, error: "Failed to reset password" };
   }
 }
@@ -200,7 +201,7 @@ export async function deleteAccountAction(): Promise<AccountActionResult> {
 
     redirect("/");
   } catch (error) {
-    console.error("Delete account error:", error);
+    logger.error("Delete account error", error);
     return { success: false, error: "Failed to delete account" };
   }
 }

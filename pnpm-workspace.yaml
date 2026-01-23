@@ -1,7 +1,15 @@
 packages:
-  - "apps/*"
-  - "packages/*"
-  - "packages/design-system/*"
+  # ============================================================================
+  # Active Workspace Packages
+  # ============================================================================
+  - "apps/*"                              # @axis/web
+  - "packages/*"                          # Published packages & libraries
+  - "tools/*"                             # Development tools & CLI utilities
+
+  # ============================================================================
+  # Exclusions - Standalone/Template Packages
+  # ============================================================================
+  # Test/fixture directories
   - "!**/test/**"
   - "!**/fixtures/**"
   - "!**/temp/**"
@@ -11,7 +19,7 @@ catalog:
   react: ^19.2.3
   react-dom: ^19.2.3
   next: ^16.1.4
-  
+
   # Build tools
   typescript: ^5.5.3
   vite: ^7.1.12
@@ -19,13 +27,13 @@ catalog:
   vitest: ^2.1.9
   tsx: ^4.1.4
   tsup: ^8.5.0
-  
+
   # Styling
   tailwindcss: ^4.1.11
   '@tailwindcss/postcss': ^4.1.11
   autoprefixer: ^10.4.14
   postcss: ^8.5.6
-  
+
   # Code quality
   eslint: ^9.17.0
   '@eslint/js': ^9.17.0
@@ -39,24 +47,27 @@ catalog:
   # 'eslint-plugin-tailwindcss': 3.13.1  # Removed: Incompatible with Tailwind 4
   prettier: ^3.4.2
   '@ianvs/prettier-plugin-sort-imports': ^4.4.1
-  
+
   # Babel
   '@babel/core': ^7.28.0
   '@babel/parser': ^7.28.0
-  
+
   # Motion/Animation
   motion: ^12.12.1
-  
+
   # Testing
   'start-server-and-test': ^2.0.12
-  
+
   # Types
   '@types/node': ^20.11.27
   '@types/react': 19.2.2
   '@types/react-dom': 19.2.2
   '@types/hast': ^3.0.4
-  
+
   # Utils
   rimraf: ^6.0.1
   'cross-env': ^7.0.3
   chokidar: ^4.0.3
+
+  # Validation
+  zod: ^3.25.67

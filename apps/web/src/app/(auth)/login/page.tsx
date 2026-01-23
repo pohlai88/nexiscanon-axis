@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { LoginForm } from "./login-form";
 
 interface LoginPageProps {
@@ -23,15 +23,15 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       <div className="mt-4 text-center">
         <Link
           href="/forgot-password"
-          className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors duration-200"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
         >
           Forgot your password?
         </Link>
       </div>
       
-      <p className="mt-4 text-center text-sm text-[var(--muted-foreground)]">
+      <p className="mt-4 text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{" "}
-        <Link href="/register" className="text-[var(--primary)] hover:underline">
+        <Link href="/register" className="text-primary hover:underline">
           Register
         </Link>
       </p>

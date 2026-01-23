@@ -1,0 +1,20 @@
+/* Menu Color: Inverted - Dark sidebar in light mode, light sidebar in dark mode */
+:root[data-menu-color="inverted"] {
+  --sidebar: var(--foreground);
+  --sidebar-foreground: var(--background);
+  --sidebar-primary: var(--primary-foreground);
+  --sidebar-primary-foreground: var(--primary);
+  --sidebar-accent: oklch(from var(--foreground) calc(l - 0.1) c h);
+  --sidebar-accent-foreground: var(--background);
+  --sidebar-border: oklch(1 0 0 / 15%);
+}
+
+:root[data-menu-color="inverted"].dark {
+  --sidebar: var(--foreground);
+  --sidebar-foreground: var(--background);
+  --sidebar-primary: var(--primary-foreground);
+  --sidebar-primary-foreground: var(--primary);
+  --sidebar-accent: oklch(from var(--foreground) calc(l - 0.1) c h);
+  --sidebar-accent-foreground: var(--background);
+  --sidebar-border: oklch(0 0 0 / 15%);
+}

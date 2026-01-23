@@ -18,6 +18,7 @@ import {
   PLAN_CONFIG,
   type PlanId,
 } from "../billing";
+import { logger } from "../logger";
 
 export interface BillingActionResult {
   success: boolean;
@@ -54,7 +55,8 @@ export async function upgradePlanAction(
 
   try {
     // Get or create Stripe customer ID
-    let customerId: string | undefined = tenant.settings.stripeCustomerId;
+    const settings = tenant.settings as Record<string, unknown> | null;
+    let customerId: string | undefined = settings?.stripeCustomerId as string | undefined;
 
     if (!customerId) {
       const newCustomerId = await createCustomer({
@@ -98,7 +100,7 @@ export async function upgradePlanAction(
     if ((error as { digest?: string })?.digest?.startsWith("NEXT_REDIRECT")) {
       throw error;
     }
-    console.error("Upgrade plan error:", error);
+    logger.error("Upgrade plan error", error);
     return { success: false, error: "Failed to start upgrade" };
   }
 }
@@ -125,7 +127,8 @@ export async function openBillingPortalAction(
     return { success: false, error: "Only the owner can manage billing" };
   }
 
-  const customerId = tenant.settings.stripeCustomerId;
+  const tenantSettings = tenant.settings as Record<string, unknown> | null;
+  const customerId = tenantSettings?.stripeCustomerId as string | undefined;
   if (!customerId) {
     return { success: false, error: "No billing account found" };
   }
@@ -146,7 +149,7 @@ export async function openBillingPortalAction(
     if ((error as { digest?: string })?.digest?.startsWith("NEXT_REDIRECT")) {
       throw error;
     }
-    console.error("Open billing portal error:", error);
+    logger.error("Open billing portal error", error);
     return { success: false, error: "Failed to open billing portal" };
   }
 }

@@ -1,0 +1,468 @@
+/**
+ * Glass Theme Layer
+ * 
+ * A composable "cloth" layer that can be applied to any component.
+ * Based on Tailwind v4 theming principles.
+ * 
+ * Usage:
+ *   <Card className="glass" />
+ *   <Card className="glass-grain" />
+ *   <div className="glass glass-tint-primary" />
+ * 
+ * @see E02-07-THEME-GLASS.md for full documentation
+ */
+
+/* =================================================================
+   Glass Theme Variables
+   ================================================================= */
+
+:root {
+  /* Base glass properties */
+  --glass-blur: 12px;
+  --glass-saturation: 1.1;
+  
+  /* Glass background opacity tiers */
+  --glass-opacity-solid: 0.85;
+  --glass-opacity-medium: 0.7;
+  --glass-opacity-subtle: 0.5;
+  --glass-opacity-ethereal: 0.3;
+  
+  /* Glass border */
+  --glass-border-opacity: 0.15;
+  --glass-border-width: 1px;
+  
+  /* Grain texture */
+  --grain-opacity: 0.03;
+  --grain-size: 200;
+  --grain-density: 0.5;
+  
+  /* Tint colors (using semantic tokens) */
+  --glass-tint-amount: 0.08;
+  
+  /* Shadow for glass depth */
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+  
+  /* Animation timing */
+  --glass-transition: 200ms ease;
+}
+
+.dark {
+  --glass-opacity-solid: 0.75;
+  --glass-opacity-medium: 0.6;
+  --glass-opacity-subtle: 0.4;
+  --glass-opacity-ethereal: 0.25;
+  
+  --glass-border-opacity: 0.2;
+  --grain-opacity: 0.05;
+  --glass-tint-amount: 0.12;
+  
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* =================================================================
+   Base Glass Utilities
+   ================================================================= */
+
+/* Base glass - lightweight, clean */
+.glass {
+  --_glass-bg: color-mix(in oklch, var(--background) calc(var(--glass-opacity-medium) * 100%), transparent);
+  --_glass-border: color-mix(in oklch, var(--border) calc(var(--glass-border-opacity) * 100%), transparent);
+  
+  background: var(--_glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: var(--glass-border-width) solid var(--_glass-border);
+  transition: all var(--glass-transition);
+}
+
+/* Solid glass - more opaque, for primary surfaces */
+.glass-solid {
+  --glass-opacity-medium: var(--glass-opacity-solid);
+}
+
+/* Subtle glass - more transparent */
+.glass-subtle {
+  --glass-opacity-medium: var(--glass-opacity-subtle);
+}
+
+/* Ethereal glass - very transparent, for overlays */
+.glass-ethereal {
+  --glass-opacity-medium: var(--glass-opacity-ethereal);
+}
+
+/* =================================================================
+   Glass with Grain Texture
+   ================================================================= */
+
+/* Base grain overlay - applied via ::before pseudo-element */
+.glass-grain {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+/* Grain intensity variants */
+.glass-grain-subtle::before {
+  --grain-opacity: 0.02;
+}
+
+.glass-grain-medium::before {
+  --grain-opacity: 0.04;
+}
+
+.glass-grain-heavy::before {
+  --grain-opacity: 0.08;
+}
+
+/* =================================================================
+   Glass Blur Variants
+   ================================================================= */
+
+.glass-blur-none {
+  --glass-blur: 0px;
+}
+
+.glass-blur-sm {
+  --glass-blur: 8px;
+}
+
+.glass-blur-md {
+  --glass-blur: 12px;
+}
+
+.glass-blur-lg {
+  --glass-blur: 20px;
+}
+
+.glass-blur-xl {
+  --glass-blur: 32px;
+}
+
+/* =================================================================
+   Glass Tint Variants (Semantic Colors)
+   ================================================================= */
+
+.glass-tint-primary {
+  --_glass-bg: color-mix(
+    in oklch,
+    color-mix(in oklch, var(--primary) calc(var(--glass-tint-amount) * 100%), var(--background)) calc(var(--glass-opacity-medium) * 100%),
+    transparent
+  );
+}
+
+.glass-tint-secondary {
+  --_glass-bg: color-mix(
+    in oklch,
+    color-mix(in oklch, var(--secondary) calc(var(--glass-tint-amount) * 100%), var(--background)) calc(var(--glass-opacity-medium) * 100%),
+    transparent
+  );
+}
+
+.glass-tint-accent {
+  --_glass-bg: color-mix(
+    in oklch,
+    color-mix(in oklch, var(--accent) calc(var(--glass-tint-amount) * 100%), var(--background)) calc(var(--glass-opacity-medium) * 100%),
+    transparent
+  );
+}
+
+.glass-tint-destructive {
+  --_glass-bg: color-mix(
+    in oklch,
+    color-mix(in oklch, var(--destructive) calc(var(--glass-tint-amount) * 100%), var(--background)) calc(var(--glass-opacity-medium) * 100%),
+    transparent
+  );
+}
+
+.glass-tint-muted {
+  --_glass-bg: color-mix(
+    in oklch,
+    color-mix(in oklch, var(--muted) calc(var(--glass-tint-amount) * 100%), var(--background)) calc(var(--glass-opacity-medium) * 100%),
+    transparent
+  );
+}
+
+/* =================================================================
+   Glass Shadow Variants
+   ================================================================= */
+
+.glass-shadow {
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-shadow-lg {
+  box-shadow: var(--glass-shadow-lg);
+}
+
+.glass-shadow-none {
+  box-shadow: none;
+}
+
+/* =================================================================
+   Glass Border Variants
+   ================================================================= */
+
+.glass-border-none {
+  border: none;
+}
+
+.glass-border-subtle {
+  --glass-border-opacity: 0.08;
+}
+
+.glass-border-strong {
+  --glass-border-opacity: 0.25;
+}
+
+/* =================================================================
+   Glass Interactive States
+   ================================================================= */
+
+.glass-interactive {
+  cursor: pointer;
+}
+
+.glass-interactive:hover {
+  --glass-opacity-medium: calc(var(--glass-opacity-medium) + 0.1);
+  --glass-border-opacity: calc(var(--glass-border-opacity) + 0.05);
+}
+
+.glass-interactive:active {
+  --glass-opacity-medium: calc(var(--glass-opacity-medium) + 0.15);
+}
+
+.glass-interactive:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* =================================================================
+   Preset Combinations (Convenience Classes)
+   ================================================================= */
+
+/* Card glass - solid, subtle grain, shadow */
+.glass-card {
+  @apply glass glass-solid glass-grain-subtle glass-shadow;
+}
+
+/* Modal glass - deep blur, heavy grain for emphasis */
+.glass-modal {
+  @apply glass glass-blur-xl glass-grain glass-shadow-lg;
+}
+
+/* Sidebar glass - subtle, minimal distraction */
+.glass-sidebar {
+  @apply glass glass-subtle glass-blur-sm glass-border-subtle;
+}
+
+/* Header glass - solid for navigation */
+.glass-header {
+  @apply glass glass-solid glass-blur-lg glass-shadow;
+}
+
+/* Popover glass - medium, responsive */
+.glass-popover {
+  @apply glass glass-grain-subtle glass-shadow;
+}
+
+/* Toast glass - ethereal, floating */
+.glass-toast {
+  @apply glass glass-ethereal glass-blur-lg glass-grain-subtle glass-shadow;
+}
+
+/* =================================================================
+   Animation Helpers
+   ================================================================= */
+
+@keyframes glass-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.glass-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklch, var(--foreground) 5%, transparent) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: glass-shimmer 2s ease-in-out infinite;
+}
+
+/* =================================================================
+   Content Layer (ensure content is above grain)
+   ================================================================= */
+
+.glass-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* =================================================================
+   Theme-Aware Texture Integration
+   
+   These variables can be overridden per-theme via JavaScript
+   using the TEXTURE_PRESETS from tokens/theme-textures.ts
+   ================================================================= */
+
+:root {
+  /* Default texture settings (neutral theme) */
+  --texture-bg-frequency: 0.85;
+  --texture-bg-opacity: 0.08;
+  --texture-bg-octaves: 3;
+  
+  --texture-card-frequency: 0.75;
+  --texture-card-opacity: 0.14;
+  --texture-card-octaves: 3;
+  
+  --texture-button-frequency: 0.85;
+  --texture-button-opacity: 0.1;
+  --texture-button-octaves: 2;
+  
+  --texture-panel-frequency: 0.7;
+  --texture-panel-opacity: 0.12;
+  --texture-panel-octaves: 3;
+}
+
+/* Theme-specific texture overrides */
+:root[data-theme="opulence"] {
+  --texture-bg-frequency: 0.75;
+  --texture-bg-opacity: 0.07;
+  --texture-card-frequency: 0.7;
+  --texture-card-opacity: 0.15;
+  --texture-button-frequency: 0.8;
+  --texture-button-opacity: 0.11;
+  --texture-panel-frequency: 0.68;
+  --texture-panel-opacity: 0.13;
+}
+
+:root[data-theme="heirloom"] {
+  --texture-bg-frequency: 0.6;
+  --texture-bg-opacity: 0.08;
+  --texture-card-frequency: 0.55;
+  --texture-card-opacity: 0.16;
+  --texture-button-frequency: 0.65;
+  --texture-button-opacity: 0.12;
+  --texture-panel-frequency: 0.52;
+  --texture-panel-opacity: 0.14;
+}
+
+:root[data-theme="midnight"] {
+  --texture-bg-frequency: 0.95;
+  --texture-bg-opacity: 0.06;
+  --texture-card-frequency: 0.9;
+  --texture-card-opacity: 0.11;
+  --texture-button-frequency: 1.0;
+  --texture-button-opacity: 0.08;
+  --texture-panel-frequency: 0.88;
+  --texture-panel-opacity: 0.1;
+}
+
+:root[data-theme="zenith"] {
+  --texture-bg-frequency: 0.88;
+  --texture-bg-opacity: 0.065;
+  --texture-card-frequency: 0.83;
+  --texture-card-opacity: 0.115;
+  --texture-button-frequency: 0.93;
+  --texture-button-opacity: 0.085;
+  --texture-panel-frequency: 0.8;
+  --texture-panel-opacity: 0.105;
+}
+
+/* =================================================================
+   Textured Component Classes
+   
+   Apply theme-aware textures to specific component types
+   ================================================================= */
+
+.textured-bg {
+  position: relative;
+}
+
+.textured-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: var(--texture-bg-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.textured-card {
+  position: relative;
+}
+
+.textured-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: var(--texture-card-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.textured-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.textured-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: var(--texture-button-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.textured-panel {
+  position: relative;
+}
+
+.textured-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: var(--texture-panel-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}

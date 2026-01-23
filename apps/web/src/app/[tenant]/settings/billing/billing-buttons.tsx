@@ -38,7 +38,7 @@ export function UpgradeButton({
     return (
       <button
         disabled
-        className="w-full py-2 px-4 bg-[var(--muted)] text-[var(--muted-foreground)] rounded-lg cursor-not-allowed"
+        className="w-full py-2 px-4 bg-muted text-muted-foreground rounded-lg cursor-not-allowed"
       >
         Current Plan
       </button>
@@ -49,7 +49,7 @@ export function UpgradeButton({
     <button
       onClick={handleClick}
       disabled={isPending}
-      className="w-full py-2 px-4 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
+      className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
     >
       {isPending ? "Loading..." : label ?? (isDowngrade ? "Downgrade" : "Upgrade")}
     </button>
@@ -81,7 +81,7 @@ export function ManageBillingButton({
     <button
       onClick={handleClick}
       disabled={isPending}
-      className="px-4 py-2 border border-[var(--border)] rounded-lg hover:bg-[var(--muted)] transition-colors duration-200 disabled:opacity-50"
+      className="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors duration-200 disabled:opacity-50"
     >
       {isPending ? "Loading..." : "Manage Subscription"}
     </button>

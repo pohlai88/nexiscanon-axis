@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 /**
  * Theme provider for dark/light mode.
@@ -138,7 +138,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
   return (
     <button
       onClick={cycleTheme}
-      className={`p-2 rounded-lg hover:bg-[var(--muted)] transition-colors duration-200 ${className}`}
+      className={`p-2 rounded-lg hover:bg-muted transition-colors duration-200 ${className}`}
       aria-label={`Current theme: ${theme}. Click to change.`}
       title={`Theme: ${theme}`}
     >

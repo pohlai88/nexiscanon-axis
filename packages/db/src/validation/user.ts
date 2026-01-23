@@ -1,5 +1,8 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
+import {
+  createCoercedInsertSchema,
+  createSelectSchema,
+  z,
+} from "./factory";
 import {
   users,
   tenantUsers,
@@ -26,8 +29,9 @@ export const userSettingsSchema = z.object({
 
 /**
  * User insert validation schema.
+ * Uses coerced schema for date fields (Zod v4 best practice).
  */
-export const insertUserSchema = createInsertSchema(users, {
+export const insertUserSchema = createCoercedInsertSchema(users, {
   email: z.string().email("Invalid email address"),
   name: z.string().max(255).nullable().optional(),
   settings: userSettingsSchema.optional(),
@@ -52,8 +56,9 @@ export const updateProfileSchema = z.object({
 
 /**
  * Tenant user insert schema.
+ * Uses coerced schema for date fields (Zod v4 best practice).
  */
-export const insertTenantUserSchema = createInsertSchema(tenantUsers, {
+export const insertTenantUserSchema = createCoercedInsertSchema(tenantUsers, {
   role: userRoleSchema.optional(),
 });
 
@@ -68,8 +73,9 @@ export const selectTenantUserSchema = createSelectSchema(tenantUsers);
 
 /**
  * Invitation insert schema.
+ * Uses coerced schema for date fields (Zod v4 best practice).
  */
-export const insertInvitationSchema = createInsertSchema(invitations, {
+export const insertInvitationSchema = createCoercedInsertSchema(invitations, {
   email: z.string().email("Invalid email address"),
 });
 

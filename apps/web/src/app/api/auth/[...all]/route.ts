@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { authProtection, isArcjetConfigured } from "@/lib/arcjet";
 import {
   checkRateLimit,
   getClientIP,
   addRateLimitHeaders,
   RateLimits,
 } from "@/lib/rate-limit";
+import { logger } from "@/lib/logger";
 
 /**
  * Neon Auth proxy route.
@@ -12,25 +14,59 @@ import {
  * Forwards auth requests to Neon Auth service.
  * This allows the frontend to call /api/auth/* which proxies to Neon Auth.
  *
- * Rate limited: 10 requests per minute per IP (STRICT).
+ * Protection:
+ * - Arcjet: Rate limiting + bot detection + shield (if configured)
+ * - Fallback: In-memory rate limiting
  */
 
 const NEON_AUTH_URL = process.env.NEON_AUTH_BASE_URL;
 
 async function handler(request: NextRequest) {
-  // Rate limit auth endpoints (prevent brute force)
-  const ip = getClientIP(request);
-  const rateLimitResult = checkRateLimit(`auth:${ip}`, RateLimits.STRICT);
+  const requestId = request.headers.get("x-request-id") ?? "unknown";
+  const log = logger.child({ requestId, endpoint: "/api/auth" });
 
-  if (!rateLimitResult.success) {
-    const response = NextResponse.json(
-      {
-        error: "Too Many Requests",
-        retryAfter: Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000),
-      },
-      { status: 429 }
-    );
-    return addRateLimitHeaders(response, rateLimitResult);
+  // Use Arcjet if configured, otherwise fall back to in-memory rate limiting
+  if (isArcjetConfigured()) {
+    const decision = await authProtection.protect(request);
+
+    if (decision.isDenied()) {
+      log.warn("Auth request denied by Arcjet", {
+        reason: decision.reason,
+        ip: request.headers.get("x-forwarded-for"),
+      });
+
+      if (decision.reason.isRateLimit()) {
+        return NextResponse.json(
+          { error: "Too Many Requests" },
+          { status: 429 }
+        );
+      }
+      if (decision.reason.isBot()) {
+        return NextResponse.json(
+          { error: "Bot detected" },
+          { status: 403 }
+        );
+      }
+      return NextResponse.json(
+        { error: "Request denied" },
+        { status: 403 }
+      );
+    }
+  } else {
+    // Fallback: In-memory rate limiting
+    const ip = getClientIP(request);
+    const rateLimitResult = checkRateLimit(`auth:${ip}`, RateLimits.STRICT);
+
+    if (!rateLimitResult.success) {
+      const response = NextResponse.json(
+        {
+          error: "Too Many Requests",
+          retryAfter: Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000),
+        },
+        { status: 429 }
+      );
+      return addRateLimitHeaders(response, rateLimitResult);
+    }
   }
 
   if (!NEON_AUTH_URL) {
@@ -74,7 +110,7 @@ async function handler(request: NextRequest) {
 
     return proxyResponse;
   } catch (error) {
-    console.error("Auth proxy error:", error);
+    log.error("Auth proxy error", error);
     return NextResponse.json(
       { error: "Auth service unavailable" },
       { status: 502 }

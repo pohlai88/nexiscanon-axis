@@ -1,0 +1,120 @@
+﻿scripts/analyze-overrides.ts(66,23): error TS2532: Object is possibly 'undefined'.
+scripts/analyze-overrides.ts(99,20): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+scripts/analyze-overrides.ts(113,27): error TS18048: 'variantBlock' is possibly 'undefined'.
+scripts/analyze-overrides.ts(116,23): error TS2532: Object is possibly 'undefined'.
+scripts/analyze-overrides.ts(117,16): error TS2538: Type 'undefined' cannot be used as an index type.
+scripts/analyze-overrides.ts(119,18): error TS2538: Type 'undefined' cannot be used as an index type.
+src/blocks/activity-feed.tsx(123,9): error TS2532: Object is possibly 'undefined'.
+src/blocks/activity-feed.tsx(239,9): error TS2774: This condition will always return true since this function is always defined. Did you mean to call it instead?
+src/blocks/collaborative-canvas.tsx(600,12): error TS2304: Cannot find name 'X'.
+src/blocks/comparison-cockpit.tsx(480,17): error TS2322: Type 'string | false | undefined' is not assignable to type 'string | undefined'.
+  Type 'boolean' is not assignable to type 'string'.
+src/blocks/examples/command-k-integration.tsx(2,29): error TS2307: Cannot find module 'react-router-dom' or its corresponding type declarations.
+src/blocks/examples/crudsp-erp-examples.tsx(69,29): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/blocks/examples/crudsp-erp-examples.tsx(77,31): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/blocks/examples/crudsp-erp-examples.tsx(86,33): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+  Type 'undefined' is not assignable to type 'string'.
+src/blocks/examples/magic-approval-table-examples.tsx(365,12): error TS2304: Cannot find name 'Badge'.
+src/blocks/examples/magic-approval-table-examples.tsx(365,62): error TS2304: Cannot find name 'Badge'.
+src/blocks/examples/magic-approval-table-examples.tsx(366,12): error TS2304: Cannot find name 'Badge'.
+src/blocks/examples/magic-approval-table-examples.tsx(368,13): error TS2304: Cannot find name 'Badge'.
+src/blocks/examples/magic-approval-table-examples.tsx(369,12): error TS2304: Cannot find name 'Badge'.
+src/blocks/examples/magic-approval-table-examples.tsx(371,13): error TS2304: Cannot find name 'Badge'.
+src/blocks/excel-mode-grid.tsx(209,25): error TS2532: Object is possibly 'undefined'.
+src/blocks/excel-mode-grid.tsx(218,16): error TS18048: 'row' is possibly 'undefined'.
+src/blocks/excel-mode-grid.tsx(220,19): error TS18048: 'row' is possibly 'undefined'.
+src/blocks/excel-mode-grid.tsx(246,33): error TS18048: 'nextRow' is possibly 'undefined'.
+src/blocks/excel-mode-grid.tsx(250,33): error TS18048: 'prevRow' is possibly 'undefined'.
+src/blocks/excel-mode-grid.tsx(254,62): error TS18048: 'nextColumn' is possibly 'undefined'.
+src/blocks/excel-mode-grid.tsx(258,62): error TS18048: 'prevColumn' is possibly 'undefined'.
+src/blocks/excel-mode-grid.tsx(311,36): error TS2538: Type 'undefined' cannot be used as an index type.
+src/blocks/excel-mode-grid.tsx(347,18): error TS2345: Argument of type '(prev: CellChange[][]) => (CellChange[] | undefined)[]' is not assignable to parameter of type 'SetStateAction<CellChange[][]>'.
+  Type '(prev: CellChange[][]) => (CellChange[] | undefined)[]' is not assignable to type '(prevState: CellChange[][]) => CellChange[][]'.
+    Type '(CellChange[] | undefined)[]' is not assignable to type 'CellChange[][]'.
+      Type 'CellChange[] | undefined' is not assignable to type 'CellChange[]'.
+        Type 'undefined' is not assignable to type 'CellChange[]'.
+src/blocks/excel-mode-grid.tsx(350,5): error TS18048: 'lastChanges' is possibly 'undefined'.
+src/blocks/excel-mode-grid.tsx(367,18): error TS2345: Argument of type '(prev: CellChange[][]) => (CellChange[] | undefined)[]' is not assignable to parameter of type 'SetStateAction<CellChange[][]>'.
+  Type '(prev: CellChange[][]) => (CellChange[] | undefined)[]' is not assignable to type '(prevState: CellChange[][]) => CellChange[][]'.
+    Type '(CellChange[] | undefined)[]' is not assignable to type 'CellChange[][]'.
+      Type 'CellChange[] | undefined' is not assignable to type 'CellChange[]'.
+        Type 'undefined' is not assignable to type 'CellChange[]'.
+src/blocks/excel-mode-grid.tsx(369,5): error TS18048: 'changes' is possibly 'undefined'.
+src/blocks/excel-mode-grid.tsx(514,23): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+  Type 'undefined' is not assignable to type 'boolean'.
+src/blocks/exception-first-mode.tsx(170,7): error TS2532: Object is possibly 'undefined'.
+src/blocks/exception-first-mode.tsx(562,17): error TS2322: Type '{ checked: boolean; indeterminate: boolean; onCheckedChange: () => void; }' is not assignable to type 'IntrinsicAttributes & CheckboxProps & RefAttributes<HTMLButtonElement>'.
+  Property 'indeterminate' does not exist on type 'IntrinsicAttributes & CheckboxProps & RefAttributes<HTMLButtonElement>'.
+src/blocks/footer-01.tsx(1,18): error TS2307: Cannot find module 'next/link' or its corresponding type declarations.
+src/blocks/global-admin-page.tsx(585,21): error TS2532: Object is possibly 'undefined'.
+src/blocks/header-01.tsx(4,18): error TS2307: Cannot find module 'next/link' or its corresponding type declarations.
+src/blocks/hero-01.tsx(2,18): error TS2307: Cannot find module 'next/link' or its corresponding type declarations.
+src/blocks/index.ts(227,26): error TS2459: Module '"./template-system"' declares 'DEFAULT_CATEGORIES' locally, but it is not exported.
+src/blocks/inline-chat.tsx(174,5): error TS2322: Type '(string | undefined)[]' is not assignable to type 'string[]'.
+  Type 'string | undefined' is not assignable to type 'string'.
+    Type 'undefined' is not assignable to type 'string'.
+src/blocks/interactive-metric-card.tsx(124,15): error TS2532: Object is possibly 'undefined'.
+src/blocks/magic-approval-table.tsx(272,9): error TS2532: Object is possibly 'undefined'.
+src/blocks/magic-approval-table.tsx(968,3): error TS2484: Export declaration conflicts with exported declaration of 'MagicApprovalTableProps'.
+src/blocks/magic-approval-table.tsx(969,3): error TS2484: Export declaration conflicts with exported declaration of 'MagicApprovalColumn'.
+src/blocks/magic-approval-table.tsx(970,3): error TS2484: Export declaration conflicts with exported declaration of 'MagicApprovalItem'.
+src/blocks/magic-approval-table.tsx(971,3): error TS2484: Export declaration conflicts with exported declaration of 'Attachment'.
+src/blocks/magic-approval-table.tsx(972,3): error TS2484: Export declaration conflicts with exported declaration of 'Comment'.
+src/blocks/magic-approval-table.tsx(973,3): error TS2484: Export declaration conflicts with exported declaration of 'ApprovalStatus'.
+src/blocks/magic-approval-table.tsx(974,3): error TS2484: Export declaration conflicts with exported declaration of 'ApprovalPriority'.
+src/blocks/magic-paste.tsx(232,25): error TS2345: Argument of type 'DocumentTemplate | undefined' is not assignable to parameter of type 'SetStateAction<DocumentTemplate | null>'.
+  Type 'undefined' is not assignable to type 'SetStateAction<DocumentTemplate | null>'.
+src/blocks/marquee.tsx(115,14): error TS2322: Type '{ children: string; jsx: true; }' is not assignable to type 'DetailedHTMLProps<StyleHTMLAttributes<HTMLStyleElement>, HTMLStyleElement>'.
+  Property 'jsx' does not exist on type 'DetailedHTMLProps<StyleHTMLAttributes<HTMLStyleElement>, HTMLStyleElement>'.
+src/blocks/multi-step-wizard.tsx(86,9): error TS18048: 'currentStepData' is possibly 'undefined'.
+src/blocks/multi-step-wizard.tsx(88,31): error TS18048: 'currentStepData' is possibly 'undefined'.
+src/blocks/multi-step-wizard.tsx(229,23): error TS18048: 'currentStepData' is possibly 'undefined'.
+src/blocks/multi-step-wizard.tsx(230,12): error TS18048: 'currentStepData' is possibly 'undefined'.
+src/blocks/multi-step-wizard.tsx(232,16): error TS18048: 'currentStepData' is possibly 'undefined'.
+src/blocks/multi-step-wizard.tsx(246,17): error TS18048: 'currentStepData' is possibly 'undefined'.
+src/blocks/multi-step-wizard.tsx(265,29): error TS18048: 'currentStepData' is possibly 'undefined'.
+src/blocks/multi-step-wizard.tsx(284,10): error TS18048: 'currentStepData' is possibly 'undefined'.
+src/blocks/multi-step-wizard.tsx(285,10): error TS18048: 'currentStepData' is possibly 'undefined'.
+src/blocks/navbar-01.tsx(5,18): error TS2307: Cannot find module 'next/link' or its corresponding type declarations.
+src/blocks/navbar-01.tsx(6,29): error TS2307: Cannot find module 'next/navigation' or its corresponding type declarations.
+src/blocks/sidebar-01.tsx(4,18): error TS2307: Cannot find module 'next/link' or its corresponding type declarations.
+src/blocks/sidebar-01.tsx(5,29): error TS2307: Cannot find module 'next/navigation' or its corresponding type declarations.
+src/blocks/smart-queue-workbench.tsx(198,21): error TS2532: Object is possibly 'undefined'.
+src/blocks/smart-queue-workbench.tsx(199,22): error TS2532: Object is possibly 'undefined'.
+src/blocks/smart-queue-workbench.tsx(235,21): error TS18048: 'nextItem' is possibly 'undefined'.
+src/blocks/smart-queue-workbench.tsx(236,22): error TS18048: 'nextItem' is possibly 'undefined'.
+src/blocks/smart-queue-workbench.tsx(243,21): error TS18048: 'prevItem' is possibly 'undefined'.
+src/blocks/smart-queue-workbench.tsx(244,22): error TS18048: 'prevItem' is possibly 'undefined'.
+src/blocks/team-room.tsx(622,18): error TS2304: Cannot find name 'X'.
+src/blocks/team-room.tsx(897,14): error TS2304: Cannot find name 'Edit'.
+src/blocks/timeline-playback.tsx(255,32): error TS2532: Object is possibly 'undefined'.
+src/blocks/timeline-playback.tsx(256,34): error TS2532: Object is possibly 'undefined'.
+src/templates/auth/login-page-01.tsx(18,18): error TS2307: Cannot find module 'next/link' or its corresponding type declarations.
+src/templates/auth/signup-page-01.tsx(18,18): error TS2307: Cannot find module 'next/link' or its corresponding type declarations.
+src/templates/dashboard/dashboard-02.tsx(98,3): error TS2741: Property 'id' is missing in type '{ accessorKey: "header"; header: string; sortable: true; filterable: true; }' but required in type 'DataFortressColumn<DashboardData>'.
+src/templates/dashboard/dashboard-02.tsx(104,3): error TS2741: Property 'id' is missing in type '{ accessorKey: "type"; header: string; sortable: true; filterable: true; }' but required in type 'DataFortressColumn<DashboardData>'.
+src/templates/dashboard/dashboard-02.tsx(110,3): error TS2741: Property 'id' is missing in type '{ accessorKey: "status"; header: string; sortable: true; cell: ({ row }: DashboardData) => Element; }' but required in type 'DataFortressColumn<DashboardData>'.
+src/templates/dashboard/dashboard-02.tsx(114,14): error TS2339: Property 'row' does not exist on type 'DashboardData'.
+src/templates/dashboard/dashboard-02.tsx(127,3): error TS2741: Property 'id' is missing in type '{ accessorKey: "target"; header: string; sortable: true; }' but required in type 'DataFortressColumn<DashboardData>'.
+src/templates/dashboard/dashboard-02.tsx(132,3): error TS2741: Property 'id' is missing in type '{ accessorKey: "limit"; header: string; sortable: true; }' but required in type 'DataFortressColumn<DashboardData>'.
+src/templates/dashboard/dashboard-02.tsx(137,3): error TS2741: Property 'id' is missing in type '{ accessorKey: "reviewer"; header: string; sortable: true; filterable: true; }' but required in type 'DataFortressColumn<DashboardData>'.
+src/templates/dashboard/dashboard-02.tsx(265,15): error TS2322: Type 'DashboardData[]' is not assignable to type 'DataFortressRow<DashboardData>[]'.
+  Type 'DashboardData' is not assignable to type 'DataFortressRow<DashboardData>'.
+    Property '_id' is missing in type 'DashboardData' but required in type '{ _id: string | number; _audit?: AuditTrail[] | undefined; }'.
+src/templates/dashboard/users-table-01.tsx(94,14): error TS2339: Property 'row' does not exist on type 'User'.
+src/templates/dashboard/users-table-01.tsx(112,14): error TS2339: Property 'row' does not exist on type 'User'.
+src/templates/dashboard/users-table-01.tsx(132,14): error TS2339: Property 'row' does not exist on type 'User'.
+src/templates/dashboard/users-table-01.tsx(143,14): error TS2339: Property 'row' does not exist on type 'User'.
+src/templates/tasks/tasks-page-01.tsx(45,5): error TS2322: Type 'Date' is not assignable to type 'string'.
+src/templates/tasks/tasks-page-01.tsx(58,5): error TS2322: Type 'Date' is not assignable to type 'string'.
+src/templates/tasks/tasks-page-01.tsx(71,5): error TS2322: Type 'Date' is not assignable to type 'string'.
+src/templates/tasks/tasks-page-01.tsx(84,5): error TS2322: Type 'Date' is not assignable to type 'string'.
+src/templates/tasks/tasks-page-01.tsx(96,12): error TS2339: Property 'description' does not exist on type 'Task'.
+src/templates/tasks/tasks-page-01.tsx(172,11): error TS2322: Type '{ tasks: Task[]; onTaskUpdate: (taskId: any, updates: any) => void; onTaskDelete: (taskId: any) => void; showAssignee: true; showDueDate: true; showPriority: true; showTags: true; }' is not assignable to type 'IntrinsicAttributes & SmartTaskListProps'.
+  Property 'onTaskUpdate' does not exist on type 'IntrinsicAttributes & SmartTaskListProps'.
+src/templates/tasks/tasks-page-01.tsx(172,26): error TS7006: Parameter 'taskId' implicitly has an 'any' type.
+src/templates/tasks/tasks-page-01.tsx(172,34): error TS7006: Parameter 'updates' implicitly has an 'any' type.
+src/templates/tasks/tasks-page-01.tsx(179,26): error TS7006: Parameter 'taskId' implicitly has an 'any' type.

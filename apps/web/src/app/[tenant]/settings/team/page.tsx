@@ -34,17 +34,17 @@ export default async function TeamPage({ params }: TeamPageProps) {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-3xl font-bold">Team</h1>
-          <p className="text-[var(--muted-foreground)]">
+          <p className="text-muted-foreground">
             Manage {tenant.name}&apos;s team members
           </p>
         </div>
         {canManage && <InviteForm tenantSlug={slug} />}
       </div>
 
-      <div className="bg-[var(--muted)] rounded-xl overflow-hidden">
+      <div className="bg-muted rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-[var(--border)]">
+            <tr className="border-b border-border">
               <th className="px-6 py-4 text-left text-sm font-medium">Member</th>
               <th className="px-6 py-4 text-left text-sm font-medium">Role</th>
               <th className="px-6 py-4 text-left text-sm font-medium">Joined</th>
@@ -60,7 +60,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
               <tr>
                 <td
                   colSpan={canManage ? 4 : 3}
-                  className="px-6 py-8 text-center text-[var(--muted-foreground)]"
+                  className="px-6 py-8 text-center text-muted-foreground"
                 >
                   No team members yet
                 </td>

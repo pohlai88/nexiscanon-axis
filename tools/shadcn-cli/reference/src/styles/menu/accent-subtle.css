@@ -1,0 +1,6 @@
+/* Menu Accent: Subtle - Soft highlight on active items */
+:root[data-menu-accent="subtle"],
+:root:not([data-menu-accent]) {
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+}

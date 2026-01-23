@@ -46,7 +46,7 @@ export function ForgotPasswordForm() {
           </svg>
         </div>
         <h2 className="text-lg font-semibold mb-2">Check your email</h2>
-        <p className="text-[var(--muted-foreground)] text-sm">
+        <p className="text-muted-foreground text-sm">
           If an account exists for {email}, you'll receive a password reset link shortly.
         </p>
       </div>
@@ -72,7 +72,7 @@ export function ForgotPasswordForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
           autoComplete="email"
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
           placeholder="you@example.com"
           disabled={isSubmitting}
         />
@@ -81,7 +81,7 @@ export function ForgotPasswordForm() {
       <button
         type="submit"
         disabled={isSubmitting || !email.trim()}
-        className="w-full py-3 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg font-medium hover:opacity-90 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? "Sending..." : "Send Reset Link"}
       </button>

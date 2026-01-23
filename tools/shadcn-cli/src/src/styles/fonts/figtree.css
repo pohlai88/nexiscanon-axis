@@ -1,0 +1,6 @@
+/* Font: Figtree - Contemporary, geometric */
+@import "@fontsource-variable/figtree";
+
+:root[data-font="figtree"] {
+  --font-sans: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+}

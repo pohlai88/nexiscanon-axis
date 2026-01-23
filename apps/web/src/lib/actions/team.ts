@@ -5,6 +5,7 @@
  *
  * Pattern: Server actions for team operations.
  * Uses Zod schemas from @axis/db for validation.
+ * Uses policies from @/lib/policies for permission checks.
  */
 
 import { revalidatePath } from "next/cache";
@@ -21,22 +22,16 @@ import { query } from "../db";
 import { sendEmail } from "../email";
 import { invitationEmail } from "../email/templates";
 import { inviteMemberFormSchema } from "@axis/db/validation";
+import { logger } from "../logger";
+import {
+  canInviteMembers,
+  canRemoveSpecificMember,
+} from "../policies";
 
 export interface TeamActionResult {
   success: boolean;
   error?: string;
   fieldErrors?: Record<string, string[]>;
-}
-
-/**
- * Check if user can manage team.
- */
-async function canManageTeam(
-  userId: string,
-  tenantId: string
-): Promise<boolean> {
-  const membership = await getUserTenantMembership(userId, tenantId);
-  return membership?.role === "owner" || membership?.role === "admin";
 }
 
 /**
@@ -57,8 +52,8 @@ export async function inviteTeamMemberAction(
     return { success: false, error: "Organization not found" };
   }
 
-  const canManage = await canManageTeam(user.id, tenant.id);
-  if (!canManage) {
+  const membership = await getUserTenantMembership(user.id, tenant.id);
+  if (!canInviteMembers(membership)) {
     return { success: false, error: "You don't have permission to invite members" };
   }
 
@@ -129,14 +124,14 @@ export async function inviteTeamMemberAction(
       });
 
       if (!emailResult.success) {
-        console.warn(`Failed to send invitation email to ${email}:`, emailResult.error);
+        logger.warn("Failed to send invitation email", { email, error: emailResult.error });
       }
     }
 
     revalidatePath(`/${tenantSlug}/settings/team`);
     return { success: true };
   } catch (error) {
-    console.error("Invite error:", error);
+    logger.error("Invite error", error);
     return { success: false, error: "Failed to send invitation" };
   }
 }
@@ -158,25 +153,19 @@ export async function removeTeamMemberAction(
     return { success: false, error: "Organization not found" };
   }
 
-  const canManage = await canManageTeam(user.id, tenant.id);
-  if (!canManage) {
-    return { success: false, error: "You don't have permission to remove members" };
-  }
-
-  // Can't remove yourself
-  if (memberId === user.id) {
-    return { success: false, error: "You cannot remove yourself" };
-  }
-
-  // Check target user's role
+  // Get both memberships for policy check
+  const actorMembership = await getUserTenantMembership(user.id, tenant.id);
   const targetMembership = await getUserTenantMembership(memberId, tenant.id);
-  if (!targetMembership) {
-    return { success: false, error: "User is not a member" };
-  }
 
-  // Can't remove owner
-  if (targetMembership.role === "owner") {
-    return { success: false, error: "Cannot remove the owner" };
+  // Use policy for comprehensive permission check
+  const permissionCheck = canRemoveSpecificMember(
+    actorMembership,
+    targetMembership,
+    user.id
+  );
+
+  if (!permissionCheck.allowed) {
+    return { success: false, error: permissionCheck.reason ?? "Permission denied" };
   }
 
   try {
@@ -184,7 +173,7 @@ export async function removeTeamMemberAction(
     revalidatePath(`/${tenantSlug}/settings/team`);
     return { success: true };
   } catch (error) {
-    console.error("Remove member error:", error);
+    logger.error("Remove member error", error);
     return { success: false, error: "Failed to remove member" };
   }
 }
@@ -214,15 +203,21 @@ export async function updateMemberRoleAction(
     return { success: false, error: "Organization not found" };
   }
 
-  // Only owner can change roles
-  const userMembership = await getUserTenantMembership(user.id, tenant.id);
-  if (userMembership?.role !== "owner") {
-    return { success: false, error: "Only the owner can change roles" };
-  }
+  // Get memberships for policy check
+  const actorMembership = await getUserTenantMembership(user.id, tenant.id);
+  const targetMembership = await getUserTenantMembership(memberId, tenant.id);
 
-  // Can't change own role
-  if (memberId === user.id) {
-    return { success: false, error: "You cannot change your own role" };
+  // Import and use the detailed policy check
+  const { canChangeSpecificRole } = await import("../policies/team");
+  const permissionCheck = canChangeSpecificRole(
+    actorMembership,
+    targetMembership,
+    validatedRole,
+    user.id
+  );
+
+  if (!permissionCheck.allowed) {
+    return { success: false, error: permissionCheck.reason ?? "Permission denied" };
   }
 
   try {
@@ -237,7 +232,7 @@ export async function updateMemberRoleAction(
     revalidatePath(`/${tenantSlug}/settings/team`);
     return { success: true };
   } catch (error) {
-    console.error("Update role error:", error);
+    logger.error("Update role error", error);
     return { success: false, error: "Failed to update role" };
   }
 }

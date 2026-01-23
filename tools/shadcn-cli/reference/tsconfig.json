@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+  },
+  "include": ["src", ".shadcn-overrides", "scripts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "shadcn",
+    "tailwindV4",
+    "docs",
+    "**/__tests__/**",
+    "**/*.test.tsx",
+    "**/*.test.ts"
+  ]
+}

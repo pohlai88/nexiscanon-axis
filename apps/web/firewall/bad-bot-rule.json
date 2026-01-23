@@ -1,0 +1,26 @@
+{
+  "$schema": "https://openapi.vercel.sh/firewall-rule.json",
+  "name": "Block Bad Bots",
+  "description": "Blocks known bad bots, scrapers, and vulnerability scanners based on User-Agent patterns. Based on Nginx Bad Bot Blocker.",
+  "active": true,
+  "action": "log",
+  "conditionGroup": [
+    {
+      "conditions": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "op": "re",
+          "value": "(360Spider|80legs|Abonti|Aboundex|Acunetix|ADmantX|AhrefsBot|AIBOT|AiHitBot|Arachnophilia|Atomz|AttriboBOT|BackDoorBot|BackStreet|BackWeb|Bandit|Baiduspider|BatchFTP|Bigfoot|Black Hole|BlackWidow|BlowFish|Bolt|BotALot|Buddy|BuiltBotTough|Bullseye|BunnySlippers|Cegbfeieh|CheeseBot|CherryPicker|ChinaClaw|Collector|Copier|CopyRightCheck|Cosmos|Crescent|Custo|DataCha0s|DBrowse|Demon|DeuSu|Devil|Disco|Digincore|DIIbot|DISCo|DittoSpyder|DotBot|Download|Download Demon|Download Devil|Download Wonder|Drip|eCatch|EirGrabber|EmailCollector|EmailSiphon|EmailWolf|EroCrawler|Exabot|Express WebPictures|ExtractorPro|EyeNetIE|Ezooms|FairAd|FHscan|FlashGet|FlickMinimizer|Foobot|FrontPage|GalaxyBot|GetRight|GetWeb!|Go!Zilla|Go-Ahead-Got-It|Gotit|GrabNet|Grabber|Grafula|Harvest|HEADMasterSEO|heritrix|HiMom|HMView|HTTrack|Human|IlseBot|Image Stripper|Image Sucker|Indy Library|InfoNaviRobot|InfoPath|InfoTekies|Intelliseek|Interget|InternetSeer|IstellaBot|Jbrofuzz|JennyBot|JetCar|JikeSpider|JOC Web Spider|Jorgee|Jyxobot|Kenjin Spider|Keyword Density|Larbin|LexiBot|libWeb|LinkBot|LinkextractorPro|LinkScan|LinkWalker|LinqiaBot|Lipperhey|Litemage|Lmspider|LNSpiderguy|ltx71|Magnet|Mag-Net|Mata Hari|Maui|Maxpoint|Mediatoolkit|MegaIndex|Metauri|MFC_Tear_Sample|MIDown tool|MIIxpc|Mister PiX|moatbot|Mojeek|Morfeus|MSIECrawler|NAMEPROTECT|Navroad|Nimble|Ninja|Nmap|Node|NPBot|Nutch|Octopus|Offline Explorer|Offline Navigator|Openstat|OpenVAS|OrangeBot|OutfoxBot|PageGrabber|PaperLiBot|pavuk|pcBrowser|PeoplePal|Picscout|Pockey|PropowerBot|ProPowerBot|ProWebWalker|Pump|Python-urllib|Qwantify|RankActive|RealDownload|Reaper|ReGet|RepoMonkey|RMA|SemrushBot|Semrush|Serious|Siphon|SiteSnagger|Slurp|SmartDownload|Sogou|Sosospider|SpankBot|Spanner|Spbot|SpiderEngine|sqlmap|Sqworm|Stripper|Sucker|SuperBot|SuperHTTP|Surfbot|SurveyBot|Szukacz|tAkeOut|TakingBot|Teleport|Telesoft|TheNomad|TightTwatBot|Titan|TurnitinBot|UbiCrawler|UnisterBot|VCI|Victim|VidibleScraper|VoidEYE|VoilaBot|WebAuto|WebBandit|WebCollector|WebCopier|WebEnhancer|WebFetch|WebGo IS|WebImageCollector|WebLeacher|WebmasterWorldForumBot|WebPix|WebReaper|WebSauger|Website|Website eXtractor|Webster|WebStripper|WebVac|WebViewer|WebWhacker|WebZIP|WeSEE|Wget|Whacker|WhatWeb|Widow|WinHTTrack|WISENutbot|Wombot|WWWOFFLE|Xaldon|Xenu|YandexBot|YisouSpider|zermelo|Zeus|Zillya|ZmEu|ZumBot|ZyBorg)"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Start with action='log' to monitor matched requests",
+    "After 1-2 weeks of monitoring, change action to 'deny' to block",
+    "Review Vercel Firewall Logs for matched requests",
+    "Add/remove patterns based on your traffic analysis",
+    "Common legitimate bots (Googlebot, Bingbot) are NOT blocked"
+  ]
+}

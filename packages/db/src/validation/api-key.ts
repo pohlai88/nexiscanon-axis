@@ -1,11 +1,15 @@
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
+import {
+  createCoercedInsertSchema,
+  createSelectSchema,
+  z,
+} from "./factory";
 import { apiKeys } from "../schema/api-key";
 
 /**
  * API key insert schema.
+ * Uses coerced schema for date fields (Zod v4 best practice).
  */
-export const insertApiKeySchema = createInsertSchema(apiKeys, {
+export const insertApiKeySchema = createCoercedInsertSchema(apiKeys, {
   name: z.string()
     .min(1, "Name is required")
     .max(255, "Name must be 255 characters or less"),

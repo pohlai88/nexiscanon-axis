@@ -52,9 +52,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
           id="email"
           value={user.email}
           disabled
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] opacity-50 cursor-not-allowed"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background opacity-50 cursor-not-allowed"
         />
-        <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+        <p className="mt-1 text-xs text-muted-foreground">
           Email cannot be changed
         </p>
       </div>
@@ -69,7 +69,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
           disabled={isUpdating}
         />
       </div>
@@ -77,7 +77,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
       <button
         type="submit"
         disabled={isUpdating}
-        className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
+        className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
       >
         {isUpdating ? "Saving..." : "Save Changes"}
       </button>

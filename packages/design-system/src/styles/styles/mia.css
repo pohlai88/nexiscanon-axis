@@ -1,0 +1,19 @@
+/**
+ * Style: Mia - Soft, rounded with gentle shadows
+ * Friendly, approachable aesthetic with generous radius.
+ */
+
+:root[data-style="mia"] {
+  --radius: 1rem;
+  --shadow-sm: 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow: 0 4px 8px -2px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 8px 16px -4px rgb(0 0 0 / 0.08), 0 4px 8px -4px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 16px 32px -8px rgb(0 0 0 / 0.1), 0 8px 16px -8px rgb(0 0 0 / 0.05);
+}
+
+:root[data-style="mia"].dark {
+  --shadow-sm: 0 2px 4px -1px rgb(0 0 0 / 0.3);
+  --shadow: 0 4px 8px -2px rgb(0 0 0 / 0.35), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+  --shadow-md: 0 8px 16px -4px rgb(0 0 0 / 0.35), 0 4px 8px -4px rgb(0 0 0 / 0.2);
+  --shadow-lg: 0 16px 32px -8px rgb(0 0 0 / 0.4), 0 8px 16px -8px rgb(0 0 0 / 0.25);
+}

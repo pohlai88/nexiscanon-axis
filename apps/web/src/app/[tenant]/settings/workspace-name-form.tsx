@@ -65,10 +65,10 @@ export function WorkspaceNameForm({
           value={name}
           onChange={(e) => setName(e.target.value)}
           disabled={!isOwner || isPending}
-          className="w-full max-w-md px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full max-w-md px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
         />
         {!isOwner && (
-          <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+          <p className="mt-1 text-xs text-muted-foreground">
             Only the owner can change the workspace name
           </p>
         )}
@@ -78,7 +78,7 @@ export function WorkspaceNameForm({
         <button
           type="submit"
           disabled={!hasChanges || isPending}
-          className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isPending ? "Saving..." : "Save Changes"}
         </button>

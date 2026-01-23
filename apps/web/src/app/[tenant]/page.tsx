@@ -3,7 +3,7 @@ import { getTenantMembers } from "@/lib/db/users";
 import { getCurrentUser } from "@/lib/auth/session";
 import { query } from "@/lib/db";
 import { ActivityFeed } from "@/components/activity-feed";
-import { Card, CardHeader, CardContent } from "@/components/ui";
+import { Card, CardHeader, CardContent } from "@workspace/design-system";
 
 interface TenantDashboardProps {
   params: Promise<{ tenant: string }>;
@@ -26,7 +26,7 @@ export default async function TenantDashboard({ params }: TenantDashboardProps) 
     getTenantMembers(tenant.id),
     query(async (sql) => {
       return sql`
-        SELECT 
+        SELECT
           al.id, al.action, al.resource_type, al.created_at,
           u.name as actor_name, u.email as actor_email
         FROM audit_logs al
@@ -50,22 +50,22 @@ export default async function TenantDashboard({ params }: TenantDashboardProps) 
   return (
     <div>
       <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-      <p className="text-[var(--muted-foreground)] mb-8">
+      <p className="text-muted-foreground mb-8">
         Welcome back{user?.name ? `, ${user.name}` : ""}
       </p>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
-          <p className="text-sm text-[var(--muted-foreground)]">Team Members</p>
+          <p className="text-sm text-muted-foreground">Team Members</p>
           <p className="text-3xl font-bold mt-2">{members.length}</p>
         </Card>
         <Card>
-          <p className="text-sm text-[var(--muted-foreground)]">Status</p>
+          <p className="text-sm text-muted-foreground">Status</p>
           <p className="text-3xl font-bold mt-2 capitalize">{tenant.status}</p>
         </Card>
         <Card>
-          <p className="text-sm text-[var(--muted-foreground)]">Plan</p>
+          <p className="text-sm text-muted-foreground">Plan</p>
           <p className="text-3xl font-bold mt-2 capitalize">{tenant.plan}</p>
         </Card>
       </div>
@@ -77,19 +77,19 @@ export default async function TenantDashboard({ params }: TenantDashboardProps) 
           <CardContent className="grid gap-4">
             <a
               href={`/${slug}/settings/team`}
-              className="p-4 bg-[var(--background)] rounded-lg hover:shadow-md transition-shadow duration-200"
+              className="p-4 bg-background rounded-lg hover:shadow-md transition-shadow duration-200"
             >
               <h3 className="font-medium">Manage Team</h3>
-              <p className="text-sm text-[var(--muted-foreground)]">
+              <p className="text-sm text-muted-foreground">
                 Invite members and manage roles
               </p>
             </a>
             <a
               href={`/${slug}/settings`}
-              className="p-4 bg-[var(--background)] rounded-lg hover:shadow-md transition-shadow duration-200"
+              className="p-4 bg-background rounded-lg hover:shadow-md transition-shadow duration-200"
             >
               <h3 className="font-medium">Settings</h3>
-              <p className="text-sm text-[var(--muted-foreground)]">
+              <p className="text-sm text-muted-foreground">
                 Configure your workspace
               </p>
             </a>
@@ -98,20 +98,20 @@ export default async function TenantDashboard({ params }: TenantDashboardProps) 
 
         {/* Recent Activity */}
         <Card>
-          <CardHeader 
-            title="Recent Activity" 
+          <CardHeader
+            title="Recent Activity"
             action={
               <a
                 href={`/${slug}/settings/audit-log`}
-                className="text-sm text-[var(--primary)] hover:underline"
+                className="text-sm text-primary hover:underline"
               >
                 View all
               </a>
             }
           />
           <CardContent>
-            <ActivityFeed 
-              activities={activities} 
+            <ActivityFeed
+              activities={activities}
               emptyMessage="No recent activity in this workspace"
             />
           </CardContent>

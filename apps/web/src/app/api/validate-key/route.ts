@@ -4,7 +4,7 @@
  * Pattern: Validate API keys for programmatic access.
  * Used by external services to authenticate requests.
  *
- * Rate limited: 100 requests per minute per IP (STANDARD).
+ * Protected by Arcjet with fallback to in-memory rate limiting.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -16,22 +16,45 @@ import {
   addRateLimitHeaders,
   RateLimits,
 } from "@/lib/rate-limit";
+import { apiProtection, isArcjetConfigured } from "@/lib/arcjet";
+import { logger } from "@/lib/logger";
 
 export async function POST(request: NextRequest) {
-  // Rate limit
-  const ip = getClientIP(request);
-  const rateLimitResult = checkRateLimit(`validate-key:${ip}`, RateLimits.STANDARD);
+  const requestId = request.headers.get("x-request-id") ?? "unknown";
+  const log = logger.child({ requestId, endpoint: "/api/validate-key" });
 
-  if (!rateLimitResult.success) {
-    const response = NextResponse.json(
-      {
-        valid: false,
-        error: "Too Many Requests",
-        retryAfter: Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000),
-      },
-      { status: 429 }
-    );
-    return addRateLimitHeaders(response, rateLimitResult);
+  // Arcjet protection (primary)
+  if (isArcjetConfigured()) {
+    const decision = await apiProtection.protect(request);
+    if (decision.isDenied()) {
+      log.warn("Validate-key request denied by Arcjet", { reason: decision.reason });
+      if (decision.reason.isRateLimit()) {
+        return NextResponse.json(
+          { valid: false, error: "Too many requests" },
+          { status: 429 }
+        );
+      }
+      return NextResponse.json(
+        { valid: false, error: "Request denied" },
+        { status: 403 }
+      );
+    }
+  } else {
+    // Fallback: In-memory rate limiting
+    const ip = getClientIP(request);
+    const rateLimitResult = checkRateLimit(`validate-key:${ip}`, RateLimits.STANDARD);
+
+    if (!rateLimitResult.success) {
+      const response = NextResponse.json(
+        {
+          valid: false,
+          error: "Too Many Requests",
+          retryAfter: Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000),
+        },
+        { status: 429 }
+      );
+      return addRateLimitHeaders(response, rateLimitResult);
+    }
   }
 
   try {
@@ -117,7 +140,7 @@ export async function POST(request: NextRequest) {
       scopes: (keyRecord.scopes as string[]) ?? [],
     });
   } catch (error) {
-    console.error("Validate API key error:", error);
+    log.error("Validate API key error", error);
     return NextResponse.json(
       { valid: false, error: "Internal server error" },
       { status: 500 }

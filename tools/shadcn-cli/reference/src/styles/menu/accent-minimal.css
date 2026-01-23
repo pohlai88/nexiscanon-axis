@@ -1,0 +1,10 @@
+/* Menu Accent: Minimal - No background, just text color change */
+:root[data-menu-accent="minimal"] {
+  --sidebar-accent: transparent;
+  --sidebar-accent-foreground: var(--primary);
+}
+
+:root[data-menu-accent="minimal"].dark {
+  --sidebar-accent: transparent;
+  --sidebar-accent-foreground: var(--primary);
+}

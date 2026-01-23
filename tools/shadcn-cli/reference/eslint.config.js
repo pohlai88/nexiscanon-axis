@@ -1,0 +1,110 @@
+/**
+ * ESLint Config - @workspace/design-system
+ *
+ * Extends root config only. All rules defined in root eslint.config.mjs.
+ *
+ * ⚠️ IMMUTABLE: This file is protected. Do not modify without explicit approval.
+ */
+import rootConfig from "../../eslint.config.mjs";
+
+export default [
+  ...rootConfig,
+  // Node.js scripts
+  {
+    files: ["scripts/**/*.{ts,mjs,js}"],
+    languageOptions: {
+      globals: {
+        console: "readonly",
+        process: "readonly",
+        fetch: "readonly",
+        __dirname: "readonly",
+        __filename: "readonly",
+      },
+    },
+  },
+  // Browser/DOM globals for React components
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    rules: {
+      // Disable base rule in favor of @typescript-eslint version
+      "no-unused-vars": "off",
+    },
+    languageOptions: {
+      globals: {
+        window: "readonly",
+        document: "readonly",
+        HTMLDivElement: "readonly",
+        HTMLInputElement: "readonly",
+        KeyboardEvent: "readonly",
+        MouseEvent: "readonly",
+        Element: "readonly",
+        HTMLElement: "readonly",
+        Event: "readonly",
+        ResizeObserver: "readonly",
+        IntersectionObserver: "readonly",
+        MutationObserver: "readonly",
+        requestAnimationFrame: "readonly",
+        cancelAnimationFrame: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        navigator: "readonly",
+        localStorage: "readonly",
+        sessionStorage: "readonly",
+        URL: "readonly",
+        URLSearchParams: "readonly",
+        FormData: "readonly",
+        Blob: "readonly",
+        File: "readonly",
+        FileReader: "readonly",
+        Image: "readonly",
+        Audio: "readonly",
+        fetch: "readonly",
+        AbortController: "readonly",
+        AbortSignal: "readonly",
+        console: "readonly",
+        performance: "readonly",
+        getComputedStyle: "readonly",
+        matchMedia: "readonly",
+        CustomEvent: "readonly",
+        DOMRect: "readonly",
+        ClipboardEvent: "readonly",
+        DragEvent: "readonly",
+        FocusEvent: "readonly",
+        InputEvent: "readonly",
+        PointerEvent: "readonly",
+        TouchEvent: "readonly",
+        WheelEvent: "readonly",
+        AnimationEvent: "readonly",
+        TransitionEvent: "readonly",
+        crypto: "readonly",
+        alert: "readonly",
+        confirm: "readonly",
+        prompt: "readonly",
+        React: "readonly",
+        HTMLButtonElement: "readonly",
+        HTMLParagraphElement: "readonly",
+        HTMLSpanElement: "readonly",
+        HTMLTextAreaElement: "readonly",
+        HTMLSelectElement: "readonly",
+        HTMLFormElement: "readonly",
+        HTMLTableElement: "readonly",
+        HTMLTableRowElement: "readonly",
+        HTMLTableCellElement: "readonly",
+        HTMLImageElement: "readonly",
+        HTMLAnchorElement: "readonly",
+        HTMLLIElement: "readonly",
+        HTMLUListElement: "readonly",
+        HTMLOListElement: "readonly",
+        HTMLCanvasElement: "readonly",
+        HTMLVideoElement: "readonly",
+        HTMLAudioElement: "readonly",
+        MediaQueryList: "readonly",
+        MediaQueryListEvent: "readonly",
+        JSX: "readonly",
+        SVGSVGElement: "readonly",
+      },
+    },
+  },
+];

@@ -11,6 +11,7 @@ import {
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { logger } from "../logger";
 
 const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID;
 const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID;
@@ -89,7 +90,7 @@ export async function getPresignedUploadUrl(params: {
 
     return { success: true, uploadUrl, key };
   } catch (error) {
-    console.error("Get presigned upload URL error:", error);
+    logger.error("Get presigned upload URL error", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to generate URL",
@@ -120,7 +121,7 @@ export async function getPresignedDownloadUrl(params: {
 
     return { success: true, uploadUrl, key };
   } catch (error) {
-    console.error("Get presigned download URL error:", error);
+    logger.error("Get presigned download URL error", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to generate URL",
@@ -157,7 +158,7 @@ export async function uploadFile(params: {
 
     return { success: true, key };
   } catch (error) {
-    console.error("Upload file error:", error);
+    logger.error("Upload file error", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to upload",
@@ -183,7 +184,7 @@ export async function deleteFile(key: string): Promise<UploadResult> {
 
     return { success: true };
   } catch (error) {
-    console.error("Delete file error:", error);
+    logger.error("Delete file error", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to delete",

@@ -1,0 +1,15 @@
+/* Style: Mira - Pill-shaped, full radius with glow effects */
+:root[data-style="mira"] {
+  --radius: 9999px;
+  --shadow-sm: 0 0 8px -2px var(--primary);
+  --shadow: 0 0 12px -3px var(--primary);
+  --shadow-md: 0 0 20px -4px var(--primary);
+  --shadow-lg: 0 0 32px -6px var(--primary);
+}
+
+:root[data-style="mira"].dark {
+  --shadow-sm: 0 0 10px -2px var(--primary);
+  --shadow: 0 0 16px -3px var(--primary);
+  --shadow-md: 0 0 24px -4px var(--primary);
+  --shadow-lg: 0 0 40px -6px var(--primary);
+}

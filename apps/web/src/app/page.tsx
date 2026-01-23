@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-provider";
 
 const FEATURES = [
@@ -38,7 +38,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
-      <nav className="border-b border-[var(--border)]">
+      <nav className="border-b border-border">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold">
             AXIS
@@ -47,13 +47,13 @@ export default function HomePage() {
             <ThemeToggle />
             <Link
               href="/login"
-              className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors px-2"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors px-2"
             >
               Sign In
             </Link>
             <Link
               href="/register"
-              className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
             >
               Get Started
             </Link>
@@ -67,22 +67,22 @@ export default function HomePage() {
           <h1 className="text-5xl font-bold mb-6 leading-tight">
             Enterprise Resource Planning
             <br />
-            <span className="text-[var(--primary)]">for Modern Teams</span>
+            <span className="text-primary">for Modern Teams</span>
           </h1>
-          <p className="text-xl text-[var(--muted-foreground)] mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
             A multi-tenant SaaS platform built for scale. Manage your organization, 
             team, and resources in one powerful workspace.
           </p>
           <div className="flex gap-4 justify-center">
             <Link
               href="/register"
-              className="px-8 py-4 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-xl font-medium text-lg hover:opacity-90 transition-opacity"
+              className="px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg hover:opacity-90 transition-opacity"
             >
               Start for Free
             </Link>
             <Link
               href="#features"
-              className="px-8 py-4 border border-[var(--border)] rounded-xl font-medium text-lg hover:bg-[var(--muted)] transition-colors"
+              className="px-8 py-4 border border-border rounded-xl font-medium text-lg hover:bg-muted transition-colors"
             >
               Learn More
             </Link>
@@ -91,11 +91,11 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-24 px-6 bg-[var(--muted)]">
+      <section id="features" className="py-24 px-6 bg-muted">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Everything You Need</h2>
-            <p className="text-[var(--muted-foreground)] max-w-xl mx-auto">
+            <p className="text-muted-foreground max-w-xl mx-auto">
               Built-in features for managing your organization from day one.
             </p>
           </div>
@@ -104,11 +104,11 @@ export default function HomePage() {
             {FEATURES.map((feature) => (
               <div
                 key={feature.title}
-                className="p-6 bg-[var(--background)] rounded-xl border border-[var(--border)] hover:shadow-lg transition-shadow duration-300"
+                className="p-6 bg-background rounded-xl border border-border hover:shadow-lg transition-shadow duration-300"
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
                 <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-[var(--muted-foreground)] text-sm">
+                <p className="text-muted-foreground text-sm">
                   {feature.description}
                 </p>
               </div>
@@ -121,32 +121,32 @@ export default function HomePage() {
       <section className="py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-[var(--muted-foreground)] mb-10">
+          <p className="text-muted-foreground mb-10">
             Start free, upgrade when you need more.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 border border-[var(--border)] rounded-xl">
+            <div className="p-6 border border-border rounded-xl">
               <h3 className="font-semibold mb-2">Free</h3>
               <p className="text-3xl font-bold mb-4">$0</p>
-              <p className="text-sm text-[var(--muted-foreground)]">
+              <p className="text-sm text-muted-foreground">
                 Up to 3 team members
               </p>
             </div>
-            <div className="p-6 border-2 border-[var(--primary)] rounded-xl relative">
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--primary)] text-[var(--primary-foreground)] text-xs px-3 py-1 rounded-full">
+            <div className="p-6 border-2 border-primary rounded-xl relative">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full">
                 Popular
               </span>
               <h3 className="font-semibold mb-2">Professional</h3>
               <p className="text-3xl font-bold mb-4">$99<span className="text-sm font-normal">/mo</span></p>
-              <p className="text-sm text-[var(--muted-foreground)]">
+              <p className="text-sm text-muted-foreground">
                 Unlimited members
               </p>
             </div>
-            <div className="p-6 border border-[var(--border)] rounded-xl">
+            <div className="p-6 border border-border rounded-xl">
               <h3 className="font-semibold mb-2">Enterprise</h3>
               <p className="text-3xl font-bold mb-4">Custom</p>
-              <p className="text-sm text-[var(--muted-foreground)]">
+              <p className="text-sm text-muted-foreground">
                 Dedicated support
               </p>
             </div>
@@ -155,7 +155,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6 bg-[var(--primary)] text-[var(--primary-foreground)]">
+      <section className="py-24 px-6 bg-primary text-primary-foreground">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
           <p className="mb-8 opacity-90">
@@ -163,7 +163,7 @@ export default function HomePage() {
           </p>
           <Link
             href="/register"
-            className="inline-block px-8 py-4 bg-[var(--background)] text-[var(--foreground)] rounded-xl font-medium text-lg hover:opacity-90 transition-opacity"
+            className="inline-block px-8 py-4 bg-background text-foreground rounded-xl font-medium text-lg hover:opacity-90 transition-opacity"
           >
             Create Free Account
           </Link>
@@ -171,19 +171,19 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t border-[var(--border)]">
+      <footer className="py-12 px-6 border-t border-border">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-[var(--muted-foreground)]">
+          <p className="text-sm text-muted-foreground">
             © 2026 AXIS ERP. All rights reserved.
           </p>
-          <div className="flex gap-6 text-sm text-[var(--muted-foreground)]">
-            <Link href="#" className="hover:text-[var(--foreground)] transition-colors">
+          <div className="flex gap-6 text-sm text-muted-foreground">
+            <Link href="#" className="hover:text-foreground transition-colors">
               Privacy
             </Link>
-            <Link href="#" className="hover:text-[var(--foreground)] transition-colors">
+            <Link href="#" className="hover:text-foreground transition-colors">
               Terms
             </Link>
-            <Link href="#" className="hover:text-[var(--foreground)] transition-colors">
+            <Link href="#" className="hover:text-foreground transition-colors">
               Contact
             </Link>
           </div>

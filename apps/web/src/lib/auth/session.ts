@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { authConfig } from "./config";
 import { upsertUserFromAuth, type User } from "../db/users";
+import { logger } from "../logger";
 
 export interface Session {
   userId: string;
@@ -56,7 +57,7 @@ export async function getSession(): Promise<Session | null> {
       expiresAt: new Date(data.session.expiresAt),
     };
   } catch (error) {
-    console.error("Session validation error:", error);
+    logger.error("Session validation error", error);
     return null;
   }
 }
@@ -104,7 +105,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
 
     return user;
   } catch (error) {
-    console.error("Get current user error:", error);
+    logger.error("Get current user error", error);
     return null;
   }
 }

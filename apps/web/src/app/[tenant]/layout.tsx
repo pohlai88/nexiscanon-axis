@@ -7,6 +7,9 @@ import { signOutAction } from "@/lib/actions/auth";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
 import { CommandPalette, CommandPaletteTrigger } from "@/components/command-palette";
 import { ThemeToggle } from "@/components/theme-provider";
+import { SidebarNav } from "@/components/sidebar-nav";
+import { MobileSidebar } from "@/components/mobile-sidebar";
+import { tenantMenuItems } from "./menu-items";
 
 interface TenantLayoutProps {
   children: React.ReactNode;
@@ -39,6 +42,8 @@ export default async function TenantLayout({
     slug: t.tenantSlug,
     name: t.tenantName,
     role: t.role,
+    type: t.tenantType,
+    parentId: t.tenantParentId,
   }));
 
   const currentWorkspace = {
@@ -46,71 +51,46 @@ export default async function TenantLayout({
     slug: tenant.slug,
     name: tenant.name,
     role: currentMembership?.role ?? "member",
+    type: tenant.type,
+    parentId: tenant.parentId,
   };
+
+  // Convert menu items to nav sections format with resolved hrefs
+  const navSections = tenantMenuItems.map((section) => ({
+    label: section.label,
+    items: section.items.map((item) => ({
+      id: item.id,
+      title: item.title,
+      href: item.href(slug),
+    })),
+  }));
 
   return (
     <div className="min-h-screen flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[var(--muted)] border-r border-[var(--border)] flex flex-col">
+      {/* Sidebar - Mobile responsive */}
+      <MobileSidebar>
         {/* Workspace Switcher */}
-        <div className="border-b border-[var(--border)]">
+        <div className="border-b border-border">
           <WorkspaceSwitcher
             currentWorkspace={currentWorkspace}
             workspaces={workspaces}
           />
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
-          <Link
-            href={`/${slug}`}
-            className="block px-4 py-2 rounded-lg hover:bg-[var(--background)] transition-colors duration-200"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href={`/${slug}/settings`}
-            className="block px-4 py-2 rounded-lg hover:bg-[var(--background)] transition-colors duration-200"
-          >
-            Settings
-          </Link>
-          <Link
-            href={`/${slug}/settings/team`}
-            className="block px-4 py-2 rounded-lg hover:bg-[var(--background)] transition-colors duration-200"
-          >
-            Team
-          </Link>
-          <Link
-            href={`/${slug}/settings/billing`}
-            className="block px-4 py-2 rounded-lg hover:bg-[var(--background)] transition-colors duration-200"
-          >
-            Billing
-          </Link>
-          <Link
-            href={`/${slug}/settings/api-keys`}
-            className="block px-4 py-2 rounded-lg hover:bg-[var(--background)] transition-colors duration-200"
-          >
-            API Keys
-          </Link>
-          <Link
-            href={`/${slug}/settings/audit-log`}
-            className="block px-4 py-2 rounded-lg hover:bg-[var(--background)] transition-colors duration-200"
-          >
-            Audit Log
-          </Link>
-        </nav>
+        <SidebarNav sections={navSections} variant="light" />
 
         {/* User section */}
         {user && (
-          <div className="p-4 border-t border-[var(--border)]">
+          <div className="p-4 border-t border-border mt-auto">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm font-medium">
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-medium">
                 {user.name?.[0]?.toUpperCase() ?? user.email[0]?.toUpperCase() ?? "U"}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">
                   {user.name ?? user.email.split("@")[0]}
                 </p>
-                <p className="text-xs text-[var(--muted-foreground)] truncate">
+                <p className="text-xs text-muted-foreground truncate">
                   {user.email}
                 </p>
               </div>
@@ -118,31 +98,33 @@ export default async function TenantLayout({
             <form action={signOutAction}>
               <button
                 type="submit"
-                className="w-full text-left px-4 py-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--background)] rounded-lg transition-colors duration-200"
+                className="w-full text-left px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-background rounded-lg transition-colors duration-200"
               >
                 Sign Out
               </button>
             </form>
           </div>
         )}
-      </aside>
+      </MobileSidebar>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar with search */}
-        <header className="h-14 border-b border-[var(--border)] flex items-center justify-between px-8">
+        <header className="h-14 border-b border-border flex items-center justify-between px-4 lg:px-8">
+          {/* Spacer for mobile hamburger */}
+          <div className="w-10 lg:hidden" />
           <CommandPaletteTrigger />
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Link
               href="/account"
-              className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors duration-200 px-2"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 px-2 hidden sm:block"
             >
               Account
             </Link>
           </div>
         </header>
-        <main className="flex-1 p-8">{children}</main>
+        <main className="flex-1 p-4 lg:p-8 overflow-x-hidden">{children}</main>
       </div>
 
       {/* Command palette */}

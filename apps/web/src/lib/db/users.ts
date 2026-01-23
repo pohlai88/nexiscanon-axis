@@ -1,110 +1,77 @@
 /**
  * User database queries.
  *
- * Pattern: All user-related DB operations go here.
+ * Pattern: Thin wrapper around @axis/db/queries.
+ * - Uses Drizzle ORM (no raw SQL)
+ * - Types from @axis/db/schema (single source of truth)
+ * - Validation from @axis/db/validation
  *
- * Note: Local types match SQL schema. Will be replaced with @axis/db
- * imports once Drizzle schema is synced with `drizzle-kit introspect`.
+ * This file provides backward-compatible exports and
+ * injects the database client from the web app context.
  */
 
-import { query } from "./index";
-import { userRoleSchema } from "@axis/db/validation";
-import { type UserRole } from "@axis/db/schema";
+import { getDb } from "./index";
+import {
+  findUserByEmail as _findUserByEmail,
+  findUserById as _findUserById,
+  findUserByAuthSubject as _findUserByAuthSubject,
+  upsertUserFromAuth as _upsertUserFromAuth,
+  listUsers as _listUsers,
+  getUserTenantMembership as _getUserTenantMembership,
+  getUserTenants as _getUserTenants,
+  getTenantMembers as _getTenantMembers,
+  addUserToTenant as _addUserToTenant,
+  removeUserFromTenant as _removeUserFromTenant,
+  getUserTenantCount as _getUserTenantCount,
+  verifyTenantAccess as _verifyTenantAccess,
+} from "@axis/db/queries";
 
-// Re-export role schema for validation
-export { userRoleSchema, type UserRole };
+// Re-export types from @axis/db (single source of truth)
+export type { User, NewUser, TenantUser, NewTenantUser, UserRole } from "@axis/db/schema";
 
 /**
- * User type matching the SQL schema.
+ * TenantMembership - tenant info with user's role.
+ * Used by getUserTenants() - shows which tenants a user belongs to.
  */
-export interface User {
-  id: string;
-  email: string;
-  name: string | null;
-  avatarUrl: string | null;
-  emailVerified: boolean;
-  authSubjectId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export type { TenantMembership } from "@axis/db/queries";
 
 /**
- * Tenant membership type.
+ * Backward-compatible alias for TenantUser.
+ * Used by getTenantMembers() - the raw junction table record.
+ * @deprecated Use TenantUser instead
  */
-export interface TenantMembership {
-  tenantId: string;
-  userId: string;
-  role: UserRole;
-  acceptedAt: Date | null;
-  createdAt: Date;
-}
+export type { TenantUser as TenantUserMembership } from "@axis/db/schema";
+
+// Re-export validation schema for backward compatibility
+export { userRoleSchema } from "@axis/db/validation";
+
+// ============================================================================
+// User Query Functions (inject db client)
+// ============================================================================
 
 /**
  * Find user by email.
  */
-export async function findUserByEmail(email: string): Promise<User | null> {
-  const result = await query(async (sql) => {
-    return sql`
-      SELECT id, email, name, avatar_url, email_verified, auth_subject_id, created_at, updated_at
-      FROM users
-      WHERE email = ${email}
-      LIMIT 1
-    `;
-  });
-
-  const row = result[0];
-  if (!row) {
-    return null;
-  }
-
-  return mapRowToUser(row);
-}
-
-/**
- * Find user by Neon Auth subject ID.
- */
-export async function findUserByAuthSubject(authSubjectId: string): Promise<User | null> {
-  const result = await query(async (sql) => {
-    return sql`
-      SELECT id, email, name, avatar_url, email_verified, auth_subject_id, created_at, updated_at
-      FROM users
-      WHERE auth_subject_id = ${authSubjectId}
-      LIMIT 1
-    `;
-  });
-
-  const row = result[0];
-  if (!row) {
-    return null;
-  }
-
-  return mapRowToUser(row);
+export async function findUserByEmail(email: string) {
+  return _findUserByEmail(getDb(), email);
 }
 
 /**
  * Find user by ID.
  */
-export async function findUserById(id: string): Promise<User | null> {
-  const result = await query(async (sql) => {
-    return sql`
-      SELECT id, email, name, avatar_url, email_verified, auth_subject_id, created_at, updated_at
-      FROM users
-      WHERE id = ${id}::uuid
-      LIMIT 1
-    `;
-  });
-
-  const row = result[0];
-  if (!row) {
-    return null;
-  }
-
-  return mapRowToUser(row);
+export async function findUserById(id: string) {
+  return _findUserById(getDb(), id);
 }
 
 /**
- * Create or update user from Neon Auth.
- * Upserts based on auth_subject_id.
+ * Find user by Neon Auth subject ID.
+ */
+export async function findUserByAuthSubject(authSubjectId: string) {
+  return _findUserByAuthSubject(getDb(), authSubjectId);
+}
+
+/**
+ * Create or update user from Neon Auth (upsert).
  */
 export async function upsertUserFromAuth(data: {
   authSubjectId: string;
@@ -112,56 +79,43 @@ export async function upsertUserFromAuth(data: {
   name?: string | null;
   avatarUrl?: string | null;
   emailVerified?: boolean;
-}): Promise<User> {
-  const result = await query(async (sql) => {
-    return sql`
-      INSERT INTO users (auth_subject_id, email, name, avatar_url, email_verified)
-      VALUES (${data.authSubjectId}, ${data.email}, ${data.name ?? null}, ${data.avatarUrl ?? null}, ${data.emailVerified ?? false})
-      ON CONFLICT (auth_subject_id) DO UPDATE SET
-        email = EXCLUDED.email,
-        name = COALESCE(EXCLUDED.name, users.name),
-        avatar_url = COALESCE(EXCLUDED.avatar_url, users.avatar_url),
-        email_verified = EXCLUDED.email_verified,
-        updated_at = now()
-      RETURNING id, email, name, avatar_url, email_verified, auth_subject_id, created_at, updated_at
-    `;
-  });
-
-  const row = result[0];
-  if (!row) {
-    throw new Error("Failed to upsert user");
-  }
-  return mapRowToUser(row);
+}) {
+  return _upsertUserFromAuth(getDb(), data);
 }
+
+/**
+ * List all users with pagination (admin only).
+ */
+export async function listUsers(options?: {
+  limit?: number;
+  offset?: number;
+}) {
+  return _listUsers(getDb(), options);
+}
+
+// ============================================================================
+// Tenant Membership Query Functions
+// ============================================================================
 
 /**
  * Get user's membership in a tenant.
  */
-export async function getUserTenantMembership(
-  userId: string,
-  tenantId: string
-): Promise<TenantMembership | null> {
-  const result = await query(async (sql) => {
-    return sql`
-      SELECT tenant_id, user_id, role, accepted_at, created_at
-      FROM tenant_users
-      WHERE user_id = ${userId}::uuid AND tenant_id = ${tenantId}::uuid
-      LIMIT 1
-    `;
-  });
+export async function getUserTenantMembership(userId: string, tenantId: string) {
+  return _getUserTenantMembership(getDb(), userId, tenantId);
+}
 
-  const row = result[0];
-  if (!row) {
-    return null;
-  }
+/**
+ * Get user's tenants with role.
+ */
+export async function getUserTenants(userId: string) {
+  return _getUserTenants(getDb(), userId);
+}
 
-  return {
-    tenantId: row.tenant_id as string,
-    userId: row.user_id as string,
-    role: row.role as TenantMembership["role"],
-    acceptedAt: row.accepted_at ? new Date(row.accepted_at as string) : null,
-    createdAt: new Date(row.created_at as string),
-  };
+/**
+ * Get all members of a tenant.
+ */
+export async function getTenantMembers(tenantId: string) {
+  return _getTenantMembers(getDb(), tenantId);
 }
 
 /**
@@ -170,122 +124,28 @@ export async function getUserTenantMembership(
 export async function addUserToTenant(data: {
   userId: string;
   tenantId: string;
-  role: TenantMembership["role"];
-}): Promise<TenantMembership> {
-  const result = await query(async (sql) => {
-    return sql`
-      INSERT INTO tenant_users (user_id, tenant_id, role, accepted_at)
-      VALUES (${data.userId}::uuid, ${data.tenantId}::uuid, ${data.role}, now())
-      ON CONFLICT (tenant_id, user_id) DO UPDATE SET
-        role = EXCLUDED.role,
-        updated_at = now()
-      RETURNING tenant_id, user_id, role, accepted_at, created_at
-    `;
-  });
-
-  const row = result[0];
-  if (!row) {
-    throw new Error("Failed to add user to tenant");
-  }
-  return {
-    tenantId: row.tenant_id as string,
-    userId: row.user_id as string,
-    role: row.role as TenantMembership["role"],
-    acceptedAt: row.accepted_at ? new Date(row.accepted_at as string) : null,
-    createdAt: new Date(row.created_at as string),
-  };
-}
-
-/**
- * Get all members of a tenant.
- */
-export async function getTenantMembers(tenantId: string): Promise<
-  Array<{
-    user: User;
-    membership: TenantMembership;
-  }>
-> {
-  const result = await query(async (sql) => {
-    return sql`
-      SELECT
-        u.id, u.email, u.name, u.avatar_url, u.email_verified, u.auth_subject_id, u.created_at, u.updated_at,
-        tu.tenant_id, tu.user_id, tu.role, tu.accepted_at, tu.created_at as membership_created_at
-      FROM tenant_users tu
-      JOIN users u ON u.id = tu.user_id
-      WHERE tu.tenant_id = ${tenantId}::uuid
-      ORDER BY tu.created_at ASC
-    `;
-  });
-
-  return result.map((row) => ({
-    user: mapRowToUser(row),
-    membership: {
-      tenantId: row.tenant_id as string,
-      userId: row.user_id as string,
-      role: row.role as TenantMembership["role"],
-      acceptedAt: row.accepted_at ? new Date(row.accepted_at as string) : null,
-      createdAt: new Date(row.membership_created_at as string),
-    },
-  }));
-}
-
-/**
- * Get user's tenants.
- */
-export async function getUserTenants(userId: string): Promise<
-  Array<{
-    tenantId: string;
-    tenantSlug: string;
-    tenantName: string;
-    role: TenantMembership["role"];
-  }>
-> {
-  const result = await query(async (sql) => {
-    return sql`
-      SELECT t.id, t.slug, t.name, tu.role
-      FROM tenant_users tu
-      JOIN tenants t ON t.id = tu.tenant_id
-      WHERE tu.user_id = ${userId}::uuid AND t.status = 'active'
-      ORDER BY tu.created_at ASC
-    `;
-  });
-
-  return result.map((row) => ({
-    tenantId: row.id as string,
-    tenantSlug: row.slug as string,
-    tenantName: row.name as string,
-    role: row.role as TenantMembership["role"],
-  }));
+  role: "owner" | "admin" | "member" | "viewer";
+}) {
+  return _addUserToTenant(getDb(), data);
 }
 
 /**
  * Remove user from tenant.
  */
-export async function removeUserFromTenant(
-  userId: string,
-  tenantId: string
-): Promise<boolean> {
-  const result = await query(async (sql) => {
-    return sql`
-      DELETE FROM tenant_users
-      WHERE user_id = ${userId}::uuid AND tenant_id = ${tenantId}::uuid
-      RETURNING 1
-    `;
-  });
-
-  return result.length > 0;
+export async function removeUserFromTenant(userId: string, tenantId: string) {
+  return _removeUserFromTenant(getDb(), userId, tenantId);
 }
 
-// Helper to map DB row to User type
-function mapRowToUser(row: Record<string, unknown>): User {
-  return {
-    id: row.id as string,
-    email: row.email as string,
-    name: row.name as string | null,
-    avatarUrl: row.avatar_url as string | null,
-    emailVerified: row.email_verified as boolean,
-    authSubjectId: row.auth_subject_id as string | null,
-    createdAt: new Date(row.created_at as string),
-    updatedAt: new Date(row.updated_at as string),
-  };
+/**
+ * Get user's tenant count.
+ */
+export async function getUserTenantCount(userId: string) {
+  return _getUserTenantCount(getDb(), userId);
+}
+
+/**
+ * Verify user has access to tenant.
+ */
+export async function verifyTenantAccess(tenantId: string, userId: string) {
+  return _verifyTenantAccess(getDb(), tenantId, userId);
 }

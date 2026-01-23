@@ -84,15 +84,15 @@ export default async function AuditLogPage({
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-2">Audit Log</h1>
-        <p className="text-[var(--muted-foreground)]">
+        <p className="text-muted-foreground">
           View security and activity logs for your organization
         </p>
       </div>
 
       {/* Audit Log Table */}
-      <div className="border border-[var(--border)] rounded-lg overflow-hidden">
+      <div className="border border-border rounded-lg overflow-hidden">
         <table className="w-full">
-          <thead className="bg-[var(--muted)]">
+          <thead className="bg-muted">
             <tr>
               <th className="text-left px-6 py-3 text-sm font-medium">Time</th>
               <th className="text-left px-6 py-3 text-sm font-medium">User</th>
@@ -110,7 +110,7 @@ export default async function AuditLogPage({
               <tr>
                 <td
                   colSpan={5}
-                  className="px-6 py-8 text-center text-[var(--muted-foreground)]"
+                  className="px-6 py-8 text-center text-muted-foreground"
                 >
                   No audit logs yet.
                 </td>
@@ -119,7 +119,7 @@ export default async function AuditLogPage({
               auditLogs.map((log) => (
                 <tr
                   key={log.id as string}
-                  className="border-b border-[var(--border)] last:border-0"
+                  className="border-b border-border last:border-0"
                 >
                   <td className="px-6 py-4 text-sm">
                     {new Date(log.created_at as string).toLocaleString()}
@@ -129,7 +129,7 @@ export default async function AuditLogPage({
                       <p className="text-sm font-medium">
                         {(log.user_name as string) ?? "System"}
                       </p>
-                      <p className="text-xs text-[var(--muted-foreground)]">
+                      <p className="text-xs text-muted-foreground">
                         {log.user_email as string}
                       </p>
                     </div>
@@ -141,7 +141,7 @@ export default async function AuditLogPage({
                       {log.action as string}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-[var(--muted-foreground)]">
+                  <td className="px-6 py-4 text-sm text-muted-foreground">
                     {log.resource_type && (
                       <span>
                         {log.resource_type as string}
@@ -153,7 +153,7 @@ export default async function AuditLogPage({
                       </span>
                     )}
                   </td>
-                  <td className="px-6 py-4 text-sm text-[var(--muted-foreground)] font-mono">
+                  <td className="px-6 py-4 text-sm text-muted-foreground font-mono">
                     {log.ip_address as string}
                   </td>
                 </tr>
@@ -166,7 +166,7 @@ export default async function AuditLogPage({
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-sm text-[var(--muted-foreground)]">
+          <p className="text-sm text-muted-foreground">
             Showing {offset + 1}-{Math.min(offset + ITEMS_PER_PAGE, totalCount)}{" "}
             of {totalCount} entries
           </p>
@@ -174,7 +174,7 @@ export default async function AuditLogPage({
             {currentPage > 1 && (
               <a
                 href={`/${slug}/settings/audit-log?page=${currentPage - 1}`}
-                className="px-3 py-1 border border-[var(--border)] rounded hover:bg-[var(--muted)] transition-colors duration-200"
+                className="px-3 py-1 border border-border rounded hover:bg-muted transition-colors duration-200"
               >
                 Previous
               </a>
@@ -185,7 +185,7 @@ export default async function AuditLogPage({
             {currentPage < totalPages && (
               <a
                 href={`/${slug}/settings/audit-log?page=${currentPage + 1}`}
-                className="px-3 py-1 border border-[var(--border)] rounded hover:bg-[var(--muted)] transition-colors duration-200"
+                className="px-3 py-1 border border-border rounded hover:bg-muted transition-colors duration-200"
               >
                 Next
               </a>

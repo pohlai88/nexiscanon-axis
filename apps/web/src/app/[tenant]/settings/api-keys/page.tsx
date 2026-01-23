@@ -47,21 +47,21 @@ export default async function ApiKeysPage({ params }: ApiKeysPageProps) {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-2">API Keys</h1>
-        <p className="text-[var(--muted-foreground)]">
+        <p className="text-muted-foreground">
           Manage API keys for programmatic access
         </p>
       </div>
 
       {/* Create new key */}
-      <div className="bg-[var(--muted)] rounded-lg p-6 mb-8">
+      <div className="bg-muted rounded-lg p-6 mb-8">
         <h2 className="text-lg font-semibold mb-4">Create New API Key</h2>
         <CreateKeyForm tenantSlug={slug} />
       </div>
 
       {/* API Keys list */}
-      <div className="border border-[var(--border)] rounded-lg overflow-hidden">
+      <div className="border border-border rounded-lg overflow-hidden">
         <table className="w-full">
-          <thead className="bg-[var(--muted)]">
+          <thead className="bg-muted">
             <tr>
               <th className="text-left px-6 py-3 text-sm font-medium">Name</th>
               <th className="text-left px-6 py-3 text-sm font-medium">Key</th>
@@ -79,7 +79,7 @@ export default async function ApiKeysPage({ params }: ApiKeysPageProps) {
               <tr>
                 <td
                   colSpan={5}
-                  className="px-6 py-8 text-center text-[var(--muted-foreground)]"
+                  className="px-6 py-8 text-center text-muted-foreground"
                 >
                   No API keys yet. Create one to get started.
                 </td>

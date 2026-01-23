@@ -2,6 +2,7 @@
  * Upload API route.
  *
  * Pattern: API route for generating presigned upload URLs.
+ * Protected by Arcjet rate limiting.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -9,8 +10,25 @@ import { getCurrentUser } from "@/lib/auth/session";
 import { findTenantBySlug } from "@/lib/db/tenants";
 import { getUserTenantMembership } from "@/lib/db/users";
 import { getPresignedUploadUrl } from "@/lib/storage";
+import { apiProtection, isArcjetConfigured } from "@/lib/arcjet";
+import { logger } from "@/lib/logger";
 
 export async function POST(request: NextRequest) {
+  const requestId = request.headers.get("x-request-id") ?? "unknown";
+  const log = logger.child({ requestId, endpoint: "/api/upload" });
+
+  // Arcjet protection
+  if (isArcjetConfigured()) {
+    const decision = await apiProtection.protect(request);
+    if (decision.isDenied()) {
+      log.warn("Upload request denied by Arcjet", { reason: decision.reason });
+      if (decision.reason.isRateLimit()) {
+        return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+      }
+      return NextResponse.json({ error: "Request denied" }, { status: 403 });
+    }
+  }
+
   try {
     const user = await getCurrentUser();
     if (!user) {
@@ -95,7 +113,7 @@ export async function POST(request: NextRequest) {
       key: result.key,
     });
   } catch (error) {
-    console.error("Upload API error:", error);
+    log.error("Upload API error", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Activity feed component.
  * 
  * Pattern: Shows recent activity in a tenant.
@@ -24,7 +24,7 @@ export function ActivityFeed({
 }: ActivityFeedProps) {
   if (activities.length === 0) {
     return (
-      <div className="text-center py-8 text-[var(--muted-foreground)]">
+      <div className="text-center py-8 text-muted-foreground">
         {emptyMessage}
       </div>
     );
@@ -69,8 +69,8 @@ function ActivityItem({ activity }: { activity: ActivityItem }) {
   const timeAgo = getTimeAgo(activity.createdAt);
 
   return (
-    <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-[var(--muted)] transition-colors duration-200">
-      <div className="w-8 h-8 rounded-full bg-[var(--background)] flex items-center justify-center text-sm">
+    <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors duration-200">
+      <div className="w-8 h-8 rounded-full bg-background flex items-center justify-center text-sm">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
@@ -78,15 +78,15 @@ function ActivityItem({ activity }: { activity: ActivityItem }) {
           <span className="font-medium">
             {activity.actorName ?? activity.actorEmail.split("@")[0]}
           </span>{" "}
-          <span className="text-[var(--muted-foreground)]">{label}</span>
+          <span className="text-muted-foreground">{label}</span>
           {activity.resourceType && (
-            <span className="text-[var(--muted-foreground)]">
+            <span className="text-muted-foreground">
               {" "}
               ({activity.resourceType})
             </span>
           )}
         </p>
-        <p className="text-xs text-[var(--muted-foreground)]">{timeAgo}</p>
+        <p className="text-xs text-muted-foreground">{timeAgo}</p>
       </div>
     </div>
   );

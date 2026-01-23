@@ -1,4 +1,4 @@
-import { redirect, notFound } from "next/navigation";
+﻿import { redirect, notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth/session";
 import { query } from "@/lib/db";
 import { addUserToTenant } from "@/lib/db/users";
@@ -33,7 +33,7 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
     return (
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-2">Invalid Invitation</h1>
-        <p className="text-[var(--muted-foreground)]">
+        <p className="text-muted-foreground">
           This invitation link is invalid or has expired.
         </p>
       </div>
@@ -52,11 +52,11 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
     return (
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-2">Email Mismatch</h1>
-        <p className="text-[var(--muted-foreground)] mb-4">
+        <p className="text-muted-foreground mb-4">
           This invitation was sent to {invitation.email as string}.
           You're signed in as {user.email}.
         </p>
-        <p className="text-sm text-[var(--muted-foreground)]">
+        <p className="text-sm text-muted-foreground">
           Please sign out and sign in with the correct account.
         </p>
       </div>

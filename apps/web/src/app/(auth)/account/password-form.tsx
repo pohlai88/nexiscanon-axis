@@ -67,7 +67,7 @@ export function PasswordForm() {
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
           required
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
           disabled={isUpdating}
         />
       </div>
@@ -83,7 +83,7 @@ export function PasswordForm() {
           onChange={(e) => setNewPassword(e.target.value)}
           required
           minLength={8}
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
           disabled={isUpdating}
         />
       </div>
@@ -99,7 +99,7 @@ export function PasswordForm() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
           minLength={8}
-          className="w-full px-4 py-2 border border-[var(--border)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+          className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
           disabled={isUpdating}
         />
       </div>
@@ -107,7 +107,7 @@ export function PasswordForm() {
       <button
         type="submit"
         disabled={isUpdating}
-        className="px-4 py-2 bg-[var(--primary)] text-[var(--primary-foreground)] rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
+        className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity duration-200 disabled:opacity-50"
       >
         {isUpdating ? "Changing..." : "Change Password"}
       </button>
