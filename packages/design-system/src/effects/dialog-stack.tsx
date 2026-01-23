@@ -12,9 +12,9 @@ import {
 import type {
   Dispatch,
   HTMLAttributes,
+  MouseEvent,
   MouseEventHandler,
   ReactElement,
-  ReactNode,
   SetStateAction,
 } from "react"
 import * as Portal from "@radix-ui/react-portal"
@@ -154,7 +154,7 @@ export function DialogStackTrigger({
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     context.setIsOpen(true)
-    onClick?.(e as any)
+    onClick?.(e as MouseEvent<HTMLButtonElement>)
   }
 
   if (asChild && isValidElement(children)) {

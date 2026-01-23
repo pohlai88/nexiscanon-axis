@@ -1,0 +1,262 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "axis",
+  "homepage": "https://axis.nexuscanon.com",
+  "items": [
+    {
+      "name": "command-k",
+      "type": "registry:block",
+      "title": "Command K (Quorum)",
+      "description": "Global command palette with fuzzy search, keyboard navigation, and AI-powered suggestions for Quorum kernel operations",
+      "categories": [
+        "quorum",
+        "analysis",
+        "navigation"
+      ]
+    },
+    {
+      "name": "six-w1h-manifest",
+      "type": "registry:block",
+      "title": "6W1H Manifest (Quorum)",
+      "description": "Displays immutable 6W1H contextual information (Who, What, When, Where, Why, Which, How) per Nexus Doctrine",
+      "categories": [
+        "quorum",
+        "analysis",
+        "audit"
+      ]
+    },
+    {
+      "name": "exception-hunter",
+      "type": "registry:block",
+      "title": "Exception Hunter (Quorum)",
+      "description": "AI-powered exception detection and analysis with severity classification, suggested actions, and trend visualization",
+      "categories": [
+        "quorum",
+        "analysis",
+        "ai"
+      ]
+    },
+    {
+      "name": "drilldown-dashboard",
+      "type": "registry:block",
+      "title": "Drilldown Dashboard (Quorum)",
+      "description": "Interactive KPI dashboard with hierarchical drill-down navigation, sparklines, and dimension-based filtering",
+      "categories": [
+        "quorum",
+        "analysis",
+        "dashboard"
+      ]
+    },
+    {
+      "name": "trend-analysis-widget",
+      "type": "registry:block",
+      "title": "Trend Analysis Widget (Quorum)",
+      "description": "Multi-period trend comparison with anomaly highlighting, AI-generated insights, and configurable metrics",
+      "categories": [
+        "quorum",
+        "analysis",
+        "charts"
+      ]
+    },
+    {
+      "name": "summit-button",
+      "type": "registry:block",
+      "title": "SUMMIT Button (Cobalt)",
+      "description": "Multi-step workflow button implementing S.U.M.M.I.T. protocol (Save, Upload, Message, Migrate, Integrate, Terminate)",
+      "categories": [
+        "cobalt",
+        "execution",
+        "workflow"
+      ]
+    },
+    {
+      "name": "predictive-form",
+      "type": "registry:block",
+      "title": "Predictive Form (Cobalt)",
+      "description": "AI-powered form with field prediction, auto-completion, validation, and context-aware suggestions",
+      "categories": [
+        "cobalt",
+        "execution",
+        "forms",
+        "ai"
+      ]
+    },
+    {
+      "name": "crud-sap-interface",
+      "type": "registry:block",
+      "title": "CRUD-SAP Interface (Cobalt)",
+      "description": "Unified CRUD operations interface with global search, inline editing, AI-predicted actions, and pagination",
+      "categories": [
+        "cobalt",
+        "execution",
+        "data-management"
+      ]
+    },
+    {
+      "name": "autofill-engine",
+      "type": "registry:block",
+      "title": "Autofill Engine (Cobalt)",
+      "description": "Context-aware field population with AI suggestions, confidence indicators, and one-click autofill",
+      "categories": [
+        "cobalt",
+        "execution",
+        "ai",
+        "forms"
+      ]
+    },
+    {
+      "name": "danger-zone-indicator",
+      "type": "registry:block",
+      "title": "Danger Zone Indicator (Audit)",
+      "description": "Policy violation warning system with severity levels, violation details, and override workflow",
+      "categories": [
+        "audit",
+        "compliance",
+        "alerts"
+      ]
+    },
+    {
+      "name": "audit-trail-viewer",
+      "type": "registry:block",
+      "title": "Audit Trail Viewer (Audit)",
+      "description": "Comprehensive audit log viewer with filtering, diff comparison, export, and tamper-proof verification",
+      "categories": [
+        "audit",
+        "compliance",
+        "logging"
+      ]
+    },
+    {
+      "name": "risk-score-display",
+      "type": "registry:block",
+      "title": "Risk Score Display (Audit)",
+      "description": "Real-time risk assessment with gauge visualization, contributing factors breakdown, and recommendations",
+      "categories": [
+        "audit",
+        "compliance",
+        "risk"
+      ]
+    },
+    {
+      "name": "policy-override-record",
+      "type": "registry:block",
+      "title": "Policy Override Record (Audit)",
+      "description": "Documents policy overrides with justification, evidence attachment, approvals, and immutable record creation",
+      "categories": [
+        "audit",
+        "compliance",
+        "documentation"
+      ]
+    },
+    {
+      "name": "ar-aging-table",
+      "type": "registry:block",
+      "title": "AR Aging Table (ERP)",
+      "description": "Accounts Receivable aging analysis with bucket breakdown, customer details, and collection status",
+      "categories": [
+        "erp",
+        "accounting",
+        "receivables"
+      ]
+    },
+    {
+      "name": "ap-aging-table",
+      "type": "registry:block",
+      "title": "AP Aging Table (ERP)",
+      "description": "Accounts Payable aging analysis with vendor details, payment scheduling, and cash flow projection",
+      "categories": [
+        "erp",
+        "accounting",
+        "payables"
+      ]
+    },
+    {
+      "name": "inventory-valuation-card",
+      "type": "registry:block",
+      "title": "Inventory Valuation Card (ERP)",
+      "description": "Stock valuation display with costing method, stock level indicators, and reorder alerts",
+      "categories": [
+        "erp",
+        "accounting",
+        "inventory"
+      ]
+    },
+    {
+      "name": "trial-balance-table",
+      "type": "registry:block",
+      "title": "Trial Balance Table (ERP)",
+      "description": "GL trial balance with debit/credit columns, balance verification, period comparison, and drill-through",
+      "categories": [
+        "erp",
+        "accounting",
+        "general-ledger"
+      ]
+    },
+    {
+      "name": "reconciliation-widget",
+      "type": "registry:block",
+      "title": "Reconciliation Widget (ERP)",
+      "description": "Subledger to GL reconciliation with difference highlighting, auto-match suggestions, and adjustment posting",
+      "categories": [
+        "erp",
+        "accounting",
+        "reconciliation"
+      ]
+    },
+    {
+      "name": "approval-queue",
+      "type": "registry:block",
+      "title": "Approval Queue (AFANDA)",
+      "description": "Hierarchical approval workflow with SLA timers, bulk actions, comments, and delegation support",
+      "categories": [
+        "afanda",
+        "collaboration",
+        "workflow"
+      ]
+    },
+    {
+      "name": "sharing-board",
+      "type": "registry:block",
+      "title": "Sharing Board (AFANDA)",
+      "description": "Collaborative sharing board with permissions, comments, version tracking, and real-time presence",
+      "categories": [
+        "afanda",
+        "collaboration",
+        "sharing"
+      ]
+    },
+    {
+      "name": "escalation-ladder",
+      "type": "registry:block",
+      "title": "Escalation Ladder (AFANDA)",
+      "description": "Automatic escalation paths with SLA timers, contact methods, and manual escalation triggers",
+      "categories": [
+        "afanda",
+        "collaboration",
+        "escalation"
+      ]
+    },
+    {
+      "name": "consultation-thread",
+      "type": "registry:block",
+      "title": "Consultation Thread (AFANDA)",
+      "description": "Structured discussion threads with voting, mentions, canonical outcome recording, and expert tagging",
+      "categories": [
+        "afanda",
+        "collaboration",
+        "discussion"
+      ]
+    },
+    {
+      "name": "read-receipt-system",
+      "type": "registry:block",
+      "title": "Read Receipt System (AFANDA)",
+      "description": "Document view tracking with acknowledgment requirements, reminders, and accountability reporting",
+      "categories": [
+        "afanda",
+        "collaboration",
+        "tracking"
+      ]
+    }
+  ]
+}

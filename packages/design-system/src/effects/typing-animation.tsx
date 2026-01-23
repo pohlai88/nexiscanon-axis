@@ -1,5 +1,6 @@
 "use client"
 
+import type * as React from "react"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion, useInView } from "motion/react"
 import type { MotionProps } from "motion/react"

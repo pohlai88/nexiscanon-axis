@@ -1,3 +1,6 @@
+// === Shared Types (avoids duplicate exports) ===
+export * from "./types"
+
 // === Sidebar Blocks ===
 export * from "./sidebars/app-sidebar-01"
 export * from "./sidebars/collapsible-sidebar-01"
@@ -140,3 +143,40 @@ export * from "./command/command-palette-01"
 
 // === Notification Blocks ===
 export * from "./notifications/notification-center-01"
+
+// ============================================================================
+// AXIS Canonical Blocks (A01-CANONICAL.md aligned)
+// ============================================================================
+
+// === Quorum Kernel Blocks (A01 §4 — White Collar / Analysis) ===
+export * from "./quorum/command-k"
+export * from "./quorum/six-w1h-manifest"
+export * from "./quorum/exception-hunter"
+export * from "./quorum/drilldown-dashboard"
+export * from "./quorum/trend-analysis-widget"
+
+// === Cobalt Kernel Blocks (A01 §4 — Blue Collar / Execution) ===
+export * from "./cobalt/summit-button"
+export * from "./cobalt/predictive-form"
+export * from "./cobalt/crud-sap-interface"
+export * from "./cobalt/autofill-engine"
+
+// === Audit Blocks (A01 §5 — Nexus Doctrine / 6W1H) ===
+export * from "./audit/danger-zone-indicator"
+export * from "./audit/audit-trail-viewer"
+export * from "./audit/risk-score-display"
+export * from "./audit/policy-override-record"
+
+// === ERP Domain Blocks (A01 §3 — Three Pillars) ===
+export * from "./erp/ar-aging-table"
+export * from "./erp/ap-aging-table"
+export * from "./erp/inventory-valuation-card"
+export * from "./erp/trial-balance-table"
+export * from "./erp/reconciliation-widget"
+
+// === AFANDA Blocks (A01 §8 — Unified Board) ===
+export * from "./afanda/approval-queue"
+export * from "./afanda/sharing-board"
+export * from "./afanda/escalation-ladder"
+export * from "./afanda/consultation-thread"
+export * from "./afanda/read-receipt-system"

@@ -140,7 +140,7 @@ function Calendar({
             />
           )
         },
-        Chevron: ({ className, orientation, ...props }) => {
+        Chevron: ({ className: _className, orientation, ..._props }) => {
           if (orientation === "left") {
             return (
               <ChevronLeft />

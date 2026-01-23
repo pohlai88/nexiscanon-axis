@@ -39,7 +39,15 @@
     "axis:setup": "tsx scripts/setup.ts",
     "axis:seed": "tsx scripts/seed.ts",
     "axis:dev": "pnpm dev --filter @axis/web",
-    "axis:build": "pnpm build --filter @axis/web"
+    "axis:build": "pnpm build --filter @axis/web",
+    "css:dev": "pnpm --filter @workspace/design-system css:dev",
+    "css:build": "pnpm --filter @workspace/design-system css:build",
+    "validate:imports": "tsx scripts/validate-imports.ts",
+    "validate:tokens": "tsx scripts/validate-semantic-tokens.ts",
+    "validate:no-local-ui": "bash scripts/check-no-local-ui-components.sh",
+    "validate:all": "pnpm validate:imports && pnpm validate:tokens && pnpm validate:no-local-ui",
+    "report:design-system": "tsx scripts/generate-design-system-report.ts",
+    "prepare": "husky"
   },
   "packageManager": "pnpm@9.15.4",
   "dependencies": {
@@ -70,6 +78,28 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "eslint-plugin-design-system": "workspace:*",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "globals": "^17.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "start-server-and-test": "catalog:"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "packages/design-system/src/**/*.{ts,tsx}": [
+      "pnpm --filter @workspace/design-system check-types",
+      "pnpm --filter @workspace/design-system lint --fix",
+      "prettier --write"
+    ],
+    "**/*.css": [
+      "prettier --write"
+    ],
+    "**/*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

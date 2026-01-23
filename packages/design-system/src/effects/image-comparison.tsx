@@ -1,7 +1,8 @@
 "use client"
 
+import type * as React from "react"
 import { useState, createContext, useContext } from "react"
-import type { ReactNode, CSSProperties } from "react"
+import type { ReactNode } from "react"
 import {
   motion,
   useMotionValue,

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 "use client"
 
 import { useEffect, useRef, type RefObject } from "react"

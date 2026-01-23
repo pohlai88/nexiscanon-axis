@@ -34,7 +34,11 @@
     "lint": "eslint .",
     "check-types": "tsc --noEmit",
     "format:write": "prettier --write \"**/*.{ts,tsx}\" --cache",
-    "format:check": "prettier --check \"**/*.{ts,tsx}\" --cache"
+    "format:check": "prettier --check \"**/*.{ts,tsx}\" --cache",
+    "css:dev": "@tailwindcss/cli -i ./src/styles/globals.css -o ./dist/output.css --watch",
+    "css:build": "@tailwindcss/cli -i ./src/styles/globals.css -o ./dist/output.css --minify",
+    "registry:build": "node scripts/build-registry.mjs",
+    "registry:validate": "node -e \"const r = require('./registry.json'); console.log('Registry valid:', r.items.length, 'items')\""
   },
   "dependencies": {
     "@base-ui/react": "1.1.0",

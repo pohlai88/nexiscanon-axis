@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Minus, Plus, Trash2, X } from "lucide-react"
+import { Minus, Plus, X } from "lucide-react"
 import { Button } from "@/components/button"
 import {
   Card,

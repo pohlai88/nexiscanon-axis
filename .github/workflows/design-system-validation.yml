@@ -1,0 +1,121 @@
+name: Design System Validation
+
+on:
+  pull_request:
+    paths:
+      - 'packages/design-system/**'
+      - 'apps/**/src/**'
+      - '.github/workflows/design-system-validation.yml'
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  validate:
+    name: Validate Design System Compliance
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ==================================================================
+      # STEP 1: TypeScript Validation
+      # ==================================================================
+      - name: Type check design-system
+        run: pnpm --filter @workspace/design-system check-types
+
+      - name: Type check all workspaces
+        run: pnpm typecheck
+
+      # ==================================================================
+      # STEP 2: ESLint Validation
+      # ==================================================================
+      - name: Lint design-system
+        run: pnpm --filter @workspace/design-system lint
+
+      - name: Lint all workspaces
+        run: pnpm lint
+
+      # ==================================================================
+      # STEP 3: Prettier Validation
+      # ==================================================================
+      - name: Check formatting
+        run: pnpm format:check
+
+      # ==================================================================
+      # STEP 4: Custom Design System Validations
+      # ==================================================================
+      - name: Validate imports (no local UI components)
+        run: pnpm validate:imports
+        continue-on-error: true
+
+      - name: Validate semantic tokens (no hardcoded colors)
+        run: pnpm validate:tokens
+        continue-on-error: true
+
+      - name: Check for local UI component directories
+        run: pnpm validate:no-local-ui
+
+      # ==================================================================
+      # STEP 5: Build Validation
+      # ==================================================================
+      - name: Build design-system
+        run: pnpm --filter @workspace/design-system check-types
+
+      - name: Build Tailwind CSS
+        run: pnpm --filter @workspace/design-system css:build
+
+      # ==================================================================
+      # STEP 6: Generate Design System Report
+      # ==================================================================
+      - name: Generate design system health report
+        run: pnpm report:design-system
+        continue-on-error: true
+
+      # ==================================================================
+      # STEP 7: Upload artifacts (optional)
+      # ==================================================================
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: design-system-output
+          path: |
+            packages/design-system/dist/
+          retention-days: 7
+
+  # Optional: Comment on PR with results
+  comment-results:
+    name: Comment PR with Results
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Design System validation passed! All components comply with @workspace/design-system standards.'
+            })

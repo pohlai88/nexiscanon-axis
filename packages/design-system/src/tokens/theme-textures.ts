@@ -8,6 +8,7 @@
  * @see E02-07-THEME-GLASS.md for Glass Theme integration
  */
 
+import type * as React from "react"
 import type { ThemeName } from "./theme-config"
 
 /* -----------------------------------------------------------------------------

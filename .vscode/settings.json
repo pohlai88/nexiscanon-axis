@@ -3,8 +3,12 @@
   "eslint.useFlatConfig": true,
   "eslint.experimental.useFlatConfig": true,
   "eslint.workingDirectories": [
-    { "pattern": "packages/*/" },
-    { "pattern": "apps/*/" }
+    {
+      "pattern": "packages/*/"
+    },
+    {
+      "pattern": "apps/*/"
+    }
   ],
   "eslint.validate": [
     "javascript",
@@ -12,7 +16,6 @@
     "typescript",
     "typescriptreact"
   ],
-
   // Editor
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -25,20 +28,28 @@
   },
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "editor.rulers": [100],
-
+  "editor.rulers": [
+    100
+  ],
   // TypeScript
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-
   // Tailwind CSS
-  "tailwindCSS.classFunctions": ["cva", "cn"],
-  "tailwindCSS.experimental.classRegex": [
-    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  "tailwindCSS.classFunctions": [
+    "cva",
+    "cn"
   ],
-
+  "tailwindCSS.experimental.classRegex": [
+    [
+      "cva\\(([^)]*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ],
+    [
+      "cn\\(([^)]*)\\)",
+      "[\"'`]([^\"'`]*).*?[\"'`]"
+    ]
+  ],
   // Testing
   "vitest.debugExclude": [
     "<node_internals>/**",
@@ -54,7 +65,6 @@
     "**/.next/**",
     "**/dist/**"
   ],
-
   // Files
   "files.exclude": {
     "deprecated": true,
@@ -64,7 +74,6 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-
   // Search
   "search.exclude": {
     "packages/design-system/tailwindV4/registry/radix-*": true,
@@ -74,10 +83,8 @@
     "**/.next": true,
     "**/dist": true
   },
-
   // Terminal
   "terminal.integrated.cwd": "${workspaceFolder}",
-
   // Emmet for JSX
   "emmet.includeLanguages": {
     "typescriptreact": "html"

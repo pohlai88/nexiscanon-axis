@@ -133,6 +133,94 @@ In your app's CSS file:
 
 ---
 
+## AXIS Registry (Canonical Blocks)
+
+The AXIS Registry is a Shadcn-compatible registry containing **23 canonical blocks** organized into 5 domain-specific categories. These blocks follow the Nexus Doctrine patterns and are designed for enterprise ERP applications.
+
+### Registry Schema
+
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "axis",
+  "homepage": "https://axis.nexuscanon.com",
+  "items": [...]
+}
+```
+
+### Domain Categories
+
+| Domain | Purpose | Blocks |
+|--------|---------|--------|
+| **Quorum** | Analysis & inquiry kernel | command-k, six-w1h-manifest, exception-hunter, drilldown-dashboard, trend-analysis-widget |
+| **Cobalt** | Execution & action kernel | summit-button, predictive-form, crud-sap-interface, autofill-engine |
+| **Audit** | Compliance & governance | danger-zone-indicator, audit-trail-viewer, risk-score-display, policy-override-record |
+| **ERP** | Accounting & finance | ar-aging-table, ap-aging-table, inventory-valuation-card, trial-balance-table, reconciliation-widget |
+| **AFANDA** | Approval & collaboration | approval-queue, sharing-board, escalation-ladder, consultation-thread, read-receipt-system |
+
+### Installing Blocks
+
+```bash
+# Install a single block
+shadcn add @axis/summit-button
+
+# Install multiple blocks
+shadcn add @axis/command-k @axis/approval-queue
+```
+
+### Registry Configuration
+
+In your `components.json`:
+
+```json
+{
+  "registries": {
+    "@shadcn": "https://ui.shadcn.com/r/styles/new-york-v4/{name}.json",
+    "@axis": "http://localhost:3000/r/{name}.json"
+  }
+}
+```
+
+### Building the Registry
+
+```bash
+# Build registry JSON files to public/r/
+pnpm registry:build
+
+# Validate registry.json
+pnpm registry:validate
+```
+
+**Output:**
+```
+packages/design-system/public/r/
+├── index.json              # Registry index
+├── summit-button.json      # Individual block files
+├── command-k.json
+└── ... (23 total blocks)
+```
+
+### Block Import Examples
+
+```tsx
+// Quorum blocks (analysis)
+import { CommandK, ExceptionHunter, DrilldownDashboard } from "@workspace/design-system/blocks"
+
+// Cobalt blocks (execution)
+import { SUMMITButton, PredictiveForm, CRUDSAPInterface } from "@workspace/design-system/blocks"
+
+// Audit blocks (compliance)
+import { DangerZoneIndicator, AuditTrailViewer, RiskScoreDisplay } from "@workspace/design-system/blocks"
+
+// ERP blocks (accounting)
+import { ARAgingTable, APAgingTable, TrialBalanceTable } from "@workspace/design-system/blocks"
+
+// AFANDA blocks (collaboration)
+import { ApprovalQueue, SharingBoard, EscalationLadder } from "@workspace/design-system/blocks"
+```
+
+---
+
 ## Blocks (Pre-built Compositions)
 
 Import from `@workspace/design-system/blocks`:
@@ -141,7 +229,7 @@ Import from `@workspace/design-system/blocks`:
 import { AppSidebar01, LoginForm01, StatsGrid01 } from "@workspace/design-system/blocks"
 ```
 
-### Available Blocks
+### General Blocks
 
 - **AppSidebar01** - Application sidebar with navigation
 - **LoginForm01** - Login form with email/password
@@ -403,6 +491,70 @@ pnpm lint
 
 # Format code
 pnpm format:write
+
+# Build registry JSON files
+pnpm registry:build
+
+# Validate registry
+pnpm registry:validate
+
+# Build CSS
+pnpm css:build
+```
+
+## Shadcn MCP Integration
+
+The design system integrates with Shadcn MCP tools for automated consistency enforcement:
+
+### Available MCP Tools
+
+| Tool | Purpose |
+|------|---------|
+| `list_items_in_registries` | List all blocks in @axis registry |
+| `view_items_in_registries` | View block metadata and source code |
+| `get_add_command_for_items` | Get CLI command to install blocks |
+| `get_audit_checklist` | Post-generation validation checklist |
+| `get-blocks-metadata` | Get catalog of all available blocks |
+
+### Consistency Workflow
+
+```
+1. DISCOVERY
+   └─ list_items_in_registries(["@axis"]) → Find existing blocks
+
+2. INSTALLATION
+   └─ get_add_command_for_items(["@axis/summit-button"]) → CLI command
+
+3. VALIDATION
+   └─ get_audit_checklist() → Verify files, imports, dependencies
+
+4. ENFORCEMENT (via registry.json schema)
+   └─ registryDependencies → Only approved base components
+   └─ categories → Domain-scoped organization
+```
+
+### Registry Item Schema
+
+Each block in `public/r/{name}.json` follows the Shadcn registry-item schema:
+
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "summit-button",
+  "type": "registry:block",
+  "title": "SUMMIT Button (Cobalt)",
+  "description": "Multi-step workflow button...",
+  "categories": ["cobalt", "execution", "workflow"],
+  "registryDependencies": ["button", "tooltip", "progress"],
+  "dependencies": ["motion"],
+  "files": [
+    {
+      "path": "src/blocks/cobalt/summit-button.tsx",
+      "type": "registry:component",
+      "content": "..."
+    }
+  ]
+}
 ```
 
 ## Architecture Decisions
@@ -417,12 +569,36 @@ pnpm format:write
 ### File Structure
 
 ```
-src/
-├── components/     # 54 base components
-├── hooks/          # Custom hooks (useMobile, etc.)
-├── lib/            # Utilities (cn function)
-├── styles/         # Global CSS and themes
-└── index.ts        # Public API exports
+packages/design-system/
+├── registry.json           # AXIS Registry definition (23 blocks)
+├── public/r/               # Built registry JSON files (generated)
+├── scripts/
+│   └── build-registry.mjs  # Registry build script
+├── src/
+│   ├── components/         # 54 base components
+│   ├── blocks/             # Domain blocks (quorum, cobalt, audit, erp, afanda)
+│   ├── effects/            # Visual effects (confetti, particles, etc.)
+│   ├── hooks/              # Custom hooks (useMobile, etc.)
+│   ├── lib/                # Utilities (cn function)
+│   ├── tokens/             # Theme tokens and textures
+│   ├── styles/             # Global CSS and themes
+│   └── index.ts            # Public API exports
+└── package.json
+```
+
+### Registry Structure
+
+```
+registry.json
+├── name: "axis"
+├── homepage: "https://axis.nexuscanon.com"
+└── items: [
+    ├── Quorum (5 blocks)     # Analysis kernel
+    ├── Cobalt (4 blocks)     # Execution kernel
+    ├── Audit (4 blocks)      # Compliance blocks
+    ├── ERP (5 blocks)        # Accounting blocks
+    └── AFANDA (5 blocks)     # Collaboration blocks
+]
 ```
 
 ### Import Strategy

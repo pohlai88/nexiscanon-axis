@@ -1,7 +1,7 @@
 "use client"
 
 import { forwardRef } from "react"
-import type { HTMLAttributes, Ref } from "react"
+import type { HTMLAttributes } from "react"
 import { motion, useScroll } from "motion/react"
 import type { MotionProps } from "motion/react"
 

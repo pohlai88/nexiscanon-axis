@@ -22,20 +22,34 @@
 
 ## The Consistency Principle
 
+> **Canonical Reference:** [A01-CANONICAL.md §6 — PROTECT. DETECT. REACT.](./A01-CANONICAL.md)
+>
+> *"It's never too late to REACT when you DETECT it, because you PROTECTED it."*
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                    AUTOMATED CONSISTENCY ENFORCEMENT                         │
+│                      (PROTECT. DETECT. REACT. Applied)                       │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
 │   ╔═══════════════════════════════════════════════════════════════════╗    │
 │   ║                                                                   ║    │
 │   ║   Consistency is not a suggestion. It's a contract.               ║    │
 │   ║                                                                   ║    │
+│   ║   PROTECT (The Foundation):                                       ║    │
 │   ║   • Tailwind CLI scans and validates all utility classes          ║    │
 │   ║   • Shadcn MCP audits component compliance                        ║    │
 │   ║   • TypeScript enforces type contracts                            ║    │
+│   ║                                                                   ║    │
+│   ║   DETECT (The Vigilance):                                         ║    │
 │   ║   • ESLint catches anti-patterns                                  ║    │
-│   ║   • Pre-commit hooks prevent violations                           ║    │
+│   ║   • Pre-commit hooks scan staged files                            ║    │
+│   ║   • CI/CD pipeline validates every PR                             ║    │
+│   ║                                                                   ║    │
+│   ║   REACT (The Response):                                           ║    │
+│   ║   • Block commits with violations                                 ║    │
+│   ║   • Generate health metrics reports                               ║    │
+│   ║   • Alert team of compliance drift                                ║    │
 │   ║                                                                   ║    │
 │   ║   If it compiles, it's consistent. If it's inconsistent, it fails.║    │
 │   ║                                                                   ║    │
@@ -43,6 +57,14 @@
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
+
+### PDR Applied to Design System
+
+| PDR Layer | Design System Implementation |
+|-----------|------------------------------|
+| **PROTECT** | Immutable design tokens, workspace imports only, TypeScript strict mode |
+| **DETECT** | ESLint rules, Tailwind CLI validation, health metrics monitoring |
+| **REACT** | Pre-commit hooks block violations, CI/CD fails on errors, automated reports |
 
 ---
 
@@ -90,6 +112,12 @@
 │   ├── Run lint on staged files                                              │
 │   ├── Format code with Prettier                                             │
 │   └── Block commit if violations found                                      │
+│                                                                              │
+│   Layer 7: AXIS REGISTRY (Shadcn Schema)                                    │
+│   ├── 23 canonical blocks across 5 domains                                  │
+│   ├── registryDependencies enforce base component usage                     │
+│   ├── categories provide domain organization                                │
+│   └── MCP tools for discovery and validation                                │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -224,6 +252,103 @@ import { Button } from "../../../packages/design-system/src/components/button"
 - `list_items_in_registries` - Verify component exists in registry
 - `search_items_in_registries` - Find component before creating local version
 - `get_audit_checklist` - Post-creation validation
+
+---
+
+## Part III-B: AXIS Registry (Canonical Blocks)
+
+### 3B.1 Registry Overview
+
+The AXIS Registry extends Shadcn's registry system with **23 canonical blocks** organized into 5 domain-specific categories:
+
+| Domain | Purpose | Blocks | Categories |
+|--------|---------|--------|------------|
+| **Quorum** | Analysis & inquiry kernel | 5 | `["quorum", "analysis"]` |
+| **Cobalt** | Execution & action kernel | 4 | `["cobalt", "execution"]` |
+| **Audit** | Compliance & governance | 4 | `["audit", "compliance"]` |
+| **ERP** | Accounting & finance | 5 | `["erp", "accounting"]` |
+| **AFANDA** | Approval & collaboration | 5 | `["afanda", "collaboration"]` |
+
+### 3B.2 Registry Schema
+
+**File:** `packages/design-system/registry.json`
+
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "axis",
+  "homepage": "https://axis.nexuscanon.com",
+  "items": [
+    {
+      "name": "summit-button",
+      "type": "registry:block",
+      "title": "SUMMIT Button (Cobalt)",
+      "description": "Multi-step workflow button with S.U.M.M.I.T. protocol",
+      "categories": ["cobalt", "execution", "workflow"],
+      "registryDependencies": ["button", "tooltip", "progress"],
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/blocks/cobalt/summit-button.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+    // ... 22 more blocks
+  ]
+}
+```
+
+### 3B.3 Registry Build Process
+
+```bash
+# Build registry JSON files to public/r/
+pnpm --filter @workspace/design-system registry:build
+
+# Output:
+# packages/design-system/public/r/
+# ├── index.json           # Registry index (23 items)
+# ├── summit-button.json   # Individual block files
+# ├── command-k.json
+# └── ... (23 total)
+```
+
+### 3B.4 Consistency Enforcement via Registry
+
+**`registryDependencies` Enforcement:**
+- Each block declares which base components it uses
+- Blocks MUST only depend on registered @workspace/design-system components
+- No local component creation allowed
+
+**`categories` Organization:**
+- Domain categories (quorum, cobalt, audit, erp, afanda)
+- Functional categories (workflow, analysis, compliance, accounting, collaboration)
+- Enables discovery and filtering
+
+### 3B.5 Block Usage
+
+```tsx
+// Import canonical blocks from the registry
+import { 
+  SUMMITButton,           // Cobalt
+  CommandK,               // Quorum
+  ApprovalQueue,          // AFANDA
+  ARAgingTable,           // ERP
+  DangerZoneIndicator     // Audit
+} from "@workspace/design-system/blocks"
+
+// Install via CLI
+// shadcn add @axis/summit-button
+```
+
+### 3B.6 MCP Tools for Registry
+
+| Tool | Purpose |
+|------|---------|
+| `list_items_in_registries(["@axis"])` | List all AXIS blocks |
+| `view_items_in_registries(["@axis/summit-button"])` | View block details |
+| `get_add_command_for_items(["@axis/summit-button"])` | Get install command |
+| `get_audit_checklist()` | Validate after installation |
 
 ---
 

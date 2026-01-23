@@ -1,0 +1,352 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "axis",
+  "homepage": "https://axis.nexuscanon.com",
+  "items": [
+    {
+      "name": "command-k",
+      "type": "registry:block",
+      "title": "Command K (Quorum)",
+      "description": "Global command palette with fuzzy search, keyboard navigation, and AI-powered suggestions for Quorum kernel operations",
+      "categories": ["quorum", "analysis", "navigation"],
+      "registryDependencies": ["command", "dialog", "input"],
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/blocks/quorum/command-k.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "six-w1h-manifest",
+      "type": "registry:block",
+      "title": "6W1H Manifest (Quorum)",
+      "description": "Displays immutable 6W1H contextual information (Who, What, When, Where, Why, Which, How) per Nexus Doctrine",
+      "categories": ["quorum", "analysis", "audit"],
+      "registryDependencies": ["card", "badge", "collapsible"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/quorum/six-w1h-manifest.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "exception-hunter",
+      "type": "registry:block",
+      "title": "Exception Hunter (Quorum)",
+      "description": "AI-powered exception detection and analysis with severity classification, suggested actions, and trend visualization",
+      "categories": ["quorum", "analysis", "ai"],
+      "registryDependencies": ["card", "badge", "collapsible", "button"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/quorum/exception-hunter.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "drilldown-dashboard",
+      "type": "registry:block",
+      "title": "Drilldown Dashboard (Quorum)",
+      "description": "Interactive KPI dashboard with hierarchical drill-down navigation, sparklines, and dimension-based filtering",
+      "categories": ["quorum", "analysis", "dashboard"],
+      "registryDependencies": ["card", "button", "tooltip"],
+      "dependencies": ["recharts"],
+      "files": [
+        {
+          "path": "src/blocks/quorum/drilldown-dashboard.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "trend-analysis-widget",
+      "type": "registry:block",
+      "title": "Trend Analysis Widget (Quorum)",
+      "description": "Multi-period trend comparison with anomaly highlighting, AI-generated insights, and configurable metrics",
+      "categories": ["quorum", "analysis", "charts"],
+      "registryDependencies": ["card", "select", "tooltip"],
+      "dependencies": ["recharts"],
+      "files": [
+        {
+          "path": "src/blocks/quorum/trend-analysis-widget.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "summit-button",
+      "type": "registry:block",
+      "title": "SUMMIT Button (Cobalt)",
+      "description": "Multi-step workflow button implementing S.U.M.M.I.T. protocol (Save, Upload, Message, Migrate, Integrate, Terminate)",
+      "categories": ["cobalt", "execution", "workflow"],
+      "registryDependencies": ["button", "tooltip", "progress"],
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/blocks/cobalt/summit-button.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "predictive-form",
+      "type": "registry:block",
+      "title": "Predictive Form (Cobalt)",
+      "description": "AI-powered form with field prediction, auto-completion, validation, and context-aware suggestions",
+      "categories": ["cobalt", "execution", "forms", "ai"],
+      "registryDependencies": ["card", "input", "button", "label"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/cobalt/predictive-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "crud-sap-interface",
+      "type": "registry:block",
+      "title": "CRUD-SAP Interface (Cobalt)",
+      "description": "Unified CRUD operations interface with global search, inline editing, AI-predicted actions, and pagination",
+      "categories": ["cobalt", "execution", "data-management"],
+      "registryDependencies": ["table", "button", "input", "dialog"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/cobalt/crud-sap-interface.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "autofill-engine",
+      "type": "registry:block",
+      "title": "Autofill Engine (Cobalt)",
+      "description": "Context-aware field population with AI suggestions, confidence indicators, and one-click autofill",
+      "categories": ["cobalt", "execution", "ai", "forms"],
+      "registryDependencies": ["card", "button", "input", "tooltip"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/cobalt/autofill-engine.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "danger-zone-indicator",
+      "type": "registry:block",
+      "title": "Danger Zone Indicator (Audit)",
+      "description": "Policy violation warning system with severity levels, violation details, and override workflow",
+      "categories": ["audit", "compliance", "alerts"],
+      "registryDependencies": ["alert", "card", "badge", "dialog"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/audit/danger-zone-indicator.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "audit-trail-viewer",
+      "type": "registry:block",
+      "title": "Audit Trail Viewer (Audit)",
+      "description": "Comprehensive audit log viewer with filtering, diff comparison, export, and tamper-proof verification",
+      "categories": ["audit", "compliance", "logging"],
+      "registryDependencies": ["card", "table", "collapsible", "button"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/audit/audit-trail-viewer.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "risk-score-display",
+      "type": "registry:block",
+      "title": "Risk Score Display (Audit)",
+      "description": "Real-time risk assessment with gauge visualization, contributing factors breakdown, and recommendations",
+      "categories": ["audit", "compliance", "risk"],
+      "registryDependencies": ["card", "progress", "tooltip"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/audit/risk-score-display.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "policy-override-record",
+      "type": "registry:block",
+      "title": "Policy Override Record (Audit)",
+      "description": "Documents policy overrides with justification, evidence attachment, approvals, and immutable record creation",
+      "categories": ["audit", "compliance", "documentation"],
+      "registryDependencies": ["card", "textarea", "button", "dialog"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/audit/policy-override-record.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ar-aging-table",
+      "type": "registry:block",
+      "title": "AR Aging Table (ERP)",
+      "description": "Accounts Receivable aging analysis with bucket breakdown, customer details, and collection status",
+      "categories": ["erp", "accounting", "receivables"],
+      "registryDependencies": ["table", "card", "badge", "tooltip"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/erp/ar-aging-table.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "ap-aging-table",
+      "type": "registry:block",
+      "title": "AP Aging Table (ERP)",
+      "description": "Accounts Payable aging analysis with vendor details, payment scheduling, and cash flow projection",
+      "categories": ["erp", "accounting", "payables"],
+      "registryDependencies": ["table", "card", "badge", "tooltip"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/erp/ap-aging-table.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "inventory-valuation-card",
+      "type": "registry:block",
+      "title": "Inventory Valuation Card (ERP)",
+      "description": "Stock valuation display with costing method, stock level indicators, and reorder alerts",
+      "categories": ["erp", "accounting", "inventory"],
+      "registryDependencies": ["card", "badge", "progress"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/erp/inventory-valuation-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "trial-balance-table",
+      "type": "registry:block",
+      "title": "Trial Balance Table (ERP)",
+      "description": "GL trial balance with debit/credit columns, balance verification, period comparison, and drill-through",
+      "categories": ["erp", "accounting", "general-ledger"],
+      "registryDependencies": ["table", "card", "select"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/erp/trial-balance-table.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "reconciliation-widget",
+      "type": "registry:block",
+      "title": "Reconciliation Widget (ERP)",
+      "description": "Subledger to GL reconciliation with difference highlighting, auto-match suggestions, and adjustment posting",
+      "categories": ["erp", "accounting", "reconciliation"],
+      "registryDependencies": ["card", "table", "button", "tooltip"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/erp/reconciliation-widget.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "approval-queue",
+      "type": "registry:block",
+      "title": "Approval Queue (AFANDA)",
+      "description": "Hierarchical approval workflow with SLA timers, bulk actions, comments, and delegation support",
+      "categories": ["afanda", "collaboration", "workflow"],
+      "registryDependencies": ["card", "button", "badge", "avatar", "tooltip"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/afanda/approval-queue.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "sharing-board",
+      "type": "registry:block",
+      "title": "Sharing Board (AFANDA)",
+      "description": "Collaborative sharing board with permissions, comments, version tracking, and real-time presence",
+      "categories": ["afanda", "collaboration", "sharing"],
+      "registryDependencies": ["card", "dialog", "button", "avatar"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/afanda/sharing-board.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "escalation-ladder",
+      "type": "registry:block",
+      "title": "Escalation Ladder (AFANDA)",
+      "description": "Automatic escalation paths with SLA timers, contact methods, and manual escalation triggers",
+      "categories": ["afanda", "collaboration", "escalation"],
+      "registryDependencies": ["card", "button", "badge", "tooltip"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/afanda/escalation-ladder.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "consultation-thread",
+      "type": "registry:block",
+      "title": "Consultation Thread (AFANDA)",
+      "description": "Structured discussion threads with voting, mentions, canonical outcome recording, and expert tagging",
+      "categories": ["afanda", "collaboration", "discussion"],
+      "registryDependencies": ["card", "button", "avatar", "textarea"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/afanda/consultation-thread.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "read-receipt-system",
+      "type": "registry:block",
+      "title": "Read Receipt System (AFANDA)",
+      "description": "Document view tracking with acknowledgment requirements, reminders, and accountability reporting",
+      "categories": ["afanda", "collaboration", "tracking"],
+      "registryDependencies": ["card", "table", "badge", "tooltip"],
+      "dependencies": [],
+      "files": [
+        {
+          "path": "src/blocks/afanda/read-receipt-system.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

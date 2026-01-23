@@ -256,7 +256,7 @@ export function GlassSurface({
   tint = "none",
   shadow = false,
   interactive = false,
-  asChild = false,
+  asChild: _asChild = false,
   children,
   className,
   ...props

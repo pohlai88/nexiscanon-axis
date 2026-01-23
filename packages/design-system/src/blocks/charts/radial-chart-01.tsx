@@ -65,7 +65,7 @@ export function RadialChart01({
 
   // Calculate end angle based on percentage
   const percentage = (value / maxValue) * 100
-  const calculatedEndAngle = (percentage / 100) * 360
+  const _calculatedEndAngle = (percentage / 100) * 360
 
   return (
     <Card className={cn("flex flex-col", className)}>

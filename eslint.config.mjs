@@ -4,6 +4,7 @@ import { FlatCompat } from "@eslint/eslintrc"
 import js from "@eslint/js"
 import typescriptEslint from "@typescript-eslint/eslint-plugin"
 import tsParser from "@typescript-eslint/parser"
+import globals from "globals"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -40,6 +41,10 @@ export default [
       parser: tsParser,
       ecmaVersion: "latest",
       sourceType: "module",
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -56,6 +61,22 @@ export default [
         },
       ],
       "@typescript-eslint/no-explicit-any": "warn",
+      "no-unused-vars": "off", // Use TypeScript version instead
+    },
+  },
+  // Relaxed rules for design-system blocks (interface callback parameters)
+  {
+    files: ["packages/design-system/src/blocks/**/*.tsx"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          args: "none",
+          ignoreRestSiblings: true,
+        },
+      ],
     },
   },
   // CommonJS files (e.g., prettier.config.cjs)

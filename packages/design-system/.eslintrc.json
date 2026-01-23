@@ -1,0 +1,91 @@
+{
+  "root": true,
+  "extends": ["../../.eslintrc.json"],
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "node": true
+  },
+  "globals": {
+    "React": "readonly",
+    "NodeJS": "readonly",
+    "console": "readonly",
+    "setTimeout": "readonly",
+    "clearTimeout": "readonly",
+    "setInterval": "readonly",
+    "clearInterval": "readonly",
+    "HTMLInputElement": "readonly",
+    "HTMLButtonElement": "readonly",
+    "HTMLElement": "readonly",
+    "Element": "readonly",
+    "File": "readonly",
+    "FileList": "readonly",
+    "FormData": "readonly",
+    "Blob": "readonly",
+    "URL": "readonly",
+    "globalThis": "readonly",
+    "window": "readonly",
+    "document": "readonly",
+    "MouseEvent": "readonly",
+    "TouchEvent": "readonly",
+    "KeyboardEvent": "readonly",
+    "Event": "readonly",
+    "EventListener": "readonly",
+    "AddEventListenerOptions": "readonly",
+    "WindowEventMap": "readonly",
+    "IntersectionObserver": "readonly",
+    "IntersectionObserverInit": "readonly",
+    "IntersectionObserverEntry": "readonly",
+    "ResizeObserver": "readonly",
+    "MutationObserver": "readonly",
+    "requestAnimationFrame": "readonly",
+    "cancelAnimationFrame": "readonly"
+  },
+  "rules": {
+    "no-undef": "off",
+    "no-unused-vars": ["error", {
+      "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
+      "args": "after-used",
+      "ignoreRestSiblings": true
+    }],
+    "@typescript-eslint/no-unused-vars": ["error", {
+      "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
+      "args": "after-used",
+      "ignoreRestSiblings": true
+    }]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "**/*.ts", "**/*.tsx"],
+      "rules": {
+        "no-undef": "off"
+      }
+    },
+    {
+      "files": ["src/hooks/**/*.ts"],
+      "rules": {
+        "no-undef": "off"
+      }
+    },
+    {
+      "files": ["src/blocks/**/*.tsx"],
+      "rules": {
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["warn", {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+          "args": "none",
+          "ignoreRestSiblings": true
+        }]
+      }
+    },
+    {
+      "files": ["scripts/**/*.mjs", "scripts/**/*.js"],
+      "env": {
+        "node": true
+      }
+    }
+  ]
+}

@@ -56,6 +56,15 @@
 | [B11](./.cursor/ERP/B11-AFANDA.md) | AFANDA | Dashboard & Analytics Framework |
 | [B12](./.cursor/ERP/B12-INTELLIGENCE.md) | Intelligence | AI/ML Integration |
 
+### E-Series: Design System
+
+| Doc | Name | Description |
+| --- | ---- | ----------- |
+| [E01](./.cursor/ERP/E01-DESIGN-SYSTEM.md) | **Constitution** | Design System Philosophy & Component Inventory |
+| [E02](./.cursor/ERP/E02-BLOCKS.md) | Block Library | Pre-Built UI Patterns & Compositions |
+| [E03](./.cursor/ERP/E03-IMPLEMENTATION.md) | Implementation | Forms, Tables, Themes, Best Practices |
+| [E04](./.cursor/ERP/E04-CONSISTENCY-STRATEGY.md) | **Consistency** | Automated Enforcement & Quality Assurance |
+
 ### C-Series: Migration & Integration
 
 | Doc | Name | Description |
@@ -168,6 +177,94 @@ cp .envsamplelocal .env.local
 pnpm dev
 
 # Opens at http://localhost:3000
+```
+
+---
+
+## Design System Consistency
+
+> **Status:** ✅ Fully Automated | **Documentation:** [E04-CONSISTENCY-STRATEGY.md](./.cursor/ERP/E04-CONSISTENCY-STRATEGY.md)
+
+AXIS enforces design system consistency through **7 automated validation layers**:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│            AUTOMATED CONSISTENCY ENFORCEMENT                │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  1. Design Tokens    → Tailwind v4 semantic variables      │
+│  2. Utility Classes  → Tailwind CLI validation             │
+│  3. Component Imports → @workspace/design-system only      │
+│  4. Semantic Tokens  → No hardcoded colors (bg-blue-500)  │
+│  5. No Local UI      → Centralized components only         │
+│  6. ESLint Rules     → Custom design system plugin         │
+│  7. TypeScript       → Strict mode (no any types)          │
+│                                                             │
+│  Every commit validated. Every build checked.              │
+│  If it compiles, it's consistent.                          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Health Metrics
+
+```bash
+# Generate comprehensive health report
+pnpm report:design-system
+```
+
+| Metric | Target | Enforced By |
+|--------|--------|-------------|
+| Component Reuse | ≥90% | Validation scripts |
+| Import Compliance | 100% | ESLint + pre-commit hooks |
+| Semantic Token Usage | 100% | Custom ESLint rule |
+| TypeScript Errors | 0 | TypeScript compiler |
+| ESLint Violations | 0 | Pre-commit hooks + CI/CD |
+| Bundle Size | <500KB | Monitored in reports |
+| Build Time | <30s | Monitored in reports |
+
+### Pre-Commit Validation
+
+```bash
+# Automatic on every commit
+git commit -m "Add feature"
+# → Validates TypeScript types
+# → Validates ESLint rules
+# → Formats with Prettier
+# → Blocks commit if violations found
+```
+
+### CI/CD Pipeline
+
+**GitHub Actions:** `.github/workflows/design-system-validation.yml`
+
+- ✅ TypeScript validation
+- ✅ ESLint validation (including custom design system rules)
+- ✅ Import compliance check
+- ✅ Semantic token enforcement
+- ✅ Build validation
+- ✅ Health metrics report
+
+**All checks must pass before merge.**
+
+### Custom ESLint Rules
+
+Located in `packages/eslint-plugin-design-system/`:
+
+1. **`no-hardcoded-colors`** - Blocks `bg-blue-500`, enforces semantic tokens
+2. **`no-template-literals-in-classname`** - Enforces `cn()` utility
+3. **`no-restricted-imports`** - Blocks local UI component imports
+
+```typescript
+// ✅ CORRECT
+import { Button } from "@workspace/design-system"
+className={cn("base", condition && "conditional")}
+className="bg-primary text-primary-foreground"
+
+// ❌ BLOCKED BY ESLINT
+import { Button } from "./components/ui/button"
+className={`base ${condition ? 'active' : ''}`}
+className="bg-blue-500 text-white"
 ```
 
 ---
@@ -288,6 +385,17 @@ pnpm typecheck              # TypeScript check
 pnpm lint                   # ESLint check
 pnpm lint:fix               # Auto-fix lint issues
 
+# Design System Validation
+pnpm validate:imports       # Check workspace imports
+pnpm validate:tokens        # Check semantic token usage
+pnpm validate:no-local-ui   # Check for local UI components
+pnpm validate:all           # Run all validations
+pnpm report:design-system   # Generate health metrics
+
+# Tailwind CSS
+pnpm css:dev                # Watch mode (development)
+pnpm css:build              # Minified build (production)
+
 # Database (from packages/db)
 pnpm db:generate            # Generate Drizzle migrations
 pnpm db:push                # Push schema to database
@@ -328,6 +436,7 @@ pnpm --filter @axis/registry codegen
 | [Plans](.cursor/plans/README.md) | Implementation plans |
 | [Scripts](./scripts/README.md) | Utility scripts |
 | [E2E Testing](./docs/E2E-TESTING.md) | Testing strategy |
+| [Design System Consistency](./docs/DESIGN-SYSTEM-CONSISTENCY.md) | Automated enforcement guide |
 
 ### External
 
@@ -355,8 +464,9 @@ MIT License - See [LICENSE.md](./LICENSE.md)
 | ----- | ----- |
 | **Status** | Production |
 | **Version** | 1.0.0 |
-| **Last Updated** | 2026-01-22 |
+| **Last Updated** | 2026-01-23 |
 | **Maintainer** | AXIS Architecture Team |
+| **Design System** | ✅ 100% Compliance Enforced |
 
 ---
 

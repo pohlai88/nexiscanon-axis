@@ -5,6 +5,62 @@ alwaysApply: true
 
 # Global Constitution (Always Apply)
 
+## 🚨 RULE #1: NO ANY, NO UNUSED (HIGHEST PRIORITY - HARD ENFORCEMENT)
+
+**This rule supersedes all other rules. Zero tolerance. No exceptions.**
+
+### Banned Patterns (IMMEDIATE REJECTION)
+
+```typescript
+// ❌ FORBIDDEN - Will cause lint failure
+const data: any = ...
+function foo(x: any) { ... }
+Record<string, any>
+as any
+// @ts-ignore
+// eslint-disable
+
+// ❌ FORBIDDEN - Unused code
+import { Unused } from "..."     // Unused import
+const unused = 5                  // Unused variable
+function unused() { ... }         // Unused function
+```
+
+### Required Alternatives
+
+```typescript
+// ✅ REQUIRED - Use proper types
+const data: unknown = ...         // Use unknown, then narrow
+function foo(x: string | number) { ... }
+Record<string, unknown>
+
+// ✅ REQUIRED - Prefix unused with underscore
+const _intentionallyUnused = 5
+function Component({ _unusedProp }: Props) { ... }
+array.map((item, _index) => ...)
+```
+
+### Enforcement (HARD STOP)
+
+**BEFORE completing ANY code generation:**
+1. Search for `any` in generated code → If found, REPLACE with proper type
+2. Search for unused imports/variables → If found, REMOVE or prefix with `_`
+3. Run `pnpm lint` → Must pass with 0 errors
+
+**FORBIDDEN** (HARD BAN - NO WORKAROUNDS):
+- ❌ Using `any` type anywhere
+- ❌ Using `// @ts-ignore` or `// @ts-expect-error`
+- ❌ Using `eslint-disable` for type rules
+- ❌ Leaving unused imports or variables
+- ❌ Saying "I'll fix types later"
+
+**If unable to determine correct type:**
+1. STOP immediately
+2. Ask user: "Cannot determine type for [X]. Options: [A], [B], or [C]?"
+3. DO NOT proceed with `any`
+
+---
+
 ## Prime Directives (Non-Negotiable)
 - **DRY + KISS**: Don't Repeat Yourself; Keep It Simple, Stupid
 - **Minimal Change**: Do the minimum change that solves the problem

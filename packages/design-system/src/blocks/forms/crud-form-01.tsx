@@ -27,7 +27,7 @@ export interface CrudFormField {
 
 export interface CrudForm01Props {
   fields: CrudFormField[]
-  onSubmit: (data: Record<string, any>) => void | Promise<void>
+  onSubmit: (data: Record<string, unknown>) => void | Promise<void>
   onCancel?: () => void
   title?: string
   description?: string
@@ -48,15 +48,15 @@ export function CrudForm01({
   isLoading = false,
   className,
 }: CrudForm01Props) {
-  const [formData, setFormData] = React.useState<Record<string, any>>(() => {
-    const initial: Record<string, any> = {}
+  const [formData, setFormData] = React.useState<Record<string, unknown>>(() => {
+    const initial: Record<string, unknown> = {}
     fields.forEach((field) => {
       initial[field.name] = field.value || ""
     })
     return initial
   })
 
-  const handleChange = (name: string, value: any) => {
+  const handleChange = (name: string, value: string | number) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 

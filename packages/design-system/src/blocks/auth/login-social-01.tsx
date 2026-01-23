@@ -11,7 +11,6 @@ import {
 } from "@/components/card"
 import { Input } from "@/components/input"
 import { Label } from "@/components/label"
-import { Separator } from "@/components/separator"
 import { cn } from "@/lib/utils"
 
 export interface LoginSocial01Props {

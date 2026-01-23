@@ -1,7 +1,8 @@
 "use client"
 
+import type * as React from "react"
 import { useEffect, useRef, useState } from "react"
-import type { ReactNode, RefObject, FormEvent } from "react"
+import type { ReactNode, RefObject } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import { ChevronUp, Loader2, Check } from "lucide-react"
 

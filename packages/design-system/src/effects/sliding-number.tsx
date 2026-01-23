@@ -144,7 +144,7 @@ export function SlidingNumber({
   value,
   padStart = false,
   decimalSeparator = ".",
-  thousandsSeparator,
+  thousandsSeparator: _thousandsSeparator,
   decimalPlaces,
   prefix,
   suffix,
